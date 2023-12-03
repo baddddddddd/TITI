@@ -1,0 +1,61 @@
+<!-- register.js -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NodeJS</title>
+
+    <style>
+        *, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .flex-container {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flex-container input {
+            padding: 5px;
+        }
+
+        .flex-container a {
+            text-decoration: none;
+        }
+
+        .success-message {
+            color: green;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex-container">
+        <form action="/register" method="post" id="registrationForm">
+            <input required type="text" name="name" placeholder="Full Name">
+            <br><br>
+            <input required type="password" name="password" placeholder="Password">
+            <br><br>
+            <input required type="text" name="age" placeholder="Age">
+            <br><br>
+            <input required type="text" name="contactno" placeholder="Contact Number">
+            <br><br>
+            <input required type="email" name="email" placeholder="Email">
+            <br><br>
+            <input required type="submit" value="Register" onclick="submitForm()">
+            <br><br>
+            <div><%= registrationResult %></div>
+            <br><br>
+            <p>Already have an account? <a href="/">Login</a></p>
+            <br><br>
+        </form>
+    </div>
+</body>
+</html>

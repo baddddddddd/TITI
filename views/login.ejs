@@ -1,0 +1,49 @@
+<!-- For Login Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NodeJS</title>
+
+    <style>
+        *, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .flex-container {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flex-container input {
+            padding: 5px;
+        }
+
+        .flex-container a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex-container">
+        <form action="/" method="post">
+            <br><br>
+            <input type="text" name="schoolcode" placeholder="School ID">
+            <br><br>
+            <input type="password" name="password" placeholder="Password">
+            <br><br>
+            <div><%= errorMessage %></div>
+            <br>
+            <input type="submit">
+            <br><br>
+            <p>Don't have an account yet? <a href="/register">Register</a></p>
+        </form>
+    </div>
+</body>
+</html>
