@@ -14,11 +14,12 @@
         Log In
       </div>
       <div class="field-container">
-        <input required type="text" name="userCode" id="userCode" placeholder="User Code">
+        <input required type="text" name="userCode" id="userCode" placeholder="User Code" value="<%= locals.userCode %>">
       </div>
       <div class="field-container">
         <input required type="password" name="password" id="password" placeholder="Password">
       </div>
+      <div class="error-message"><%= locals.errorMessage %></div>
       <div>
         <input class="btn" type="submit" value="LOG IN">
       </div>

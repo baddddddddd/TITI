@@ -61,9 +61,11 @@ function verifyUser(req, response) {
     const query = "SELECT * FROM UserCredentials WHERE UserCode=?";
     const params = [userCode];
 
+
     db.query(query, params, (err, res) => {
         if (res.length == 0) {
-            response.sendStatus(401);
+            response.render("../views/login.ejs", { userCode: userCode });
+            return;
         }
 
         let user = res[0];
@@ -76,7 +78,7 @@ function verifyUser(req, response) {
                 if (result) {
                     response.redirect("dashboard")
                 } else {
-                    response.sendStatus(401);
+                    response.render("../views/login.ejs", { userCode: userCode, errorMessage: "Incorrect password or email" });
                 }
             }
         });
