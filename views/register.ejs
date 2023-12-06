@@ -25,14 +25,12 @@
       <div class="field-container">
         <input type="text" name="nameExtension" id="nameExtension" placeholder="Name Extension (if applicable)">
       </div>
-      <div>
+      <div class="half-split-flex">
         <div class="field-container">
-          <input type="date" name="birthdate" id="birthdate" placeholder="birthdate">
+          <input class="date-picker" type="date" name="birthdate" id="birthdate" placeholder="birthdate">
         </div>
         <div class="field-container">
-          <label for="gender">Gender:</label>
-
-          <select id="gender" name="gender">
+          <select class="options" id="gender" name="gender">
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Other">Prefer not to say</option>
@@ -52,13 +50,13 @@
         <input required type="text" name="currentAddress" id="currentAddress" placeholder="Current Address">
       </div>
       <div class="field-container">
-        <input required type="text" name="password" id="password" placeholder="Password">
+        <input required type="password" name="password" id="password" placeholder="Password">
       </div>
       <div class="field-container">
-        <input required type="text" id="confirmPassword" placeholder="Confirm Password">
+        <input required type="password" id="confirmPassword" placeholder="Confirm Password">
       </div>
       <div>
-        <input type="submit" value="Register">
+        <input class="btn" type="submit" value="REGISTER">
       </div>
     </form>
   </div>
