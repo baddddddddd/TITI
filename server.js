@@ -2,29 +2,29 @@ const express = require("express");
 const app = express();
 
 const db = require('./db');
-const registrationController = require('./registrationController');
-const loginController = require('./loginController');
+const registrationController = require('./controllers/registrationController');
+const loginController = require('./controllers/loginController');
+const authController = require("./controllers/authController");
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static(__dirname + "/static"));
 
 // Routes
 
-// Login (loginController.js)
 app.get('/', (req, res) => {
     res.render("login.ejs", {errorMessage: '' });
 });
 
-app.post('/', loginController.loginUser);
+app.post('/', authController.verifyUser);
 
 
-// Registration (registrationController.js)
 app.get('/register', (req, res) => {
     res.render("register.ejs", {registrationResult: '' });
 });
 
-app.post('/register', registrationController.registerUser);
+app.post('/register', authController.registerUser);
 
 
 // Student Dashboard

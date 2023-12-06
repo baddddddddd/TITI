@@ -1,27 +1,30 @@
 const mysql = require('mysql');
+require('dotenv').config();
 
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Labyu_123',
-    database: 'student_portal',
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    port: process.env.DB_PORT,
 });
 
+console.log("Connecting to database...");
 connection.connect((err) => {
     if (err) {
-        console.error('Error connecting to MySQL:', err);
-        throw err; // Throw an error to terminate the application if the connection fails
+        console.error('Error connecting to database:', err);
+        throw err;
     }
-    console.log('Connected to MySQL database');
+    console.log('Successfully connected to database.');
 });
 
-// Additional error handling for database queries
+console.log("Executing test query...")
 connection.query('SELECT 1', (err, results) => {
     if (err) {
         console.error('Error executing test query:', err);
-        throw err; // Throw an error to terminate the application if the test query fails
+        throw err;
     }
-    console.log('Test query executed successfully');
+    console.log('Test query executed successfully.');
 });
 
 module.exports = connection;
