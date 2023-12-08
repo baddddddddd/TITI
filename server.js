@@ -1,10 +1,18 @@
 const express = require("express");
+const session = require('express-session');
 const app = express();
+
+app.use(session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: true,
+}));
 
 const db = require('./db');
 const registrationController = require('./controllers/registrationController');
 const loginController = require('./controllers/loginController');
 const authController = require("./controllers/authController");
+<<<<<<< Updated upstream
 const generator = require("./utils/generator");
 
 const courseRouter = require("./routers/course");
@@ -24,6 +32,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+=======
+const dashboardController = require("./controllers/dashboardController")
+>>>>>>> Stashed changes
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
@@ -31,20 +42,32 @@ app.use(express.json());
 app.use(express.static(__dirname + "/static"));
 
 // Routes
-
+// Login
 app.get('/', (req, res) => {
     res.render("login.ejs", {errorMessage: '' });
 });
 
 app.post('/', authController.verifyUser);
 
+// Student Dashboard
+app.get('/dashboard', dashboardController.renderDashboard);
 
+
+// Admin Dashboard
+app.get('/admin', (req, res) => {
+    res.render("admin.ejs", {errorMessage: '' });
+});
+
+app.post('/admin', authController.verifyAdmin);
+
+// Registration
 app.get('/register', (req, res) => {
     res.render("register.ejs", {registrationResult: '' });
 });
 
 app.post('/register', authController.registerUser);
 
+<<<<<<< Updated upstream
 
 // Student Dashboard
 app.get('/dashboard', (req, res) => {
@@ -118,6 +141,18 @@ app.post("/course/download", (req, res) => {
     res.download(path);
 });
 
+=======
+// Logout
+app.post('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error("Error destroying session:", err);
+            return res.status(500).send('Internal Server Error');
+        }
+        res.redirect('/'); // Redirect to the login page after logout
+    });
+})
+>>>>>>> Stashed changes
 
 // End Routes
 app.listen(3000, () => {

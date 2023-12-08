@@ -1,8 +1,5 @@
 const db = require('../db');
 
-
-
-
 function registerUser(req, res) {
     const { name, password, age, contactno, email } = req.body;
 
