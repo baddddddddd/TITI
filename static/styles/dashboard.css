@@ -1,0 +1,113 @@
+@import url("./common.css");
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    align-items: center;
+}
+
+.profile {
+    margin-top: 30px;
+    min-height: 30vh;
+    text-align: left;
+    width: 80%;
+    font-size: var(--paragraph-text);
+    font-weight: 600;
+    padding: 8px 20px;
+    line-height: 24px;
+    border: 3px solid var(--main-color);
+    border-radius: 5px;
+    transition: ease 0.3s;
+    box-sizing: border-box;
+}
+
+.profile button {
+    border: none;
+    background: transparent;
+}
+
+.image-class {
+    width: 20px; /* Set the width to your desired size */
+    height: auto; /* Maintain the aspect ratio */
+}
+
+.form-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the buttons horizontally */
+    margin-top: 15px;
+    flex-direction: column;
+    min-height: 30vh;
+    width: 80%;
+    font-size: var(--paragraph-text);
+    font-weight: 600;
+    padding: 8px 20px;
+    line-height: 24px;
+    border: 3px solid var(--main-color);
+    border-radius: 5px;
+    transition: ease 0.3s;
+    box-sizing: border-box;
+}
+
+.form-1, .form-2 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.form-container button {
+    margin: 10px;
+    color: black;
+    background: white;
+    font-size: var(--paragraph-text);
+    font-weight: 600;
+    padding: 8px 20px;
+    line-height: 24px;
+    border: 3px solid var(--main-color);
+    border-radius: 5px;
+    transition: ease 0.3s;
+    height: 40px;
+    width: 200px;
+    position: relative;
+}
+
+.button-1:hover::after {
+    content: "Look for your class schedule.";
+}
+
+.button-2:hover::after {
+    content: "Download Class Materials related to your strand.";
+}
+
+.button-3:hover::after {
+    content: "Upload/Submit learning materials or assignments.";
+}
+
+.button-4:hover::after {
+    content: "Perform maths or any school related stuffs here.";
+}
+
+.button-5:hover::after {
+    content: "Post feedbacks here.";
+}
+
+.button-6:hover::after {
+    content: "You may request for an appointment.";
+}
+
+.form-container button:hover::after {
+    position: absolute;
+    bottom: 70%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    z-index: 1;
+    width: 200px;
+}

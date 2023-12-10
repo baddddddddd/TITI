@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= locals.name %> | Student Portal</title>
+
+  <style>
+    @import url("/styles/common.css");
+
+    .content-wrapper {
+      margin: 5rem 10%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      row-gap: 2rem;
+    }
+
+    .class-header {
+      width: 100%;
+      height: 200px;
+      border-radius: 12px;
+      border: 3px solid black;
+      padding: 2rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+    }
+
+    .class-sidebar {
+      display: flex;
+      flex-direction: column;
+      row-gap: 1.5rem;
+    }
+
+    .class-content {
+      display: grid;
+      grid-template-columns: 1fr 3fr;
+    }
+
+    .class-code {
+      border-radius: 8px;
+      border: 3px solid black;
+      padding: 1.5rem;
+      width: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      row-gap: 1rem;
+    }
+
+    .label {
+      font-size: 1.2rem
+    }
+
+    .code {
+      font-weight: 600;
+      font-size: 2rem;
+    }
+
+    .class-stream {
+      padding: 0rem 2rem;
+      display: flex;
+      flex-direction: column;
+      row-gap: 1.5rem;
+    }
+
+    .material-card {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 1rem;
+      border: 3px solid black;
+      border-radius: 6px;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <div class="content-wrapper">
+    <div class="control-view">
+
+    </div>
+    <div class="class-header">
+      <div class="item-wrapper">
+        <h2><%= locals.name %></h2>
+        <h3><%= locals.section %></h3>
+      </div>
+    </div>
+    <div class="class-content">
+      <div class="class-sidebar">
+        <div class="class-code">
+          <div class="label">Class Code</div>
+          <div class="code"><%= locals.code %></div>
+        </div>
+        <form class="class-code" action="upload" method="post" enctype="multipart/form-data">
+          <div class="label">Upload material</div>
+          <input type="hidden" name="code" value="<%= locals.code %>">
+          <input type="tel" name="fileName" id="fileName" placeholder="Material Name">
+          <input type="file" name="file" id="file">
+          <input type="submit" class="btn" value="UPLOAD"></input>
+        </form>
+      </div>
+      <div class="class-stream">
+        <% for (let i = 0; i < locals.stream.length; i++) { %>
+          <form class="material-card" action="download" method="post">
+            <div> <%= locals.stream[i].name %> </div>
+            <input type="hidden" name="path" value="<%= locals.stream[i].path %>">
+            <input class="btn" type="submit" value="DOWNLOAD">
+          </form>
+        <% } %>
+      </div>
+    </div>
+    
+  </div>
+</body>
+</html>
