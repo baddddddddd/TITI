@@ -12,7 +12,6 @@ const db = require('./db');
 const registrationController = require('./controllers/registrationController');
 const loginController = require('./controllers/loginController');
 const authController = require("./controllers/authController");
-<<<<<<< Updated upstream
 const generator = require("./utils/generator");
 
 const courseRouter = require("./routers/course");
@@ -32,9 +31,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-=======
 const dashboardController = require("./controllers/dashboardController")
->>>>>>> Stashed changes
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
@@ -67,7 +64,6 @@ app.get('/register', (req, res) => {
 
 app.post('/register', authController.registerUser);
 
-<<<<<<< Updated upstream
 
 // Student Dashboard
 app.get('/dashboard', (req, res) => {
@@ -141,7 +137,6 @@ app.post("/course/download", (req, res) => {
     res.download(path);
 });
 
-=======
 // Logout
 app.post('/logout', (req, res) => {
     req.session.destroy((err) => {
@@ -152,7 +147,6 @@ app.post('/logout', (req, res) => {
         res.redirect('/'); // Redirect to the login page after logout
     });
 })
->>>>>>> Stashed changes
 
 // End Routes
 app.listen(3000, () => {
