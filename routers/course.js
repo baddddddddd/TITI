@@ -5,13 +5,13 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
     // View Courses
-    res.render("../views/course");
+    res.render("course");
 
 });
 
 router.get("/create", (req, res) => {
     // Create courses, for teachers only
-    res.render("../views/course/create");
+    res.render("course/create");
 });
 
 
@@ -54,7 +54,7 @@ router.get("/:courseId", (req, res) => {
                     });
                 });
 
-                res.render("../views/course", { name: name, subject: subject, section: section, room: room, code: req.params.courseId, stream: stream });
+                res.render("course", { name: name, subject: subject, section: section, room: room, code: req.params.courseId, stream: stream });
             });
         });
     });
