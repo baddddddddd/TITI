@@ -219,7 +219,11 @@
                   </div>
                 </div>
                 <div class="stream-right">
-                  Due <%= new Date(locals.stream[i].dueDate).toLocaleString('en-US', { timeZone: 'UTC' }) %>
+                  <% if (locals.stream[i].dueDate) { %>
+                    Due <%= new Date(locals.stream[i].dueDate).toLocaleString('en-US', { timeZone: 'UTC' }) %>
+                  <% } else { %>
+                    No due date
+                  <% } %>
                 </div>
               </div>
             </div>

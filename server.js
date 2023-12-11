@@ -218,17 +218,18 @@ app.post("/course/assignment/create/submit", upload.single("file"), (req, res) =
     const instructions = req.body.instructions;
     const date = req.body.date;
     const time = req.body.time;
-    const duedate = `${date} ${time}`
+    let duedate = (date) ? `${date} ${time}` : null;
     const courseId = req.body.courseId;
     const courseCode = req.body.courseCode;
     const uploadDate = getCurrentDatetime();
 
-    let query = "INSERT INTO File (FileName, FilePath) VALUES (?, ?)";
-    let params = [req.file.filename, req.file.path];
-    
-    db.query(query, params, (err, result) => {
-        const fileId = result.insertId;
+    if (duedate) {
+        let dateObj = new Date(duedate);
+        dateObj.setHours(dateObj.getHours() + 16);
+        duedate = dateObj.toISOString().slice(0, 19).replace('T', ' ');
+    }
 
+    function insertAssignment(fileId = null) {
         const query = "INSERT INTO Assignments (AssignmentTitle, Instructions, DueDate, CourseID, AttachmentID, UploadDate) VALUES (?, ?, ?, ?, ?, ?)";
         const params = [title, instructions, duedate, courseId, fileId, uploadDate];
 
@@ -237,7 +238,28 @@ app.post("/course/assignment/create/submit", upload.single("file"), (req, res) =
 
             res.redirect(`/course/${courseCode}`);
         });
-    });
+    }
+
+    function insertFile() {
+        let query = "INSERT INTO File (FileName, FilePath) VALUES (?, ?)";
+        let params = [req.file.filename, req.file.path];
+        
+        db.query(query, params, (err, result) => {
+            let fileId = result.insertId;
+            insertAssignment(fileId);
+        });
+    }
+
+    console.log(req.file);
+
+    if (req.file) {
+        insertFile();
+    } else {
+        insertAssignment();
+    }
+    
+
+    
 });
 
 // Logout
