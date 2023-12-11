@@ -89,6 +89,38 @@ app.post("/course/create", (req, res) => {
     });
 });
 
+function formatMySQLDatetime(date) {
+    return date.toISOString().slice(0, 19).replace('T', ' ');
+}
+
+function getCurrentDatetime() {
+    // Get the current UTC time
+    const utcNow = new Date();
+    
+    // Create a new DateTimeFormat object for the target timezone (GMT+8)
+    const gmt8DateTimeFormat = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Singapore', // Adjust timezone accordingly
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+    });
+
+    // Format the date in the GMT+8 timezone
+    const gmt8DateString = gmt8DateTimeFormat.format(utcNow);
+
+    // Convert the formatted string back to a Date object
+    let gmt8Date = new Date(gmt8DateString);
+    gmt8Date.setHours(gmt8Date.getHours() + 16);
+
+    // Output the formatted MySQL datetime string
+    const mysqlDatetimeString = formatMySQLDatetime(gmt8Date);
+
+    return mysqlDatetimeString;
+} 
+
 app.post("/course/upload", upload.single("file"), (req, res) => {
     console.log(req.body);
     console.log(req.file);
@@ -111,13 +143,10 @@ app.post("/course/upload", upload.single("file"), (req, res) => {
         console.log(params);
 
         db.query(query, params, (err, result) => {
-            console.log(result);
             let courseId = result[0].CourseID;
 
-            console.log(courseId);
-
-            let query = "INSERT INTO CourseMaterials (CourseID, FileID) VALUES (?, ?)";
-            let params = [courseId, fileId];
+            let query = "INSERT INTO CourseMaterials (CourseID, FileID, UploadDate) VALUES (?, ?, ?)";
+            let params = [courseId, fileId, getCurrentDatetime()];
 
             db.query(query, params, (err, result) => {
                 console.log(result);
@@ -160,6 +189,21 @@ app.post("/course/download", (req, res) => {
     let path = req.body.path;
 
     res.download(path);
+});
+
+app.post("/course/announce", (req, res) => {
+    console.log(req.body);
+
+    let userId = req.session.userId;
+    let content = req.body.announcementContent;
+    let courseId = req.body.courseId;
+
+    const query = "INSERT INTO Announcements (AnnouncerID, CourseID, Content, AnnouncementDate) VALUES (?, ?, ?, ?)";
+    const params = [userId, courseId, content, getCurrentDatetime()];
+
+    db.query(query, params, (err, result) => {
+        res.redirect(`/course/${req.body.courseCode}`);
+    });
 });
 
 // Logout

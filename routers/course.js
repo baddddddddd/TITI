@@ -100,6 +100,10 @@ router.get("/:courseId", (req, res) => {
         let subject = course.Subject;
         let section = course.Section;
         let room = course.Room;
+        let instructorId = course.InstructorID;
+        let courseId = course.CourseID;
+
+        let isInstructor = instructorId == req.session.userId;
 
         db.query("SELECT CourseID FROM Courses WHERE CourseCode=?", [req.params.courseId], (err, result) => {
             let courseID = result[0].CourseID;
@@ -108,16 +112,39 @@ router.get("/:courseId", (req, res) => {
             let params = [courseID];
 
             db.query(query, params, (err, result) => {
-                let stream = [];
+                let materials = [];
 
                 result.forEach((item) => {
-                    stream.push({
+                    materials.push({
+                        type: "material",
                         name: item.FileName,
                         path: item.FilePath,
+                        date: item.UploadDate,
                     });
                 });
 
-                res.render("course/overview", { name: name, subject: subject, section: section, room: room, code: req.params.courseId, stream: stream });
+                const query = "SELECT FirstName, MiddleName, LastName, Content, AnnouncementDate FROM Announcements JOIN UserProfile ON AnnouncerID = UserID WHERE CourseID=?";
+                const params = [courseID];
+
+                db.query(query, params, (err, result) => {
+                    let announcements = [];
+
+                    result.forEach((announcement) => {
+                        console.log(announcement.AnnouncementDate);
+                        announcements.push({
+                            type: "announcement",
+                            announcer: `${announcement.LastName}, ${announcement.FirstName} ${announcement.MiddleName}`,
+                            date: announcement.AnnouncementDate,
+                            content: announcement.Content,
+                        });
+                    });
+
+                    let streams = [...announcements, ...materials];
+                    streams.sort((a, b) => b.date - a.date);
+
+                    res.render("course/overview", { courseId: courseId, isInstructor: isInstructor, name: name, subject: subject, section: section, room: room, code: req.params.courseId, stream: streams });
+                });
+
             });
         });
     });
