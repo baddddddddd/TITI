@@ -26,6 +26,29 @@ router.get("/", (req, res) => {
     });
 });
 
+router.get("/owned", (req, res) => {
+    // View Courses
+    const userId = req.session.userId;
+    
+    const query = "SELECT * FROM Courses JOIN UserProfile ON Courses.InstructorID = UserProfile.UserID WHERE InstructorID=?";
+    const params = [userId];
+
+    db.query(query, params, (err, result) => {
+        let courses = [];
+        
+        result.forEach((course) => {
+            courses.push({
+                courseCode: course.CourseCode,
+                courseName: course.ClassName,
+                section: course.Section,
+                instructor: `${course.LastName}, ${course.FirstName} ${course.MiddleName}`,
+            });
+        });
+
+        res.render("course", { courses: courses });
+    });
+});
+
 router.get("/create", (req, res) => {
     // Create courses, for teachers only
     res.render("course/create");
