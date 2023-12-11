@@ -5,8 +5,25 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
     // View Courses
-    res.render("course");
+    const userId = req.session.userId;
+    
+    const query = "SELECT CourseID, CourseCode, ClassName, Section, FirstName, MiddleName, LastName FROM Courses JOIN UserProfile ON Courses.InstructorID = UserProfile.UserID NATURAL JOIN CourseEnrolees WHERE StudentID=?";
+    const params = [userId];
 
+    db.query(query, params, (err, result) => {
+        let courses = [];
+        
+        result.forEach((course) => {
+            courses.push({
+                courseCode: course.CourseCode,
+                courseName: course.ClassName,
+                section: course.Section,
+                instructor: `${course.LastName}, ${course.FirstName} ${course.MiddleName}`,
+            });
+        });
+
+        res.render("course", { courses: courses });
+    });
 });
 
 router.get("/create", (req, res) => {
@@ -54,7 +71,7 @@ router.get("/:courseId", (req, res) => {
                     });
                 });
 
-                res.render("course", { name: name, subject: subject, section: section, room: room, code: req.params.courseId, stream: stream });
+                res.render("course/overview", { name: name, subject: subject, section: section, room: room, code: req.params.courseId, stream: stream });
             });
         });
     });
