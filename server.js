@@ -79,8 +79,7 @@ app.post("/course/create", (req, res) => {
     let classRoom = req.body.classRoom;
     let classCode = generateClassCode();
 
-    // TK id
-    let userId = 39;
+    let userId = req.session.userId;
 
     let query = "INSERT INTO Courses (InstructorID, CourseCode, ClassName, Section, Subject, Room) VALUES (?, ?, ?, ?, ?, ?)";
     let params = [userId, classCode, className, classSection, classSubject, classRoom]; 
