@@ -2,6 +2,9 @@ const express = require("express");
 const db = require("../db");
 const router = express.Router();
 
+const assignmentRouter = require("./assignment");
+router.use("/assignment", assignmentRouter);
+
 
 router.get("/", (req, res) => {
     // View Courses
@@ -139,12 +142,28 @@ router.get("/:courseId", (req, res) => {
                         });
                     });
 
-                    let streams = [...announcements, ...materials];
-                    streams.sort((a, b) => b.date - a.date);
+                    const query = "SELECT * FROM Assignments WHERE CourseID=?";
+                    const params = [courseID];
 
-                    res.render("course/overview", { courseId: courseId, isInstructor: isInstructor, name: name, subject: subject, section: section, room: room, code: req.params.courseId, stream: streams });
+                    db.query(query, params, (err, result) => {
+                        let assignments = [];
+
+                        result.forEach((assignment) => {
+                            assignments.push({
+                                type: "activity",
+                                title: assignment.AssignmentTitle,
+                                date: assignment.UploadDate,
+                                dueDate: assignment.DueDate,
+                                id: assignment.AssignmentID,
+                            });
+                        }); 
+
+                        let streams = [...announcements, ...materials, ...assignments];
+                        streams.sort((a, b) => b.date - a.date);
+    
+                        res.render("course/overview", { courseId: courseId, isInstructor: isInstructor, name: name, subject: subject, section: section, room: room, code: req.params.courseId, stream: streams });    
+                    })
                 });
-
             });
         });
     });

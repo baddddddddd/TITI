@@ -157,6 +157,12 @@
             <input type="file" name="file" id="file">
             <input type="submit" class="btn" value="UPLOAD"></input>
           </form>
+
+          <form action="assignment/create" method="post" style="width: 100%;">
+            <input type="hidden" name="courseId" value="<%= locals.courseId %>">
+            <input type="hidden" name="courseCode" value="<%= locals.code %>">
+            <input type="submit" class="btn" value="CREATE ASSIGNMENT" style="width: 100%;"></input>
+          </form>
         <% } %>
       </div>
       <div class="class-stream">
@@ -200,6 +206,21 @@
               <div class="stream-content">
                 <textarea readonly class="announcement-box" name="" id="" cols="30" rows="1" value="aaa"><%= locals.stream[i].content %></textarea>
                 
+              </div>
+            </div>
+          <% } else if (locals.stream[i].type == "activity") { %>
+            <div class="stream-card">
+              <div class="stream-header">
+                <div class="stream-left">
+                  <i class='bx bx-task'></i>
+                  <div class="stream-info">
+                    <div class="stream-title"><%= locals.stream[i].title %></div>
+                    <div class="stream-date"><%= new Date(locals.stream[i].date).toLocaleString('en-US', { timeZone: 'UTC' }) %></div>
+                  </div>
+                </div>
+                <div class="stream-right">
+                  Due <%= new Date(locals.stream[i].dueDate).toLocaleString('en-US', { timeZone: 'UTC' }) %>
+                </div>
               </div>
             </div>
           <% } %>

@@ -206,6 +206,40 @@ app.post("/course/announce", (req, res) => {
     });
 });
 
+app.post("/course/assignment/create", (req, res) => {
+    let courseId = req.body.courseId;
+    let courseCode = req.body.courseCode;
+
+    res.render("assignment/create", { courseId: courseId, courseCode: courseCode });
+});
+
+app.post("/course/assignment/create/submit", upload.single("file"), (req, res) => {
+    const title = req.body.title;
+    const instructions = req.body.instructions;
+    const date = req.body.date;
+    const time = req.body.time;
+    const duedate = `${date} ${time}`
+    const courseId = req.body.courseId;
+    const courseCode = req.body.courseCode;
+    const uploadDate = getCurrentDatetime();
+
+    let query = "INSERT INTO File (FileName, FilePath) VALUES (?, ?)";
+    let params = [req.file.filename, req.file.path];
+    
+    db.query(query, params, (err, result) => {
+        const fileId = result.insertId;
+
+        const query = "INSERT INTO Assignments (AssignmentTitle, Instructions, DueDate, CourseID, AttachmentID, UploadDate) VALUES (?, ?, ?, ?, ?, ?)";
+        const params = [title, instructions, duedate, courseId, fileId, uploadDate];
+
+        db.query(query, params, (err, result) => {
+            console.log(result);
+
+            res.redirect(`/course/${courseCode}`);
+        });
+    });
+});
+
 // Logout
 app.post('/logout', (req, res) => {
     req.session.destroy((err) => {
