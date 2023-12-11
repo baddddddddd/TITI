@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Canvas Drawing Board</title>
+    <style>
+        *, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            text-align: center;
+            flex-direction: row;
+        }
+
+        .extra {
+            display: flex;
+            flex-direction: row;
+            margin-top: 30px;
+            height: 10vh;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .extra button {
+            border: 2px solid #003049;
+            border-radius: 5px;
+            transition: ease 0.3s;
+            font-size: 0.5rem;
+            height: 20px;
+            width: 60px;
+            background-color: white;
+        }
+
+        canvas {
+            border: 3px solid #003049;
+            border-radius: 5px;
+        }
+        
+        .functional-button button {
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            margin: 10px;
+            color: black;
+            background: white;
+            font-weight: 500;
+            line-height: 24px;
+            border: 2px solid #003049;
+            border-radius: 5px;
+            transition: ease 0.3s;
+            font-size: 0.6rem;
+            height: 20px;
+            width: 100px;
+        }
+
+        label {
+            margin: 10px 0 0 10px;
+            font-size: 0.6rem;
+        }
+        input {
+            font-size: 0.6rem;
+            margin: 10px 20px 0 0;
+            height: 20px;
+            width: 30px;
+            padding: 2px;
+        }
+
+        .canvasButtons {
+            display: flex;
+            flex-direction: row;
+        }
+        
+        .canvasButtons button {
+            border: 2px solid #003049;
+            border-radius: 5px;
+            background-color: white;
+            text-align: center;
+            margin: 2px 2px 5px 2px;
+            padding: 5px;
+            font-size: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="extra">
+        <form action="/dashboard" method="get">
+            <button input="submit">Back</button>
+        </form>
+        <h2 style="font-family: Arial, Helvetica, sans-serif; margin-left: 5px;">Drawing Board</h2>
+    </div>
+    <div class="main-container">
+        <div>
+            <div class="functional-button">
+                <div class="button-1">
+                    <button id="clearButton">Clear All</button>
+                    <button id="newCanvasButton">New Canvas</button>
+                    <button id="deleteCanvasButton">Delete All</button>
+                    <button id="prevCanvasButton">Previous</button>
+                    <button id="nextCanvasButton">Next</button>
+                </div>
+                <div class="button-2">
+                    <button id="toggleBrushButton">Toggle Brush</button>
+                    <label for="brushSize">Brush Size:</label>
+                    <input type="number" id="brushSize" value="2" min="1" max="20">
+                    <br>
+                    <label for="eraserSize">Eraser Size:</label>
+                    <input type="number" id="eraserSize" value="10" min="1" max="50">
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: column;" class="canvas-css">
+            <div class="canvasButtons" id="canvasButtons"></div>
+            <div id="canvasContainer">
+                <!-- Canvases will be dynamically added here -->
+            </div>
+            <span style="font-size: 0.6rem;" id="currentPageInfo">Page 1</span>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var canvasContainer = document.getElementById("canvasContainer");
+            var canvasButtonsContainer = document.getElementById("canvasButtons");
+            var canvases = [];
+            var currentCanvasIndex = 0;
+            var isDrawing = false;
+            var isEraser = false;
+
+            function createCanvas() {
+                var canvas = document.createElement("canvas");
+                canvas.width = 700;
+                canvas.height = 400;
+                canvas.style.border = "3px solid #003049";
+                canvas.style.borderRadius = "10px";  // Set the border radius directly
+                canvasContainer.appendChild(canvas);
+
+                var context = canvas.getContext("2d");
+                context.lineWidth = 2;
+                context.lineCap = "round";
+                context.strokeStyle = "#000";
+
+                canvases.push({ canvas: canvas, context: context, content: [] });
+
+                canvas.addEventListener("mousedown", startDrawing);
+                canvas.addEventListener("mouseup", stopDrawing);
+                canvas.addEventListener("mousemove", draw);
+            }
+
+            function startDrawing(e) {
+                isDrawing = true;
+                draw(e);
+            }
+
+            function stopDrawing() {
+                isDrawing = false;
+                canvases[currentCanvasIndex].context.beginPath();
+            }
+
+            function draw(e) {
+                var canvas = canvases[currentCanvasIndex];
+                var x = e.clientX - canvas.canvas.offsetLeft;
+                var y = e.clientY - canvas.canvas.offsetTop;
+
+                if (isDrawing) {
+                    if (isEraser) {
+                        canvas.context.globalCompositeOperation = "destination-out";
+                        canvas.context.strokeStyle = "rgba(0,0,0,1)";
+                        canvas.context.lineWidth = document.getElementById("eraserSize").value;
+                    } else {
+                        canvas.context.globalCompositeOperation = "source-over";
+                        canvas.context.strokeStyle = "#000";
+                        canvas.context.lineWidth = document.getElementById("brushSize").value;
+                    }
+
+                    canvas.context.lineTo(x, y);
+                    canvas.context.stroke();
+                    canvas.context.beginPath();
+                    canvas.context.moveTo(x, y);
+
+                    canvas.content.push({ x: x, y: y });
+                }
+            }
+
+            function clearCanvas() {
+                var canvas = canvases[currentCanvasIndex];
+                canvas.context.clearRect(0, 0, canvas.canvas.width, canvas.canvas.height);
+                canvas.content = [];
+            }
+
+            function createNewCanvas() {
+                currentCanvasIndex = canvases.length;
+                createCanvas();
+                updateCanvasView();
+                createCanvasButton();
+            }
+
+            function deleteCanvas() {
+                for (var i = 1; i < canvases.length; i++) {
+                    canvasContainer.removeChild(canvases[i].canvas);
+                }
+
+                canvases = [canvases[0]];  // Keep the first canvas and clear its content
+                canvases[0].context.clearRect(0, 0, canvases[0].canvas.width, canvases[0].canvas.height);
+                currentCanvasIndex = 0;
+
+                // Remove all canvas buttons except the first one
+                while (canvasButtonsContainer.children.length > 1) {
+                    canvasButtonsContainer.removeChild(canvasButtonsContainer.lastChild);
+                }
+
+                updateCanvasView();
+            }
+            
+            function moveToPreviousCanvas() {
+                if (currentCanvasIndex > 0) {
+                    currentCanvasIndex--;
+                    updateCanvasView();
+                }
+            }
+
+            function moveToNextCanvas() {
+                if (currentCanvasIndex < canvases.length - 1) {
+                    currentCanvasIndex++;
+                    updateCanvasView();
+                }
+            }
+
+            function toggleEraser() {
+                isEraser = !isEraser;
+            }
+
+            function toggleBrush() {
+                isEraser = !isEraser;
+                document.getElementById("toggleBrushButton").innerText = isEraser ? "Toggle Brush" : "Toggle Eraser";
+            }
+
+            function updateCanvasView() {
+                for (var i = 0; i < canvases.length; i++) {
+                    canvases[i].canvas.style.display = (i === currentCanvasIndex) ? "block" : "none";
+                }
+                document.getElementById("currentPageInfo").innerText = "Page " + (currentCanvasIndex + 1);
+            }
+
+            function createCanvasButton() {
+                var button = document.createElement("button");
+                button.innerText = canvases.length.toString();
+                button.addEventListener("click", function () {
+                    currentCanvasIndex = parseInt(button.innerText) - 1;
+                    updateCanvasView();
+                });
+                canvasButtonsContainer.appendChild(button);
+            }
+
+            // Initial canvas
+            createCanvas();
+            createCanvasButton();
+
+            // Attach event listeners to buttons
+            document.getElementById("clearButton").addEventListener("click", clearCanvas);
+            document.getElementById("newCanvasButton").addEventListener("click", createNewCanvas);
+            document.getElementById("deleteCanvasButton").addEventListener("click", deleteCanvas);
+            document.getElementById("prevCanvasButton").addEventListener("click", moveToPreviousCanvas);
+            document.getElementById("nextCanvasButton").addEventListener("click", moveToNextCanvas);
+            document.getElementById("toggleBrushButton").addEventListener("click", toggleBrush);
+            document.getElementById("eraserSize").addEventListener("input", draw);
+            document.getElementById("brushSize").addEventListener("input", draw);
+        });
+    </script>
+</body>
+</html>

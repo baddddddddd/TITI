@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback</title>
+    <link rel="stylesheet" href="/styles/appointment.css">
+</head>
+<body>
+    <div class="flex-container">
+        <form action="/dashboard">
+            <button type="submit">Back</button>
+            <p>Feedback</p>
+            <p style="font-weight: 200;">information about reactions to a product, a person's performance of a task, etc. which is used as a basis for improvement.</p>
+        </form>
+    
+        <form action="/dashboard/feedback" method="post">
+            <input style="padding: 30px 10px 30px 10px; overflow: hidden;" type="text" name="concern" placeholder="Concern">
+            <br>
+            <input class="button-submit" type="submit">
+            <br>
+            <p><%= insertingStatus %></p>
+        </form>
+    </div>
+</body>
+</html>

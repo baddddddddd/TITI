@@ -1,0 +1,78 @@
+@import url("./common.css");
+
+.content-wrapper {
+  margin: 10% 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 130vh;
+  flex-direction: column;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+  color: black;
+  background: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 8px 20px;
+  line-height: 24px;
+  border: 3px solid var(--main-color);
+  border-radius: 5px;
+  transition: ease 0.3s;
+  height: 35px;
+  width: 60px;
+  position: relative;
+}
+
+.heading-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-container {
+  width: 50vw;
+  text-align: center;
+  border-radius: 12px;
+  padding: 2rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  border: 2px solid black;
+}
+
+.heading {
+  font-size: 1.5rem;
+  color: var(--main-color);
+  font-weight: 700;
+}
+
+.field-container {
+  width: 100%;
+}
+
+.field-container > input,
+.date-picker {
+  margin: 0.5 rem 0rem;
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+.options {
+  margin: 0.5 rem 0rem;
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+.half-split-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 2rem;
+}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule</title>
+    <!-- <link rel="stylesheet" href="styles/schedule.css"> -->
+    <!-- Hindi ko mapagana ang paglilink -->
+    <style>
+        @import url("./common.css");
+        *, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        table {
+            width: 80%;
+            overflow: hidden; /* Ensure the border radius is applied */
+            border: 3px solid #003049; /* Apply main color to the outer border */
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+            font-size: 12px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        .extra {
+            display: flex;
+            flex-direction: row;
+            margin-top: 30px;
+        }
+
+        button {
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            margin: 10px;
+            color: black;
+            background: white;
+            font-weight: 600;
+            padding: 8px 20px;
+            line-height: 24px;
+            border: 3px solid #003049;
+            border-radius: 5px;
+            transition: ease 0.3s;
+            font-size: 0.75rem;
+            height: 40px;
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="extra">
+            <form action="/dashboard" method="get">
+                <button input="submit">Back</button>
+            </form>
+            <h1 style="font-family: Arial, Helvetica, sans-serif; margin-top: 13px;">Schedule</h1>
+        </div>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Time Slot</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% schedule.forEach(item => { %>
+                    <tr>
+                        <td><%= item.time_slot %></td>
+                        <td><%- item.Monday ? (item.Monday + (item.Instructor ? '<br>' + item.Instructor : '')) : '---' %></td>
+                        <td><%- item.Tuesday ? (item.Tuesday + (item.Instructor ? '<br>' + item.Instructor : '')) : '---' %></td>
+                        <td><%- item.Wednesday ? (item.Wednesday + (item.Instructor ? '<br>' + item.Instructor : '')) : '---' %></td>
+                        <td><%- item.Thursday ? (item.Thursday + (item.Instructor ? '<br>' + item.Instructor : '')) : '---' %></td>
+                        <td><%- item.Friday ? (item.Friday + (item.Instructor ? '<br>' + item.Instructor : '')) : '---' %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

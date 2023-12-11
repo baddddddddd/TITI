@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In | Student Portal</title>
+
+  <link rel="stylesheet" href="/styles/login.css">
+</head>
+
+<body>
+  <div class="content-wrapper">
+    <form class="form-container" action="/" method="post" id="loginForm">
+      <div class="heading">
+        Log In
+      </div>
+      <div class="field-container">
+        <input required type="text" name="userCode" id="userCode" placeholder="User Code" value="<%= locals.userCode %>">
+      </div>
+      <div class="field-container">
+        <input required type="password" name="password" id="password" placeholder="Password">
+      </div>
+      <div class="error-message"><%= locals.errorMessage %></div>
+      <div>
+        <input class="btn" type="submit" value="LOG IN">
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles/dashboard.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="profile"> 
+            <form action="/logout" method="post">
+                <button type="submit"><img class="image-class" src="styles/images/icons8-logout-30.png" alt=""></button>
+            </form>
+            <p>Welcome, <%= userCode %></p>
+            <p>Name: <%= firstName %> <%= lastName %> <%= middleName %> <%= extensionName %></p>
+            <p>Strand: <%= strand %></p>
+            <p>Section: <%= section %></p>
+            <p>Status: <%= enrollmentStatus %></p>
+        </div>
+
+        <div class="form-container">
+            <p>Services</p>
+            <div class="form-1">
+                <form action="/dashboard/schedule" method="get">
+                    <button type="submit" class="button-1">Schedule</button>
+                </form>
+                <form action="/" method="get">
+                    <button type="submit" class="button-2">Course Materials</button>
+                </form>
+                <form action="/" method="get">
+                    <button type="submit" class="button-3">Discussion Board</button>
+                </form>
+            </div>
+            
+            <div class="form-2">
+                <form action="/dashboard/drawingboard" method="get">
+                    <button type="submit" class="button-4">Drawing Board</button>
+                </form>
+                <form action="/dashboard/appointment" method="get">
+                    <button type="submit" class="button-6">Appointment</button>
+                </form>
+                <form action="/dashboard/feedback" method="get">
+                    <button type="submit" class="button-5">Student Feedback</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

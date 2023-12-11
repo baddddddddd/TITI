@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register | Student Portal</title>
+
+  <link rel="stylesheet" href="/styles/register.css">
+</head>
+<body>
+  <div class="content-wrapper">
+      <form class="heading-form" action="/admin/dashboard">
+        <button input="submit">Back</button>
+        <div class="heading">Register
+        </div>
+      </form>
+    <form class="form-container" action="/admin/dashboard/register" method="post" id="registrationForm">
+      <div class="field-container">
+        <input required type="text" name="firstName" id="firstName" placeholder="First Name">
+      </div>
+      <div class="field-container">
+        <input type="text" name="middleName" id="middleName" placeholder="Middle Name (if applicable)">
+      </div>
+      <div class="field-container">
+        <input required type="text" name="lastName" id="lastName" placeholder="Last Name">
+      </div>
+      <div class="field-container">
+        <input type="text" name="nameExtension" id="nameExtension" placeholder="Name Extension (if applicable)">
+      </div>
+      <div class="half-split-flex">
+        <div class="field-container">
+          <input class="date-picker" type="date" name="birthdate" id="birthdate" placeholder="birthdate">
+        </div>
+        <div class="field-container">
+          <select class="options" id="gender" name="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Prefer not to say</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-container">
+        <input required type="text" name="emailAddress" id="emailAddress" placeholder="Email">
+      </div>
+      <div class="field-container">
+        <input required type="text" name="contactNumber" id="contactNumber" placeholder="Contact Number">
+      </div>
+      <div class="field-container">
+        <input required type="text" name="permanentAddress" id="permanentAddress" placeholder="Permanent Address">
+      </div>
+      <div class="field-container">
+        <input required type="text" name="currentAddress" id="currentAddress" placeholder="Current Address">
+      </div>
+      <div class="field-container">
+        <input required type="password" name="password" id="password" placeholder="Password">
+      </div>
+      <div class="field-container">
+        <input required type="password" id="confirmPassword" placeholder="Confirm Password">
+      </div>
+      <div class="field-container">
+        <input required type="text" name="section" placeholder="Section">
+      </div>
+      <div class="field-container">
+        <input required type="text" name="strand" placeholder="Strand">
+      </div>
+      <div class="field-container">
+        <input required type="text" name="enrollmentStatus" placeholder="Enrollment Status">
+      </div>
+      <div>
+        <input class="btn" type="submit" value="REGISTER">
+      </div>
+      <div><%= registrationResult %></div>
+    </form>
+  </div>
+</body>
+</html>
