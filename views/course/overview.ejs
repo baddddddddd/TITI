@@ -174,9 +174,16 @@
           <% if (locals.stream[i].type == "material") { %>
             <div class="stream-card">
               <form class="stream-header" action="download" method="post">
-                <div> <%= locals.stream[i].name %> </div>
+                <div class="stream-left">
+                  <i class='bx bxs-file'></i>
+                  <div class="stream-info">
+                    <div class="stream-title"><%= locals.stream[i].name %></div>
+                    <div class="stream-date"><%= new Date(locals.stream[i].date).toLocaleString('en-US', { timeZone: 'UTC' }) %></div>
+                  </div>
+                </div>
                 <input type="hidden" name="path" value="<%= locals.stream[i].path %>">
                 <input class="btn" type="submit" value="DOWNLOAD">
+                
               </form>
             </div>
           <% } else if (locals.stream[i].type == "announcement") { %>
