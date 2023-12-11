@@ -18,7 +18,7 @@ router.get("/create", (req, res) => {
 
 router.get("/join", (req, res) => {
     // Join courses, for students only
-    res.send("Join course");
+    res.render("course/join");
 });
 
 router.get("/:courseId", (req, res) => {

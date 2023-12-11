@@ -129,6 +129,32 @@ app.post("/course/upload", upload.single("file"), (req, res) => {
     });
 });
 
+app.post("/course/join", (req, res) => {
+    const userId = req.session.userId;
+    const courseCode = req.body.courseCode;
+
+    const query = "SELECT * FROM Courses WHERE CourseCode=?";
+    const params = [courseCode];
+
+    db.query(query, params, (err, result) => {
+        if (result.length == 0) {
+            res.render("course/join", { errorMessage: "Course does not exist." });
+            return;
+        }
+
+        const course = result[0];
+        const courseID = course.CourseID;
+
+        const query = "INSERT INTO CourseEnrolees (CourseID, StudentID) VALUES (?, ?)";
+        const params = [courseID, userId];
+
+        db.query(query, params, (err, result) => {
+            console.log(result);
+            res.redirect(`${courseCode}`);
+        });
+    });
+});
+
 app.post("/course/download", (req, res) => {
     console.log(req.body);
 

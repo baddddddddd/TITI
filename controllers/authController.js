@@ -125,7 +125,8 @@ function verifyUser(req, response) {
             } else {
                 if (result) {    
                     req.session.userCode = userCode;
-                    response.redirect("dashboard")
+                    req.session.userId = user.UserID;
+                    response.redirect("dashboard");
                 } else {
                     response.render("../views/login.ejs", { userCode: userCode, errorMessage: "Incorrect password or email" });
                 }
