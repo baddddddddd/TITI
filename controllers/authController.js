@@ -14,6 +14,10 @@ const transporter = nodemailer.createTransport({
 });
 
 async function registerUser(req, response) {
+    if (!req.session || !req.session.adminID) {
+        return res.render("admin.ejs", { errorMessage: "Login your account first." });
+    }
+
     let firstName = req.body.firstName;
     let middleName = req.body.middleName;
     let lastName = req.body.lastName;
@@ -157,8 +161,8 @@ function verifyAdmin(req, response) {
         let user = res[0];
 
         if (adminPassword === user.AdminPassword) {
-            // req.session.adminID = adminID;
-            response.redirect("/register");
+            req.session.adminID = adminID;
+            response.redirect("/admin/dashboard");
         } else {
             response.render("../views/admin.ejs", {errorMessage: "Incorrect password or email" });
         }

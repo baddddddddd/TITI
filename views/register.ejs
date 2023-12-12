@@ -5,14 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register | Student Portal</title>
 
-  <link rel="stylesheet" href="styles/register.css">
+  <link rel="stylesheet" href="/styles/register.css">
 </head>
 <body>
   <div class="content-wrapper">
-    <form class="form-container" action="/register" method="post" id="registrationForm">
-      <div class="heading">
-        Register
-      </div>
+      <form class="heading-form" action="/admin/dashboard">
+        <button input="submit">Back</button>
+        <div class="heading">Register
+        </div>
+      </form>
+    <form class="form-container" action="/admin/dashboard/register" method="post" id="registrationForm">
       <div class="field-container">
         <input required type="text" name="firstName" id="firstName" placeholder="First Name">
       </div>

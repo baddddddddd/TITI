@@ -12,6 +12,7 @@ const db = require('./db');
 const registrationController = require('./controllers/registrationController');
 const loginController = require('./controllers/loginController');
 const authController = require("./controllers/authController");
+const adminController = require("./controllers/adminController")
 const generator = require("./utils/generator");
 
 const courseRouter = require("./routers/course");
@@ -49,6 +50,8 @@ app.post('/', authController.verifyUser);
 // Student Dashboard
 app.get('/dashboard', dashboardController.renderDashboard);
 
+// Schedule
+app.get('/dashboard/schedule', dashboardController.renderSchedule);
 
 // Admin Dashboard
 app.get('/admin', (req, res) => {
@@ -57,18 +60,32 @@ app.get('/admin', (req, res) => {
 
 app.post('/admin', authController.verifyAdmin);
 
+app.get('/admin/dashboard', adminController.renderAdminDashboard);
+
 // Registration
-app.get('/register', (req, res) => {
+app.get('/admin/dashboard/register', (req, res) => {
     res.render("register.ejs", {registrationResult: '' });
 });
 
-app.post('/register', authController.registerUser);
-
+app.post('/admin/dashboard/register', authController.registerUser);
 
 // Student Dashboard
 app.get('/dashboard', (req, res) => {
     res.render("dashboard.ejs");
 });
+
+// Drawing Board
+app.get('/dashboard/drawingboard', dashboardController.renderDrawingBoard);
+
+// Appointment
+app.get('/dashboard/appointment', dashboardController.renderAppointment)
+app.post('/dashboard/appointment', dashboardController.renderAppointment);
+
+// Feedback
+app.get('/dashboard/feedback', (req, res) => {
+    res.render("feedback.ejs", {insertingStatus: '' });
+});
+app.post('/dashboard/feedback', dashboardController.renderFeedback);
 
 // TK Course Router not working
 app.post("/course/create", (req, res) => {
@@ -318,6 +335,16 @@ app.post('/logout', (req, res) => {
             return res.status(500).send('Internal Server Error');
         }
         res.redirect('/'); // Redirect to the login page after logout
+    });
+})
+
+app.post('/admin/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error("Error destroying session:", err);
+            return res.status(500).send('Internal Server Error');
+        }
+        res.redirect('/admin'); // Redirect to the login page after logout
     });
 })
 
