@@ -108,3 +108,35 @@
   padding: 0.5rem;
   font-size: 0.8rem;
 }
+
+.subheading {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.submission-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  padding: 1rem 0rem;
+}
+
+.submission-card {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  padding: 1rem;
+  border: 3px solid black;
+  border-radius: 6px;
+  width: 100%;
+}
+
+.submission-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.submission-file {
+  font-size: 0.9rem;
+}

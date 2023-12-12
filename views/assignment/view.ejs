@@ -6,6 +6,23 @@
   <title><%= locals.info.title %> | Student Portal</title>
 
   <link rel="stylesheet" href="/styles/view_assignment.css">
+
+    <% if (locals.isInstructor) { %>
+      <style>
+        .content-wrapper {
+          margin: 5rem 15%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          row-gap: 2rem;
+        }
+
+        .content-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+      </style>
+    <% } %>
 </head>
 
 <body>
@@ -34,38 +51,66 @@
             </form>
           </div>
         </div>
+        <% if (locals.isInstructor) { %>
+
+        <hr class="rule">
+
+        <div class="submission-view">
+          <div class="subheading">
+            Submissions
+          </div>
+          <div class="submission-list">
+            <% for (let i = 0; i < locals.submissions.length; i++) { %>
+              <form class="submission-card" action="/course/download" method="post">
+                <div class="submission-left">
+                  <div class="submission-info">
+                    <div class="submission-title"><%= locals.submissions[i].name %></div>
+                    <div class="submission-file"><%= locals.submissions[i].fileName %></div>
+                  </div>
+                </div>
+                <input type="hidden" name="path" value="<%= locals.submissions[i].filePath %>">
+                <input class="btn" type="submit" value="DOWNLOAD">
+              </form>
+            <% } %>
+          </div>
+        </div>
+
+        <% } %>
+
       </div>
       <div class="right-column">
-        <form class="submissions" action="/course/assignment/upload" method="post" enctype="multipart/form-data">
-          <div class="submission-header">
-            <div class="submission-heading">Your Work</div>
-            <div class="status"><%= locals.info.submission.status %></div>
-          </div>
-          <div class="submission-files">
-            <!--
-            <div class="add-btn">
-              <input class="btn-hollow" type="submit" value="ADD FILE">
+        <% if (!locals.isInstructor) { %>
+          <form class="submissions" action="/course/assignment/upload" method="post" enctype="multipart/form-data">
+            <div class="submission-header">
+              <div class="submission-heading">Your Work</div>
+              <div class="status"><%= locals.info.submission.status %></div>
             </div>
-            -->
-            <% if (locals.info.submission.status == "Turned In") { %>
-              <div class="file-info">
-                <%= locals.info.submission.fileName %>
+            <div class="submission-files">
+              <!--
+              <div class="add-btn">
+                <input class="btn-hollow" type="submit" value="ADD FILE">
               </div>
-            <% } else { %>
-              <input type="file" name="file" id="file">
-            <% } %>
-          </div>
-          <div class="submit-btn">
-            <% if (locals.info.submission.status == "Turned In") { %>
-              <input class="btn-hollow" type="submit" value="UNSUBMIT">
-              <input type="hidden" name="type" value="unsubmit">
+              -->
+              <% if (locals.info.submission.status == "Turned In") { %>
+                <div class="file-info">
+                  <%= locals.info.submission.fileName %>
+                </div>
               <% } else { %>
-              <input class="btn" type="submit" value="SUBMIT">
-              <input type="hidden" name="type" value="submit">
-            <% } %>
-          </div>
-          <input type="hidden" name="assignmentId" value="<%= locals.info.id %>">
-        </form>
+                <input type="file" name="file" id="file">
+              <% } %>
+            </div>
+            <div class="submit-btn">
+              <% if (locals.info.submission.status == "Turned In") { %>
+                <input class="btn-hollow" type="submit" value="UNSUBMIT">
+                <input type="hidden" name="type" value="unsubmit">
+                <% } else { %>
+                <input class="btn" type="submit" value="SUBMIT">
+                <input type="hidden" name="type" value="submit">
+              <% } %>
+            </div>
+            <input type="hidden" name="assignmentId" value="<%= locals.info.id %>">
+          </form>
+        <% } %>
       </div>
     </div>
   </div>

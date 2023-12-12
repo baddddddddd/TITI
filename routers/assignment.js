@@ -5,7 +5,7 @@ const router = express.Router();
 router.get("/:assignmentId", (req, res) => {
     let assignmentId = req.params.assignmentId;
 
-    const query = "SELECT * FROM Assignments JOIN File ON AttachmentID = FileID WHERE AssignmentID = ?";
+    const query = "SELECT * FROM Assignments JOIN File ON AttachmentID = FileID JOIN Courses on Assignments.CourseID = Courses.CourseID WHERE AssignmentID = ?";
     const params = [assignmentId];
     
     db.query(query, params, (err, result) => {
@@ -13,6 +13,8 @@ router.get("/:assignmentId", (req, res) => {
 
         const query = "SELECT * FROM Submissions JOIN File ON Submissions.FileID = File.FileID WHERE AssignmentID=? AND StudentID=?";
         const params = [assignmentId, req.session.userId];
+
+        let isInstructor = req.session.userId == assignment.InstructorID;
 
         let info = {
             id: assignment.AssignmentID,
@@ -25,20 +27,40 @@ router.get("/:assignmentId", (req, res) => {
             filePath: assignment.FilePath,
         };
 
-        db.query(query, params, (err, result) => {
-            let submission = {};
-            if (result.length == 0) {
-                submission.status = "Pending";
-            } else {
-                submission.status = result[0].Status;
-                submission.fileName = result[0].FileName;
-                submission.filePath = result[0].FilePath;
-            }
+        if (!isInstructor) {
 
-            info.submission = submission;
-    
-            res.render("assignment/view", { info: info });
-        });
+            db.query(query, params, (err, result) => {
+                let submission = {};
+                if (result.length == 0) {
+                    submission.status = "Pending";
+                } else {
+                    submission.status = result[0].Status;
+                    submission.fileName = result[0].FileName;
+                    submission.filePath = result[0].FilePath;
+                }
+
+                info.submission = submission;
+        
+                res.render("assignment/view", { info: info, isInstructor: isInstructor });
+            });
+        } else {
+            const query = "SELECT * FROM Submissions JOIN UserProfile ON StudentID = UserID JOIN File ON Submissions.FileID = File.FileID WHERE AssignmentID=?";
+            const params = [assignmentId];
+            
+            db.query(query, params, (err, result) => {
+                let submissions = [];
+
+                result.forEach((submission) => {
+                    submissions.push({
+                        name: `${submission.LastName}, ${submission.FirstName} ${submission.MiddleName} ${submission.NameExtension}`,
+                        fileName: submission.FileName,
+                        filePath: submission.FilePath,
+                    });
+                });
+
+                res.render("assignment/view", { info: info, submissions: submissions, isInstructor: isInstructor });
+            });
+        }
     });
 });
 
