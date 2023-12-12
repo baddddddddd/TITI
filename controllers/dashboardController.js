@@ -138,7 +138,7 @@ exports.renderAppointment = async (req, res) => {
             const { purpose, appointmentdate } = req.body;
         
             if (!purpose || !appointmentdate) {
-                return res.render("appointment.ejs", { userCode, insertingStatus: "Failed: Purpose and Date are required." });
+                return res.render("appointment.ejs", { userCode, insertingStatus: "Failed: Purpose and Date are required."});
             }
         
             const countSimilarDatesQuery = "SELECT COUNT(*) AS count FROM Appointments WHERE Date = ?";
@@ -165,15 +165,15 @@ exports.renderAppointment = async (req, res) => {
                         }
         
                         if (result.affectedRows === 1) {
-                            return res.render("appointment.ejs", { userCode, status, insertingStatus: "Success: Appointment added." });
+                            return res.render("appointment.ejs", { userCode, status, insertingStatus: "Success: Appointment added.", results});
                         } else {
-                            return res.render("appointment.ejs", { userCode, status, insertingStatus: "Failed: Error inserting appointment." });
+                            return res.render("appointment.ejs", { userCode, status, insertingStatus: "Failed: Error inserting appointment.", results});
                         }
                     });
                 }
             });
         } else {
-            res.render("appointment.ejs", { userCode, status, insertingStatus: '' });
+            res.render("appointment.ejs", { userCode, status, insertingStatus: '', results});
         }
     });
 };

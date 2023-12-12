@@ -40,18 +40,12 @@ app.use(express.json());
 app.use(express.static(__dirname + "/static"));
 
 // Routes
-// Login
+// Student Login
 app.get('/', (req, res) => {
     res.render("login.ejs", {errorMessage: '' });
 });
 
 app.post('/', authController.verifyUser);
-
-// Student Dashboard
-app.get('/dashboard', dashboardController.renderDashboard);
-
-// Schedule
-app.get('/dashboard/schedule', dashboardController.renderSchedule);
 
 // Admin Dashboard
 app.get('/admin', (req, res) => {
@@ -62,26 +56,78 @@ app.post('/admin', authController.verifyAdmin);
 
 app.get('/admin/dashboard', adminController.renderAdminDashboard);
 
-// Registration
+// Admin Registration
 app.get('/admin/dashboard/register', (req, res) => {
     res.render("register.ejs", {registrationResult: '' });
 });
 
 app.post('/admin/dashboard/register', authController.registerUser);
 
-// Student Dashboard
-app.get('/dashboard', (req, res) => {
-    res.render("dashboard.ejs");
+// Admin Feedback
+app.get('/admin/dashboard/feedback', adminController.renderFeedback);
+app.post('/delete-feedback', (req, res) => {
+    const feedbackID = req.body.feedbackID;
+
+    if (!feedbackID) {
+        return res.status(400).send("FeedbackID is required for deletion.");
+    }
+
+    db.query('DELETE FROM Feedback WHERE FeedbackID = ?', [feedbackID], (error, results) => {
+        if (error) {
+            console.error("Error deleting feedback:", error);
+            return res.status(500).send("Internal Server Error");
+        }
+
+        console.log("Feedback deleted successfully.");
+        res.redirect('/admin/dashboard/feedback');
+    });
 });
 
-// Drawing Board
+// Admin Appointment
+app.get('/admin/dashboard/appointments', adminController.renderAppointments);
+app.post('/handle-appointment', adminController.handleAppointment);
+
+// Modify the route for deleting feedback
+app.post('/delete-appointment', (req, res) => {
+    const appointmentID = req.body.appointmentID;
+
+    if (!appointmentID) {
+        return res.status(400).send("AppointmentID is required for deletion.");
+    }
+
+    // Instead of deleting, you might want to update the status to 'canceled' or similar
+    db.query('UPDATE Appointments SET Status = "canceled" WHERE AppointmentID = ?', [appointmentID], (error, results) => {
+        if (error) {
+            console.error("Error updating appointment status:", error);
+            return res.status(500).send("Internal Server Error");
+        }
+
+        console.log("Appointment canceled successfully.");
+        res.redirect('/admin/dashboard/appointments');
+    });
+});
+
+
+
+// // Student Dashboard
+// app.get('/dashboard', (req, res) => {
+//     res.render("dashboard.ejs");
+// });
+
+// Student Dashboard
+app.get('/dashboard', dashboardController.renderDashboard);
+
+// Schedule
+app.get('/dashboard/schedule', dashboardController.renderSchedule);
+
+// Student Drawing Board
 app.get('/dashboard/drawingboard', dashboardController.renderDrawingBoard);
 
-// Appointment
+// Student Appointment
 app.get('/dashboard/appointment', dashboardController.renderAppointment)
 app.post('/dashboard/appointment', dashboardController.renderAppointment);
 
-// Feedback
+// Student Feedback
 app.get('/dashboard/feedback', (req, res) => {
     res.render("feedback.ejs", {insertingStatus: '' });
 });
