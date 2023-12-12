@@ -3,24 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feedback</title>
-    <link rel="stylesheet" href="/styles/appointment.css">
+    <title>Feedback | Student Portal</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/styles/feedback.css">
 </head>
 <body>
-    <div class="flex-container">
-        <form action="/dashboard">
-            <button type="submit">Back</button>
-            <p>Feedback</p>
-            <p style="font-weight: 200;">information about reactions to a product, a person's performance of a task, etc. which is used as a basis for improvement.</p>
-        </form>
-    
-        <form action="/dashboard/feedback" method="post">
-            <input style="padding: 30px 10px 30px 10px; overflow: hidden;" type="text" name="concern" placeholder="Concern">
-            <br>
-            <input class="button-submit" type="submit">
-            <br>
-            <p><%= insertingStatus %></p>
-        </form>
+  
+  <div class="content-wrapper">
+    <div class="header">
+      <div class="btn-borderless button" onclick="document.location.href = '/dashboard'">
+        <i class='bx bx-arrow-back'></i>
+        BACK
+      </div>
+      <h1 class="heading">Student Feedback</h1>
     </div>
+      <div class="flex-container">
+    
+          <form action="/dashboard/feedback" method="post">
+              <div class="feedback">Write Feedback</div>
+              <textarea class="purpose-box" type="text" name="concern" placeholder="Concern" rows="5"></textarea>
+              <br>
+              <input class="button-submit" type="submit">
+              <br>
+              <p><%= insertingStatus %></p>
+          </form>
+      </div>
+  </div>
+  <script>
+    const textarea = document.querySelector('.purpose-box');
+
+    function autoAdjustHeight(textarea) {
+        textarea.style.height = 'auto'; // Reset height to auto
+        textarea.style.height = (textarea.scrollHeight) + 'px'; // Set new height
+    }
+
+    textarea.oninput = () => {
+      autoAdjustHeight(textarea);
+    }
+
+  </script>
 </body>
 </html>

@@ -3,43 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Schedule</title>
+    <title>Schedule | Student Portal</title>
     <!-- <link rel="stylesheet" href="styles/schedule.css"> -->
     <!-- Hindi ko mapagana ang paglilink -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
     <style>
-        @import url("./common.css");
-        *, body {
-            margin: 0;
-            padding: 0;
-        }
+        @import url("/styles/common.css");
 
         .main-container {
             display: flex;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            margin: 2rem 10%;
             text-align: center;
             flex-direction: column;
         }
 
         table {
-            width: 80%;
+            width: 100%;
             overflow: hidden; /* Ensure the border radius is applied */
-            border: 3px solid #003049; /* Apply main color to the outer border */
-            border-radius: 15px;
             margin-bottom: 30px;
+            border: none;
+            background: white;
+        }
+
+        .table-wrapper {
+          display: flex;
+          flex-direction: column;
+          row-gap: 1rem;
+            width: 100%;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+        }
+
+        .heading {
+          color: var(--main-color);
         }
 
         th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-            font-size: 12px;
+            border: 1px solid var(--gray-color);
+            text-align: center;
+            padding: 0.7rem;
+            font-size: 0.9rem;
         }
 
         th {
-            background-color: #f2f2f2;
+            background-color: var(--main-color);
+            color: white;
+            text-align: center;
         }
 
         form {
@@ -70,18 +83,31 @@
             height: 40px;
             width: 100px;
         }
+
+        .header {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+        }
+
+        .button {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+        }
     </style>
 </head>
 
 <body>
     <div class="main-container">
-        <div class="extra">
-            <form action="/dashboard" method="get">
-                <button input="submit">Back</button>
-            </form>
-            <h1 style="font-family: Arial, Helvetica, sans-serif; margin-top: 13px;">Schedule</h1>
-        </div>
-        <table border="1">
+        <div class="table-wrapper">
+          <div class="header">
+            <div class="btn-borderless button" onclick="document.location.href = '/dashboard'">
+              <i class='bx bx-arrow-back'></i>
+              BACK
+            </div>
+            <h1 class="heading">Schedule</h1>
+          </div>
+        <table>
             <thead>
                 <tr>
                     <th>Time Slot</th>
@@ -105,6 +131,7 @@
                 <% }); %>
             </tbody>
         </table>
+      </div>
     </div>
 </body>
 </html>

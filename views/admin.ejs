@@ -11,7 +11,7 @@
   <div class="content-wrapper">
     <form class="form-container" action="/admin" method="post" id="loginForm">
       <div class="heading">
-        Log In
+        Admin Log In
       </div>
       <div class="field-container">
         <input required type="text" name="adminID" id="userCode" placeholder="Admin ID" value="<%= locals.adminID %>">
@@ -24,6 +24,8 @@
         <input class="btn" type="submit" value="LOG IN">
       </div>
     </form>
+    <div class="extra-message"><a href="/"><u>Go to client log in</u></a></div>
+
   </div>
 </body>
 </html>

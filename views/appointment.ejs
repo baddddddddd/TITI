@@ -3,32 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appointment</title>
+    <title>Appointment | Student Portal</title>
 
     <link rel="stylesheet" href="/styles/appointment.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
 </head>
 <body>
-    <div class="flex-container">
-        <form action="/dashboard">
-            <button type="submit">Back</button>
-            <p>Appointment Status: <%= status %> </p>
-        
-            <% if (status === 'Approved' && results && results.length > 0 && results[0].Date) { %>
-                <p>Appointment Date: <%= results[0].Date.toLocaleDateString('en-US') %></p>
-            <% } %>
-        </form>
-    
-        <form action="/dashboard/appointment" method="post" onsubmit="return formatDate()">
-            <p>School ID: <%= userCode %></p>
-            <input required style="padding: 30px 10px 30px 10px; overflow: hidden;" type="text" name="purpose" placeholder="Purpose">
-            <br>
-            <input required type="date" name="appointmentdate">
-            <br>
-            <input class="button-submit" type="submit">
-            <br>
-            <p><%= insertingStatus %></p>
-        </form>
+  <div class="content-wrapper">
+    <div class="header">
+      <div class="btn-borderless button" onclick="document.location.href = '/dashboard'">
+        <i class='bx bx-arrow-back'></i>
+        BACK
+      </div>
+      <h1 class="heading">Appointment System</h1>
     </div>
+      <div class="flex-container">
+    
+          <form action="/dashboard/appointment" method="post" onsubmit="return formatDate()">
+              <p>Appointment Status: <%= status %> </p>
+    
+              <% if (status === 'Approved' && results && results.length > 0 && results[0].Date) { %>
+                  <p>Appointment Date: <%= results[0].Date.toLocaleDateString('en-US') %></p>
+              <% } %>
+              <div class="school-id">School ID: <%= userCode %></div>
+              <input required class="purpose-box" type="text" name="purpose" placeholder="Purpose">
+              <br>
+              <input required type="date" class="date" name="appointmentdate">
+              <br>
+              <input class="button-submit" type="submit" value="SUBMIT">
+              <br>
+              <p><%= insertingStatus %></p>
+          </form>
+      </div>
+  </div>
+    
 
     <script>
         function formatDate() {

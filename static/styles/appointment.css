@@ -1,10 +1,10 @@
-@import url("./common.css");
+@import url("/styles/common.css");
 
 .flex-container {
     display: flex;
     align-items: center;
     justify-content: center; /* Center the buttons horizontally */
-    height: 100vh;
+    height: 80vh;
     width: 100%;
     flex-direction: column;
 }
@@ -15,16 +15,18 @@ form {
     justify-content: center; /* Center the buttons horizontally */
     margin-top: 15px;
     flex-direction: column;
-    min-height: 30vh;
-    width: 30%;
+    width: 400px;
     font-size: var(--paragraph-text);
     font-weight: 600;
-    padding: 8px 20px;
+    padding: 2rem;
     line-height: 24px;
-    border: 3px solid var(--main-color);
     border-radius: 5px;
     transition: ease 0.3s;
     box-sizing: border-box;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+
 }
 
 button {
@@ -41,13 +43,10 @@ button {
     border: 3px solid var(--main-color);
     border-radius: 5px;
     transition: ease 0.3s;
-    height: 35px;
-    width: 80;
     position: relative;
 }
 
 .button-submit {
-    margin: 10px;
     color: white;
     background: var(--main-color);
     font-size: var(--paragraph-text);
@@ -57,7 +56,44 @@ button {
     border: 3px solid var(--main-color);
     border-radius: 5px;
     transition: ease 0.3s;
-    height: 40px;
-    width: 100;
     position: relative;
+}
+
+.purpose-box {
+  padding: 0.6rem;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 0.9rem;
+  resize: none;
+}
+
+.date {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+
+.school-id {
+  font-size: 0.9rem;
+  margin: 1rem 0rem;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+}
+
+.heading {
+  color: var(--main-color);
+}
+
+.content-wrapper {
+  margin: 3rem 10%;
+  text-align: center;
+}
+
+.button {
+  text-align: left;
 }

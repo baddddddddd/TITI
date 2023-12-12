@@ -375,7 +375,7 @@ app.post("/course/assignment/upload", upload.single("file"), (req, res) => {
 });
 
 // Logout
-app.post('/logout', (req, res) => {
+app.get('/logout', (req, res) => {
     req.session.destroy((err) => {
         if (err) {
             console.error("Error destroying session:", err);
