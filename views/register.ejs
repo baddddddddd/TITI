@@ -16,6 +16,12 @@
       </form>
     <form class="form-container" action="/admin/dashboard/register" method="post" id="registrationForm">
       <div class="field-container">
+        <select class="options" id="accountType" name="accountType">
+          <option value="Student">Student</option>
+          <option value="Instructor">Instructor</option>
+        </select>
+      </div>
+      <div class="field-container">
         <input required type="text" name="firstName" id="firstName" placeholder="First Name">
       </div>
       <div class="field-container">
@@ -29,10 +35,10 @@
       </div>
       <div class="half-split-flex">
         <div class="field-container">
-          <input class="date-picker" type="date" name="birthdate" id="birthdate" placeholder="birthdate">
+          <input required class="date-picker" type="date" name="birthdate" id="birthdate" placeholder="birthdate">
         </div>
         <div class="field-container">
-          <select class="options" id="gender" name="gender">
+          <select required class="options" id="gender" name="gender">
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Other">Prefer not to say</option>

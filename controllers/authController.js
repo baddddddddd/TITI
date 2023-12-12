@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 
 async function registerUser(req, response) {
     if (!req.session || !req.session.adminID) {
-        return res.render("admin.ejs", { errorMessage: "Login your account first." });
+        return response.render("admin.ejs", { errorMessage: "Login your account first." });
     }
 
     let firstName = req.body.firstName;
@@ -33,6 +33,7 @@ async function registerUser(req, response) {
     let section = req.body.section
     let strand = req.body.strand
     let enrollmentStatus = req.body.enrollmentStatus
+    let accountType = req.body.accountType;
 
     bcrypt.hash(password, saltRounds, async (err, hash) => {
         if (err) {
@@ -45,8 +46,8 @@ async function registerUser(req, response) {
           db.beginTransaction();
 
             try {
-                const userCredentialsQuery = "INSERT INTO UserCredentials (Email, Password) VALUES (?, ?)";
-                const userCredentialsParams = [emailAddress, pwHash];
+                const userCredentialsQuery = "INSERT INTO UserCredentials (Email, Password, AccountType) VALUES (?, ?, ?)";
+                const userCredentialsParams = [emailAddress, pwHash, accountType];
                 
                 db.query(userCredentialsQuery, userCredentialsParams, (err, res) => {
                     const userID = res.insertId;
