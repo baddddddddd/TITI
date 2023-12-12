@@ -11,10 +11,11 @@
 }
 
 :root {
-  --bg-color: #ffffff;
+  --bg-color: #f5f5f5;
   --text-color: #000000;
-  --main-color: #003049;
-  --accent-color: #669bbc;
+  --main-color: #284b63;
+  --accent-color: #3C6E71;
+  --gray-color: #484848;
   --secondary-color: #780000;
   --secondary-accent-color: #c1121f;
   --light-color: #fdf0d5;
@@ -44,18 +45,21 @@ body {
   transition: ease 0.3s;
 }
 
-.btn:hover {
+.btn:hover,
+.btn-hollow {
   cursor: pointer;
+  transform: scale(1.05);
 }
 
 .btn-hollow {
-  color: var(--text-color);
+  color: var(--main-color);
   background: transparent;
   font-size: var(--paragraph-text);
   font-weight: 600;
   padding: 8px 20px;
   line-height: 24px;
-  border: 3px solid var(--main-color);
+  border: 2px solid var(--main-color);
   border-radius: 5px;
   transition: ease 0.3s;
 }
+
