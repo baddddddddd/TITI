@@ -50,7 +50,8 @@ exports.renderAppointments = (req, res) => {
         return res.render("admin.ejs", { errorMessage: "Login your account first." });
     }
 
-    db.query("SELECT AppointmentID, Date, Purpose, Status FROM Appointments", (error, results) => {
+    // Update the SQL query to order by the Date column
+    db.query("SELECT AppointmentID, Date, Purpose, Status FROM Appointments ORDER BY Date", (error, results) => {
         if (error) {
             console.error("Error fetching appointment data:", error);
             return res.status(500).send("Internal Server Error");
@@ -67,22 +68,39 @@ exports.handleAppointment = (req, res) => {
         return res.status(400).send("AppointmentID and action are required.");
     }
 
-    let status;
-    if (action === 'approve') {
-        status = 'Approved';
-    } else if (action === 'decline') {
-        status = 'Declined';
-    } else {
-        return res.status(400).send("Invalid action.");
-    }
+    if (action === 'delete') {
+        // Delete the appointment from the database
+        db.query('DELETE FROM Appointments WHERE AppointmentID = ?', [appointmentID], (error, results) => {
+            if (error) {
+                console.error("Error deleting appointment:", error);
+                return res.status(500).send("Internal Server Error");
+            }
 
-    db.query('UPDATE Appointments SET Status = ? WHERE AppointmentID = ?', [status, appointmentID], (error, results) => {
-        if (error) {
-            console.error(`Error updating appointment status to ${status}:`, error);
-            return res.status(500).send("Internal Server Error");
+            console.log("Appointment deleted successfully.");
+            res.redirect('/admin/dashboard/appointments');
+        });
+    } else {
+        // Handle other actions (approve, decline, etc.)
+        let status;
+        switch (action) {
+            case 'approve':
+                status = 'Approved';
+                break;
+            case 'decline':
+                status = 'Declined';
+                break;
+            default:
+                return res.status(400).send("Invalid action.");
         }
 
-        console.log(`Appointment ${status} successfully.`);
-        res.redirect('/admin/dashboard/appointments');
-    });
+        db.query('UPDATE Appointments SET Status = ? WHERE AppointmentID = ?', [status, appointmentID], (error, results) => {
+            if (error) {
+                console.error(`Error updating appointment status to ${status}:`, error);
+                return res.status(500).send("Internal Server Error");
+            }
+
+            console.log(`Appointment ${status} successfully.`);
+            res.redirect('/admin/dashboard/appointments');
+        });
+    }
 };
