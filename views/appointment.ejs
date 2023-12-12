@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment</title>
+
+    <link rel="stylesheet" href="/styles/appointment.css">
+</head>
+<body>
+    <div class="flex-container">
+        <form action="/dashboard">
+            <button type="submit">Back</button>
+            <p>Appointment Status: <%= status %> </p>
+        </form>
+    
+        <form action="/dashboard/appointment" method="post" onsubmit="return formatDate()">
+            <p>School ID: <%= userCode %></p>
+            <input style="padding: 30px 10px 30px 10px; overflow: hidden;" type="text" name="purpose" placeholder="Purpose">
+            <br>
+            <input type="date" name="appointmentdate">
+            <br>
+            <input class="button-submit" type="submit">
+            <br>
+            <p><%= insertingStatus %></p>
+        </form>
+    </div>
+
+    <script>
+        function formatDate() {
+            let dateInput = new Date(document.getElementById("appointmentdate").value);
+            let currentDate = new Date();
+    
+            if (dateInput < currentDate) {
+                alert('Please select a future date');
+                event.preventDefault();
+                return false;
+            }
+    
+            if (isNaN(dateInput)) {
+                alert("Invalid date format");
+                return false;
+            }
+    
+            // Format the date to YYYY-MM-DD
+            let formattedDate = dateInput.toLocaleDateString('en-CA'); // Adjust the locale as needed
+    
+            document.getElementById("appointmentdate").value = formattedDate;
+            return true;
+        }
+    </script>
+</body>
+</html>
