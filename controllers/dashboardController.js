@@ -8,7 +8,7 @@ exports.renderDashboard = (req, res) => {
     }
 
     const userCode = req.session.userCode;
-    const getUserIdQuery = "SELECT UserID FROM UserCredentials WHERE userCode = ?";
+    const getUserIdQuery = "SELECT * FROM UserCredentials WHERE userCode = ?";
 
     db.query(getUserIdQuery, [userCode], (err, userIdResults) => {
         if (err) {
@@ -18,6 +18,7 @@ exports.renderDashboard = (req, res) => {
 
         if (userIdResults.length > 0) {
             const userId = userIdResults[0].UserID;
+            const isInstructor = userIdResults[0].AccountType == "Instructor";
 
             const query = "SELECT * FROM UserCredentials UC " +
                 "LEFT JOIN UserProfile UP ON UC.UserID = UP.UserID " +
@@ -47,7 +48,8 @@ exports.renderDashboard = (req, res) => {
                         extensionName: extensionName,
                         strand: strand,
                         section: section,
-                        enrollmentStatus: enrollmentStatus
+                        enrollmentStatus: enrollmentStatus,
+                        isInstructor: isInstructor,
                     });
                 } else {
                     res.render("login.ejs", { errorMessage: "Login your account first." });

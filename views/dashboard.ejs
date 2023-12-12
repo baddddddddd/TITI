@@ -25,11 +25,12 @@
                 <form action="/dashboard/schedule" method="get">
                     <button type="submit" class="button-1">Schedule</button>
                 </form>
-                <form action="/" method="get">
-                    <button type="submit" class="button-2">Course Materials</button>
-                </form>
-                <form action="/" method="get">
-                    <button type="submit" class="button-3">Discussion Board</button>
+                <% if (locals.isInstructor) { %>
+                  <form action="/course/owned" method="get">
+                <% } else { %>
+                  <form action="/course" method="get">
+                <% } %>
+                  <button type="submit" class="button-2">View Courses</button>
                 </form>
             </div>
             
