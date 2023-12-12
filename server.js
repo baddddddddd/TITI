@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
         cb(null, 'uploads/');
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname);
+        cb(null, Date.now() + '-' +file.originalname);
     }
 });
 
@@ -260,6 +260,54 @@ app.post("/course/assignment/create/submit", upload.single("file"), (req, res) =
     
 
     
+});
+
+app.post("/course/assignment/upload", upload.single("file"), (req, res) => {
+    const assignmentId = req.body.assignmentId;
+    const studentId = req.session.userId;
+
+    const type = req.body.type;
+
+    if (type == "unsubmit") {
+        const query = "DELETE FROM Submissions WHERE AssignmentID=? AND StudentID=?";
+        const params = [assignmentId, studentId];
+
+        db.query(query, params, (err, result) => {
+            console.log(result);
+            res.redirect(`/course/assignment/${assignmentId}`);
+        });
+        
+    } else if (type == "submit") {
+        function submitAssignment(fileId = null) {
+            const query = "INSERT INTO Submissions (FileID, AssignmentID, StudentID, Status) VALUES (?, ?, ?, ?)";
+            const params = [fileId, assignmentId, studentId, "Turned In"];
+    
+            console.log(query);
+            console.log(params);
+    
+            db.query(query, params, (err, result) => {
+                console.log(result);
+    
+                res.redirect(`/course/assignment/${assignmentId}`);
+            });
+        }
+    
+        function insertFile() {
+            let query = "INSERT INTO File (FileName, FilePath) VALUES (?, ?)";
+            let params = [req.file.filename, req.file.path];
+            
+            db.query(query, params, (err, result) => {
+                let fileId = result.insertId;
+                submitAssignment(fileId);
+            });
+        }
+    
+        if (req.file) {
+            insertFile();
+        } else {
+            submitAssignment();
+        }
+    }
 });
 
 // Logout

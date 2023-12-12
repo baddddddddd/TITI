@@ -130,6 +130,10 @@
     .announce-btn {
       margin-top: 0.5rem;
     }
+
+    .activity-card:hover {
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -209,7 +213,7 @@
               </div>
             </div>
           <% } else if (locals.stream[i].type == "activity") { %>
-            <div class="stream-card">
+            <div class="stream-card activity-card" onclick="document.location.href='/course/assignment/<%= locals.stream[i].id %>'">
               <div class="stream-header">
                 <div class="stream-left">
                   <i class='bx bx-task'></i>
