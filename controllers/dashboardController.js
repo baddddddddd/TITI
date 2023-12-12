@@ -114,66 +114,84 @@ exports.renderDrawingBoard = (req, res) => {
     res.render('drawingboard.ejs');
 }
 
-exports.renderAppointment = async (req, res) => {
+exports.getAppointment = async (req, res) => {
     if (!req.session || !req.session.userCode) {
         return res.render("login.ejs", { errorMessage: "Login your account first." });
     }
 
     const userCode = req.session.userCode;
-    const query = "SELECT * FROM Appointments WHERE SchoolCode = ?";
 
+    const query = "SELECT * FROM Appointments WHERE SchoolCode = ?";
     db.query(query, [userCode], (err, results) => {
         if (err) {
             console.error("Database error:", err);
             return res.status(500).send('Internal Server Error');
-        }
-
-        let status = "None";
-
-        if (results.length > 0) {
-            status = results[0].Status;
-        }
-
-        if (req.method === 'POST') {
-            const { purpose, appointmentdate } = req.body;
-        
-            if (!purpose || !appointmentdate) {
-                return res.render("appointment.ejs", { userCode, insertingStatus: "Failed: Purpose and Date are required."});
+        } else {
+            let status = "None";
+            if (results.length > 0) {
+                status = results[0].Status;
             }
-        
+            return res.render("appointment.ejs", { userCode, insertingStatus: '', status, results });
+        }
+    });
+};
+
+exports.postAppointment = async (req, res) => {
+    if (!req.session || !req.session.userCode) {
+        return res.render("login.ejs", { errorMessage: "Login your account first." });
+    }
+
+    const userCode = req.session.userCode;
+    const { purpose, appointmentdate } = req.body;
+
+    let status = "None";
+    let results = [];
+
+    const queryAppointment = "SELECT * FROM Appointments WHERE SchoolCode = ?";
+    db.query(queryAppointment, [userCode], (err, queryResults) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).send('Internal Server Error');
+        } else {
+            if (queryResults.length > 0) {
+                status = queryResults[0].Status;
+            }
+            results = queryResults;
+
+            if (!purpose || !appointmentdate) {
+                return res.render("appointment.ejs", { userCode, insertingStatus: "Failed: Purpose and Date are required.", status, results });
+            }
+
             const countSimilarDatesQuery = "SELECT COUNT(*) AS count FROM Appointments WHERE Date = ?";
             db.query(countSimilarDatesQuery, [appointmentdate], (countError, countResults) => {
                 if (countError) {
                     console.error("Database error:", countError);
                     return res.status(500).send('Internal Server Error');
                 }
-        
+
                 const existingCount = countResults[0].count;
-        
+
                 if (existingCount >= 5) {
-                    return res.render("appointment.ejs", { userCode, status, insertingStatus: "Limit reached for this date." });
-                } else {
-                    const insertQuery = "INSERT INTO Appointments (SchoolCode, Purpose, Date, Status) VALUES (?, ?, ?, 'Pending')";
-                    db.query(insertQuery, [userCode, purpose, appointmentdate], (error, result) => {
-                        if (error) {
-                            if (error.code === 'ER_DUP_ENTRY') {
-                                return res.render("appointment.ejs", { userCode, status, insertingStatus: "Duplicate entry is not allowed." });
-                            }
-        
-                            console.error(error);
-                            return res.render("appointment.ejs", { userCode, status, insertingStatus: "Failed: Error inserting appointment." });
-                        }
-        
-                        if (result.affectedRows === 1) {
-                            return res.render("appointment.ejs", { userCode, status, insertingStatus: "Success: Appointment added.", results});
-                        } else {
-                            return res.render("appointment.ejs", { userCode, status, insertingStatus: "Failed: Error inserting appointment.", results});
-                        }
-                    });
+                    return res.render("appointment.ejs", { userCode, insertingStatus: "Limit reached for this date.", status, results });
                 }
+
+                const insertQuery = "INSERT INTO Appointments (SchoolCode, Purpose, Date, Status) VALUES (?, ?, ?, 'Pending')";
+                db.query(insertQuery, [userCode, purpose, appointmentdate], (error, result) => {
+                    if (error) {
+                        if (error.code === 'ER_DUP_ENTRY') {
+                            return res.render("appointment.ejs", { userCode, insertingStatus: "Duplicate entry is not allowed.", status, results });
+                        }
+                        console.error(error);
+                        return res.render("appointment.ejs", { userCode, insertingStatus: "Failed: Error inserting appointment.", status, results });
+                    }
+
+                    if (result.affectedRows === 1) {
+                        return res.render("appointment.ejs", { userCode, insertingStatus: "Success: Appointment added.", status, results });
+                    } else {
+                        return res.render("appointment.ejs", { userCode, insertingStatus: "Failed: Error inserting appointment.", status, results });
+                    }
+                });
             });
-        } else {
-            res.render("appointment.ejs", { userCode, status, insertingStatus: '', results});
         }
     });
 };
