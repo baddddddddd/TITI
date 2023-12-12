@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback List</title>
+    <link rel="stylesheet" href="/styles/adminFeedback.css">
+</head>
+<body>
+    <div class="flex-container">
+        <div class="extra">
+            <form action="/admin/dashboard" method="get">
+                <button input="submit">Back</button>
+            </form>
+            <h1>Feedback List</h1>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Feedback ID</th>
+                    <th>Concern</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (const feedback of feedbackData) { %>
+                    <tr>
+                        <td class="feedback-column"><%= feedback.FeedbackID %></td>
+                        <td class="concern-column"><%= feedback.Concern %></td>
+                        <td>
+                            <form class="button-submit" action="/delete-feedback" method="post">
+                                <input type="hidden" name="feedbackID" value="<%= feedback.FeedbackID %>">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
