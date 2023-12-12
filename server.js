@@ -124,8 +124,9 @@ app.get('/dashboard/schedule', dashboardController.renderSchedule);
 app.get('/dashboard/drawingboard', dashboardController.renderDrawingBoard);
 
 // Student Appointment
-app.get('/dashboard/appointment', dashboardController.renderAppointment)
-app.post('/dashboard/appointment', dashboardController.renderAppointment);
+app.get('/dashboard/appointment', dashboardController.getAppointment);
+app.post('/dashboard/appointment', dashboardController.postAppointment);
+
 
 // Student Feedback
 app.get('/dashboard/feedback', (req, res) => {

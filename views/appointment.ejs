@@ -13,16 +13,16 @@
             <button type="submit">Back</button>
             <p>Appointment Status: <%= status %> </p>
         
-            <% if (status === 'Approved') { %>
+            <% if (status === 'Approved' && results && results.length > 0 && results[0].Date) { %>
                 <p>Appointment Date: <%= results[0].Date.toLocaleDateString('en-US') %></p>
             <% } %>
         </form>
     
         <form action="/dashboard/appointment" method="post" onsubmit="return formatDate()">
             <p>School ID: <%= userCode %></p>
-            <input style="padding: 30px 10px 30px 10px; overflow: hidden;" type="text" name="purpose" placeholder="Purpose">
+            <input required style="padding: 30px 10px 30px 10px; overflow: hidden;" type="text" name="purpose" placeholder="Purpose">
             <br>
-            <input type="date" name="appointmentdate">
+            <input required type="date" name="appointmentdate">
             <br>
             <input class="button-submit" type="submit">
             <br>
