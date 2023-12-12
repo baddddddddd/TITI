@@ -11,7 +11,7 @@
     @import url("/styles/common.css");
 
     .content-wrapper {
-      margin: 5rem 10%;
+      margin: 2rem 10%;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -168,7 +168,14 @@
 <body>
   <div class="content-wrapper">
     <div class="control-view">
-
+      <% if (!locals.isInstructor) { %>
+        <div class="btn-borderless" onclick="document.location.href = '/course'">
+      <% } else { %>
+        <div class="btn-borderless" onclick="document.location.href = '/course/owned'">
+      <% } %>
+        <i class='bx bx-arrow-back'></i>
+        BACK
+      </div>
     </div>
     <div class="class-header">
       <div class="item-wrapper">

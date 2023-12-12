@@ -25,7 +25,7 @@ router.get("/", (req, res) => {
             });
         });
 
-        res.render("course", { heading: "Enrolled Courses", courses: courses });
+        res.render("course", { heading: "Enrolled Courses", courses: courses, isInstructor: false });
     });
 });
 
@@ -48,7 +48,7 @@ router.get("/owned", (req, res) => {
             });
         });
 
-        res.render("course", { heading: "Owned Courses", courses: courses });
+        res.render("course", { heading: "Owned Courses", courses: courses, isInstructor: true });
     });
 });
 
@@ -168,6 +168,5 @@ router.get("/:courseId", (req, res) => {
         });
     });
 });
-
 
 module.exports = router;

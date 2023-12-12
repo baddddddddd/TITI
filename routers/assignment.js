@@ -11,6 +11,8 @@ router.get("/:assignmentId", (req, res) => {
     db.query(query, params, (err, result) => {
         let assignment = result[0];
 
+        console.log(assignment);
+
         const query = "SELECT * FROM Submissions JOIN File ON Submissions.FileID = File.FileID WHERE AssignmentID=? AND StudentID=?";
         const params = [assignmentId, req.session.userId];
 
@@ -41,7 +43,7 @@ router.get("/:assignmentId", (req, res) => {
 
                 info.submission = submission;
         
-                res.render("assignment/view", { info: info, isInstructor: isInstructor });
+                res.render("assignment/view", { info: info, isInstructor: isInstructor, courseCode: assignment.CourseCode });
             });
         } else {
             const query = "SELECT * FROM Submissions JOIN UserProfile ON StudentID = UserID JOIN File ON Submissions.FileID = File.FileID WHERE AssignmentID=?";
@@ -58,7 +60,7 @@ router.get("/:assignmentId", (req, res) => {
                     });
                 });
 
-                res.render("assignment/view", { info: info, submissions: submissions, isInstructor: isInstructor });
+                res.render("assignment/view", { info: info, submissions: submissions, isInstructor: isInstructor, courseCode: assignment.CourseCode });
             });
         }
     });

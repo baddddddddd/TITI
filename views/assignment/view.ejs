@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= locals.info.title %> | Student Portal</title>
 
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
   <link rel="stylesheet" href="/styles/view_assignment.css">
 
     <% if (locals.isInstructor) { %>
@@ -27,6 +29,13 @@
 
 <body>
   <div class="content-wrapper">
+    <div class="control-view">
+      <div class="btn-borderless" onclick="document.location.href = '/course/<%= locals.courseCode %>'">
+        <i class='bx bx-arrow-back'></i>
+        BACK
+      </div>
+    </div>
+
     <div class="content-grid">
       <div class="left-column">
         <div class="heading">

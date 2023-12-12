@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= locals.name %>Courses | Student Portal</title>
 
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+
   <style>
     @import url("/styles/common.css");
 
@@ -63,6 +66,15 @@
       text-align: center;
       color: var(--main-color);
     }
+
+    .join-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--main-color);
+      font-weight: 700;
+      font-size: 9rem;
+    }
   </style>
 </head>
 <body>
@@ -72,12 +84,21 @@
     </div>
     <div class="course-view">
       <% for (let i = 0; i < locals.courses.length; i++) { %>
-        <div class="course-card" onclick="document.location.href='<%= locals.courses[i].courseCode %>'">
+        <div class="course-card" onclick="document.location.href='/course/<%= locals.courses[i].courseCode %>'">
           <div class="course-name"><%= locals.courses[i].courseName %></div>
           <div class="course-section"><%= locals.courses[i].section %></div>
           <div class="instructor-name"><%= locals.courses[i].instructor %></div>
         </div>
       <% } %>
+      <div class="course-card">
+        <% if (!locals.isInstructor) { %>
+          <div class="join-btn" onclick="document.location.href = '/course/join'">
+        <% } else { %>
+          <div class="join-btn" onclick="document.location.href = '/course/create'">
+        <% } %>
+          <i class='bx bx-plus'></i></div>
+        </div>
+      </div>
     </div>
   </div>
 </body>
