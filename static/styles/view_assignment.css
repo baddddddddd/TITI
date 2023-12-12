@@ -1,0 +1,110 @@
+@import url("./common.css");
+
+.content-wrapper {
+  margin: 5rem 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 2rem;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr;
+  column-gap: 2rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.upload-date {
+  font-size: 1rem;
+}
+
+.rule {
+  margin: 1.5rem 0rem;
+}
+
+.instructions {
+  width: 100%;
+  resize: none;
+  padding: 0rem;
+  font-size: 1rem;
+  outline: none;
+  border: none;
+}
+
+.file {
+  border: 1px solid black;
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+.file:hover {
+  cursor: pointer;
+  background: #f9f9f9;
+}
+
+.stream-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: left;
+  width: 100%;
+}
+
+.stream-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.stream-left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+}
+
+.stream-title {
+  font-size: 1rem;
+}
+
+.submissions {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+
+.submission-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.submission-heading {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.submit-btn,
+.submit-btn > .btn,
+.add-btn,
+.submit-btn > .btn-hollow {
+  width: 100%;
+}
+
+.file-info {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+}
