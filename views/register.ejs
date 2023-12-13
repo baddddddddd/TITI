@@ -6,15 +6,19 @@
   <title>Register | Student Portal</title>
 
   <link rel="stylesheet" href="/styles/register.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
 </head>
 <body>
   <div class="content-wrapper">
-      <form class="heading-form" action="/admin/dashboard">
-        <button input="submit">Back</button>
-        <div class="heading">Register
+    <div class="control-view">
+        <div class="btn-borderless" onclick="document.location.href = '/admin/dashboard'">
+          <i class='bx bx-arrow-back'></i>
+          BACK
         </div>
-      </form>
+    </div>
     <form class="form-container" action="/admin/dashboard/register" method="post" id="registrationForm">
+      <div class="heading">Register New Account</div>
       <div class="field-container">
         <select class="options" id="accountType" name="accountType">
           <option value="Student">Student</option>
@@ -60,16 +64,16 @@
       <div class="field-container">
         <input required type="password" name="password" id="password" placeholder="Password">
       </div>
-      <div class="field-container">
+      <div class="field-container pivot">
         <input required type="password" id="confirmPassword" placeholder="Confirm Password">
       </div>
-      <div class="field-container">
+      <div class="field-container removable">
         <input required type="text" name="section" placeholder="Section">
       </div>
-      <div class="field-container">
+      <div class="field-container removable">
         <input required type="text" name="strand" placeholder="Strand">
       </div>
-      <div class="field-container">
+      <div class="field-container removable">
         <input required type="text" name="enrollmentStatus" placeholder="Enrollment Status">
       </div>
       <div>
@@ -78,5 +82,29 @@
       <div><%= registrationResult %></div>
     </form>
   </div>
+
+  <script>
+    let accountSelect = document.querySelector("#accountType");
+    let removables = document.querySelectorAll(".removable");
+    let pivot = document.querySelector(".pivot");
+
+    accountSelect.addEventListener("change", (e) => {
+      if (accountSelect.value == "Instructor") {
+        if (document.querySelectorAll(".removable").length > 0) {
+          removables.forEach((element) => {
+            element.remove();
+          });
+        }
+
+      } else {
+        if (document.querySelectorAll(".removable").length == 0) {
+          let copy = [...removables].reverse();
+          copy.forEach((element) => {
+            pivot.insertAdjacentElement("afterend", element);
+          });
+        }
+      }
+    });
+  </script>
 </body>
 </html>

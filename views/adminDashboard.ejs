@@ -5,16 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/styles/adminDashboard.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
 </head>
 <body>
     <div class="main-container">
+      <div class="header">
+        <div class="btn-borderless button" onclick="document.location.href = '/admin/logout'">
+          <i class='bx bx-log-out'></i>
+          LOG OUT
+        </div>
+        <h1 class="heading">Dashboard</h1>
+      </div>
         <div class="profile"> 
-            <form action="/logout" method="post">
-                <button type="submit"><img class="image-class" src="/styles/images/icons8-logout-30.png" alt=""></button>
-            </form>
-            <p>Name: <%= adminName %></p>
+            <p class="user-info"><b>Admin Code: </b> <%= locals.adminId %></p>
+            <p class="user-info"><b>Name:</b> <%= adminName %></p>
         </div>
 
+        <!--
         <div class="form-container">
             <p>Services</p>
             <div class="form-1">
@@ -28,6 +36,36 @@
                     <button type="submit" class="button-3">Student Feedback</button>
                 </form>
             </div>
+        </div>
+        -->
+        <div class="services">
+          <h1 class="heading">Services</h1>
+          <div class="services-container">
+            <div class="service-clicklet" onclick="document.location.href = '/admin/dashboard/register'">
+              <div class="service-icon">
+                <i class='bx bxs-edit'></i>
+              </div>
+              <div class="service-name">
+                Register
+              </div>
+            </div>
+            <div class="service-clicklet" onclick="document.location.href = '/admin/dashboard/appointments'">
+              <div class="service-icon">
+                <i class='bx bxs-calendar-check'></i>
+              </div>
+              <div class="service-name">
+                Appointment
+              </div>
+            </div>
+            <div class="service-clicklet" onclick="document.location.href = '/admin/dashboard/feedback'">
+              <div class="service-icon">
+                <i class='bx bxs-chat' ></i>
+              </div>
+              <div class="service-name">
+                Feedback
+              </div>
+            </div>
+          </div>
         </div>
     </div>
 </body>

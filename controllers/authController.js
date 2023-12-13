@@ -30,9 +30,9 @@ async function registerUser(req, response) {
     let contactNumber = req.body.contactNumber;
     let password = req.body.password;
     let pwHash = "";
-    let section = req.body.section
-    let strand = req.body.strand
-    let enrollmentStatus = req.body.enrollmentStatus
+    let section = req.body.section || "";
+    let strand = req.body.strand || "";
+    let enrollmentStatus = req.body.enrollmentStatus || "Enrolled";
     let accountType = req.body.accountType;
 
     bcrypt.hash(password, saltRounds, async (err, hash) => {

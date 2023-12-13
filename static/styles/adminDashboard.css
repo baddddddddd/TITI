@@ -1,25 +1,25 @@
 @import url("./common.css");
 
 .main-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  align-items: center;
+  margin: 2rem 10%;
 }
 
 .profile {
-    margin-top: 30px;
-    min-height: 30vh;
-    text-align: left;
-    width: 80%;
-    font-size: var(--paragraph-text);
-    font-weight: 600;
-    padding: 8px 20px;
-    line-height: 24px;
-    border: 3px solid var(--main-color);
-    border-radius: 5px;
-    transition: ease 0.3s;
-    box-sizing: border-box;
+  margin-top: 30px;
+  text-align: left;
+  width: 85%;
+  font-size: 1rem;
+  padding: 2rem;
+  line-height: 24px;
+  border-radius: 5px;
+  transition: ease 0.3s;
+  box-sizing: border-box;
+  background: white;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .profile button {
@@ -98,4 +98,76 @@
     font-size: 14px;
     z-index: 1;
     width: 200px;
+}
+
+.services-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0rem;
+}
+
+.service-clicklet {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 2rem 2rem;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  color: var(--main-color);
+  transition: transform 0.2s ease;
+}
+
+.service-clicklet:hover {
+  transform: translateY(-10px);
+  cursor: pointer;
+}
+
+.service-icon {
+  font-size: 4rem;
+  margin: -1rem 0rem;
+}
+
+.service-name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.heading {
+  color: var(--main-color);
+}
+
+.services {
+  text-align: center;
+  padding: 2rem;
+}
+
+.user-info {
+  font-size: 1.1rem;
+  line-height: 2rem;
+}
+
+.header {
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  text-align: center;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.button > i {
+  font-size: 1.2rem;
+}
+
+.heading {
+  color: var(--main-color);
 }

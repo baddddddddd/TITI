@@ -20,7 +20,7 @@ exports.renderAdminDashboard = (req, res) => {
         const adminDetails = result[0]; // Assuming you expect only one result
 
         // Pass AdminName to the rendering of adminDashboard.ejs
-        return res.render("adminDashboard.ejs", { adminName: adminDetails.AdminName });
+        return res.render("adminDashboard.ejs", { adminName: adminDetails.AdminName, adminId: adminDetails.AdminID });
     });
 };
 

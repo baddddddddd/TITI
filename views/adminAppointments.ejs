@@ -5,20 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointments List</title>
 
-    <style>
-        @import url("./common.css");
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-        body {
-            background-color: #f5f5f5;
-        }
+    <style>
+        @import url("/styles/common.css");
 
         .flex-container {
             display: flex;
             align-items: center;
-            height: 100vh;
+            min-height: 80vh;
             width: 100%;
             flex-direction: column;
-            font-family: Arial, Helvetica, sans-serif;
+            border-radius: 12px;            
+            padding: 2rem;
+            background: white;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         h1 {
@@ -26,15 +27,23 @@
         }
 
         table {
-            width: 80%;
+            width: 100%;
             border-collapse: collapse;
-            border: 2px solid black;
+            margin: 1rem
         }
+
+        
 
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
+        }
+
+        th {
+          text-align: center;
+          background: var(--main-color);
+          color: white;
         }
 
         .appointment-column {
@@ -62,25 +71,6 @@
             flex-direction: row;
         }
 
-        .button-submit button{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 10px;
-            color: white;
-            background: #003049;
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 8px 20px;
-            line-height: 24px;
-            border: 3px solid #003049;
-            border-radius: 5px;
-            transition: ease 0.3s;
-            height: 20px;
-            width: 50px;
-            position: relative;
-        }
-
         .extra {
             display: flex;
             flex-direction: row;
@@ -106,52 +96,89 @@
             position: relative;
         }
 
-        h1 {
-            font-family: Arial, Helvetica, sans-serif;
-            margin-top: 3px;
-            color: #003049;
-            font-weight: 800;
+        .header {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          width: 100%;
+        }
+
+        .heading {
+          color: var(--main-color);
+        }
+
+        .content-wrapper {
+          margin: 3rem 10%;
+          text-align: center;
+        }
+
+        .button {
+          text-align: left;
+        }
+
+        .control-view {
+          width: 100%;
+          display: flex;
+          justify-content: flex-start;
+        }
+
+        .controls {
+          padding: 0.7rem;
+          background: var(--main-color);
+          color: white;
+          border: none;
+          font-weight: 600;
+          border-radius: 6px;
+        }
+
+        .button-submit {
+          display: flex;
+          column-gap: 0.5rem;
+          justify-content: center;
+          align-items: center;
         }
     </style>
 </head>
 <body>
-    <div class="flex-container">
-        <div class="extra">
-            <form action="/admin/dashboard" method="get">
-                <button input="submit">Back</button>
-            </form>
-            <h1>Appointments List</h1>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Appointment ID</th>
-                    <th>Date</th>
-                    <th>Purpose</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% for (const appointment of appointmentData) { %>
-                    <tr>
-                        <td class="appointment-column"><%= appointment.AppointmentID %></td>
-                        <!-- Format the date using toLocaleDateString -->
-                        <td class="date-column"><%= new Date(appointment.Date).toLocaleDateString() %></td>
-                        <td class="purpose-column"><%= appointment.Purpose %></td>
-                        <td class="status-column"><%= appointment.Status %></td>
-                        <td>
-                            <form class="button-submit" action="/handle-appointment" method="post">
-                                <input type="hidden" name="appointmentID" value="<%= appointment.AppointmentID %>">
-                                <button type="submit" name="action" value="approve">Approve</button>
-                                <button type="submit" name="action" value="decline">Decline</button>
-                                <button type="submit" name="action" value="delete">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                <% } %>
-            </tbody>
-        </table>
+    <div class="content-wrapper">
+      <div class="control-view">
+        <div class="btn-borderless" onclick="document.location.href = '/admin/dashboard'">
+          <i class='bx bx-arrow-back'></i>
+            BACK
+          </div>
+      </div>
+      <div class="flex-container">
+        <h2 class="heading">Appointment Records</h2>
+          <table>
+              <thead>
+                  <tr>
+                      <th>Appointment ID</th>
+                      <th>Date</th>
+                      <th>Purpose</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <% for (const appointment of appointmentData) { %>
+                      <tr>
+                          <td class="appointment-column"><%= appointment.AppointmentID %></td>
+                          <!-- Format the date using toLocaleDateString -->
+                          <td class="date-column"><%= new Date(appointment.Date).toLocaleDateString() %></td>
+                          <td class="purpose-column"><%= appointment.Purpose %></td>
+                          <td class="status-column"><%= appointment.Status %></td>
+                          <td>
+                              <form class="button-submit" action="/handle-appointment" method="post">
+                                  <input type="hidden" name="appointmentID" value="<%= appointment.AppointmentID %>">
+                                  <button class="controls" type="submit" name="action" value="approve">Approve</button>
+                                  <button class="controls" type="submit" name="action" value="decline">Decline</button>
+                                  <button class="controls" type="submit" name="action" value="delete">Delete</button>
+                              </form>
+                          </td>
+                      </tr>
+                  <% } %>
+              </tbody>
+          </table>
+      </div>
     </div>
 </body>
 </html>

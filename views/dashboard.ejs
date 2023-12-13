@@ -21,9 +21,11 @@
         <div class="profile"> 
             <p class="user-info"><b>School Code: </b> <%= userCode %></p>
             <p class="user-info"><b>Name:</b> <%= lastName %>, <%= firstName %> <%= middleName %> <%= extensionName %></p>
-            <p class="user-info"><b>Strand:</b> <%= strand %></p>
-            <p class="user-info"><b>Section: </b> <%= section %></p>
-            <p class="user-info"><b>Status: </b> <%= enrollmentStatus %></p>
+            <% if (!locals.isInstructor) { %>
+              <p class="user-info"><b>Strand:</b> <%= strand %></p>
+              <p class="user-info"><b>Section: </b> <%= section %></p>
+              <p class="user-info"><b>Status: </b> <%= enrollmentStatus %></p>
+            <% } %>
         </div>
 
         <!--

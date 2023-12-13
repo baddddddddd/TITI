@@ -9,6 +9,12 @@
   flex-direction: column;
 }
 
+.control-view {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
 button {
   display: flex;
   align-items: center;
@@ -38,11 +44,12 @@ button {
   width: 50vw;
   text-align: center;
   border-radius: 12px;
-  padding: 2rem 3.5rem;
+  padding: 3.5rem;
   display: flex;
   flex-direction: column;
-  row-gap: 1rem;
-  border: 2px solid black;
+  row-gap: 1rem;  
+  background: white;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .heading {
