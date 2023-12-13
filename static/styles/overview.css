@@ -176,7 +176,7 @@
     .class-code {
         margin-top: -20px;
         width: 200px;
-        transform: translate(80px, -85px) scale(0.5);
+        transform: translate(130px, -150px) scale(0.5);
     }
 
     .class-stream {
@@ -189,11 +189,11 @@
     .stream-card {
         width: 100%; /* Adjusted width for responsiveness */
         max-width: 475px; /* Added max-width for responsiveness */
-        transform: translate(-18px, -170px);
+        transform: translate(-18px, -130px);
     }
 
     .stream-card:hover {
-        transform: translate(-18px, -110px) scale(1.03);
+        transform: translate(-18px, -130px) scale(1.03);
     }
 
     .announcement-box {   
@@ -211,13 +211,13 @@
 
     #upload-mat {
         width: 100%;
-        max-width: 300px;
-        transform: translate(0, -100px);
+        max-width: 450px;
+        transform: translate(0, -135px);
     }
 
     .create-ass {
         width: 100%;
         max-width: 200px;
-        transform: translate(53px, -367px);
+        transform: translate(53px, -135px);
     }
 }
