@@ -189,7 +189,7 @@
     .stream-card {
         width: 100%; /* Adjusted width for responsiveness */
         max-width: 475px; /* Added max-width for responsiveness */
-        transform: translate(-18px, -110px);
+        transform: translate(-18px, -170px);
     }
 
     .stream-card:hover {
@@ -207,5 +207,17 @@
         width: 80px;
         height: 40px;
         font-size: 0.7rem;
+    }
+
+    #upload-mat {
+        width: 100%;
+        max-width: 300px;
+        transform: translate(0, -100px);
+    }
+
+    .create-ass {
+        width: 100%;
+        max-width: 200px;
+        transform: translate(53px, -367px);
     }
 }

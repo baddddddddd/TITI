@@ -34,11 +34,11 @@
         </div>
         <% if (locals.isInstructor) { %>
           <form id="upload-mat" class="class-code" action="upload" method="post" enctype="multipart/form-data">
-            <div class="label">Upload material</div>
-            <input type="hidden" name="code" value="<%= locals.code %>">
-            <input required type="text" name="fileName" id="fileName" placeholder="Material Name">
-            <input required type="file" name="file" id="file">
-            <input type="submit" class="btn" value="UPLOAD"></input>
+              <div class="label">Upload material</div>
+              <input type="hidden" name="code" value="<%= locals.code %>">
+              <input required type="text" name="fileName" id="fileName" placeholder="Material Name">
+              <input required type="file" name="file" id="file">
+              <input type="submit" class="btn" value="UPLOAD"></input>
           </form>
 
           <form class="create-ass" action="assignment/create" method="post" style="width: 100%;">
