@@ -131,3 +131,23 @@ color: white;
   justify-content: center;
   align-items: center;
 }
+
+.hidden-message {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .hidden-message {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translate(-50%, -50%);
+      position: fixed;
+      top: 50%;
+      left: 50%;
+  }
+
+  .content-wrapper {
+      display: none;
+  }
+}

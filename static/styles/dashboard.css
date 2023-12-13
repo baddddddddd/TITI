@@ -6,13 +6,14 @@
     height: 100vh;
     align-items: center;
     margin: 2rem 10%;
+    font-size: 10px;
 }
 
 .profile {
     margin-top: 30px;
     text-align: left;
     width: 85%;
-    font-size: 1rem;
+    font-size: 20px;
     padding: 2rem;
     line-height: 24px;
     border-radius: 5px;
@@ -72,7 +73,7 @@
     position: relative;
 }
 
-.button-1:hover::after {
+/* .button-1:hover::after {
     content: "Look for your class schedule.";
 }
 
@@ -94,7 +95,7 @@
 
 .button-6:hover::after {
     content: "You may request for an appointment.";
-}
+} */
 
 .form-container button:hover::after {
     position: absolute;
@@ -107,18 +108,17 @@
     padding: 5px;
     border-radius: 3px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    font-size: 14px;
+    font-size: 12px;
     z-index: 1;
     width: 200px;
 }
 
 .services-container {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  column-gap: 1.5rem;
+  display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin: 1rem 0rem;
+  flex-wrap: wrap;
 }
 
 .service-clicklet {
@@ -131,6 +131,9 @@
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   color: var(--main-color);
   transition: transform 0.2s ease;
+  margin: 8px;
+  width: 150px;
+  height: 150px;
 }
 
 .service-clicklet:hover {
@@ -182,4 +185,10 @@
 
 .heading {
   color: var(--main-color);
+}
+
+@media screen and (max-width: 600px) {
+  .profile p {
+    font-size: 12px;
+  }
 }
