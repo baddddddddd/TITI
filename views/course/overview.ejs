@@ -6,164 +6,7 @@
   <title><%= locals.name %> | Student Portal</title>
 
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-
-  <style>
-    @import url("/styles/common.css");
-
-    .content-wrapper {
-      margin: 2rem 10%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      row-gap: 2rem;
-    }
-
-    .class-header {
-      width: 100%;
-      height: 250px;
-      border-radius: 12px;
-      padding: 2rem;
-      display: flex;
-      align-items: flex-end;
-      justify-content: flex-start;
-      background: var(--main-color);
-      color: white;
-    }
-
-    .class-sidebar {
-      display: flex;
-      flex-direction: column;
-      row-gap: 1.5rem;
-    }
-
-    .class-content {
-      display: grid;
-      grid-template-columns: 1fr 3fr;
-    }
-
-    .class-code {
-      border-radius: 8px;
-      padding: 1.5rem;
-      width: 100%;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      row-gap: 1rem;
-      background: white;
-      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    .label {
-      font-size: 1.2rem
-    }
-
-    .code {
-      font-weight: 600;
-      font-size: 2rem;
-    }
-
-    .class-stream {
-      padding: 0rem 0rem 0rem 2rem;
-      display: flex;
-      flex-direction: column;
-      row-gap: 1.5rem;
-    }
-
-    .stream-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1rem;
-      border-radius: 6px;
-      justify-content: left;
-      width: 100%;
-      background: white;
-      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-      transition: transform 0.2s ease;
-    }
-
-    .stream-card:hover {
-      transform: scale(1.03);
-    }
-
-    .stream-header {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      width: 100%;
-      justify-content: space-between;
-    }
-
-    .stream-content {
-      font-size: 0.9rem;
-      width: 100%;
-      padding: 1rem 1rem 0rem 0.7rem;
-    }
-
-    .new-announcement > textarea {
-      width: 100%;
-    }
-
-    .stream-left {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 2.5rem;
-      column-gap: 1rem;
-    }
-
-    .stream-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
-
-    .stream-date {
-      font-size: 0.9rem;
-      color: var(--gray-color);
-    }
-
-    .btn-wrapper {
-      width: 100%;
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .announcement-box {
-      width: 100%;
-      resize: none;
-      padding: 0.5rem;
-      font-size: 1rem;
-      outline: none;
-      border: none;
-    }
-
-    .activity-card:hover {
-      cursor: pointer;
-    }
-
-    #fileName {
-      padding: 0.4rem;
-      border-radius: 5px;
-      font-size: 0.9rem;
-    }
-
-    #inputfile {
-      width: 0.1px;
-      height: 0.1px;
-      opacity: 0;
-      overflow: hidden;
-      position: absolute;
-      z-index: -1;
-    }
-
-    .announcement-wrapper:hover {
-      transform: scale(1);
-    }
-
-    .icon {
-
-    }
-  </style>
+  <link rel="stylesheet" href="/styles/overview.css">
 </head>
 <body>
   <div class="content-wrapper">
@@ -190,7 +33,7 @@
           <div class="code"><%= locals.code %></div>
         </div>
         <% if (locals.isInstructor) { %>
-          <form class="class-code" action="upload" method="post" enctype="multipart/form-data">
+          <form id="upload-mat" class="class-code" action="upload" method="post" enctype="multipart/form-data">
             <div class="label">Upload material</div>
             <input type="hidden" name="code" value="<%= locals.code %>">
             <input required type="text" name="fileName" id="fileName" placeholder="Material Name">
@@ -198,7 +41,7 @@
             <input type="submit" class="btn" value="UPLOAD"></input>
           </form>
 
-          <form action="assignment/create" method="post" style="width: 100%;">
+          <form class="create-ass" action="assignment/create" method="post" style="width: 100%;">
             <input type="hidden" name="courseId" value="<%= locals.courseId %>">
             <input type="hidden" name="courseCode" value="<%= locals.code %>">
             <input type="submit" class="btn" value="CREATE ASSIGNMENT" style="width: 100%;"></input>
@@ -283,8 +126,6 @@
     document.querySelectorAll(".announcement-box").forEach((element) => {
       autoAdjustHeight(element);
     });
-
-    
 
     textarea.addEventListener('input', function () {
       // Set the textarea height to its scrollHeight

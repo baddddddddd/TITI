@@ -5,7 +5,6 @@
   margin: 3rem 10%;
   display: flex;
   justify-content: center;
-  
 }
 
 .form-container {
@@ -54,3 +53,8 @@
   column-gap: 1.2rem;
 }
 
+@media only screen and (max-width: 600px) {
+  .form-container {
+    width: 100%;
+  }
+}

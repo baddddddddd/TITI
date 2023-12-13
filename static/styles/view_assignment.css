@@ -1,4 +1,11 @@
 @import url("./common.css");
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}
 
 .content-wrapper {
   margin: 5rem 10%;
@@ -152,4 +159,43 @@
 
 .submission-file {
   font-size: 0.9rem;
+}
+
+
+@media only screen and (max-width: 600px) {
+  body {
+    overflow-x: hidden;
+    margin: 0;
+  }
+
+  /* .content-wrapper {
+    margin: 5rem 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 2rem;
+  } */
+
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5rem 0; /* Adjust margin as needed */
+  }
+  
+  .content-grid {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    box-sizing: border-box; /* Include padding and border in the total width */
+  }
+
+  .right-column {
+    margin-top: 20px;
+  }
+
+  .stream-header {
+    display: flex;
+    flex-direction: column;
+  }
 }
