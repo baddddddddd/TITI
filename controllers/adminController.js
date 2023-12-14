@@ -51,7 +51,7 @@ exports.renderAppointments = (req, res) => {
     }
 
     // Update the SQL query to order by the Date column
-    db.query("SELECT AppointmentID, Date, Purpose, Status FROM Appointments ORDER BY Date", (error, results) => {
+    db.query("SELECT SchoolCode, AppointmentID, Date, Purpose, Status FROM Appointments ORDER BY Date", (error, results) => {
         if (error) {
             console.error("Error fetching appointment data:", error);
             return res.status(500).send("Internal Server Error");

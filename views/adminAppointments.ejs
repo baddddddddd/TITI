@@ -27,6 +27,7 @@
           <table>
               <thead>
                   <tr>
+                      <th>School Code</th>
                       <th>Appointment ID</th>
                       <th>Date</th>
                       <th>Purpose</th>
@@ -37,6 +38,7 @@
               <tbody>
                   <% for (const appointment of appointmentData) { %>
                       <tr>
+                          <td class="appointment-column"><%= appointment.SchoolCode %></td>
                           <td class="appointment-column"><%= appointment.AppointmentID %></td>
                           <!-- Format the date using toLocaleDateString -->
                           <td class="date-column"><%= new Date(appointment.Date).toLocaleDateString() %></td>
