@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule | Student Portal</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/styles/schedule.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="table-wrapper">
+            <div class="header">
+                <div class="btn-borderless button" onclick="document.location.href = '/dashboard'">
+                    <i class='bx bx-arrow-back'></i>
+                    BACK
+                </div>
+                <h1 class="heading">Schedule</h1>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time Slot</th>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% schedule.forEach(item => { %>
+                        <tr>
+                            <td><%= item.time_slot %></td>
+                            <td>
+                                <%= item.Monday.subject %><br>
+                                <%= item.Monday.instructor %>
+                            </td>
+                            <td>
+                                <%= item.Tuesday.subject %><br>
+                                <%= item.Tuesday.instructor %>
+                            </td>
+                            <td>
+                                <%= item.Wednesday.subject %><br>
+                                <%= item.Wednesday.instructor %>
+                            </td>
+                            <td>
+                                <%= item.Thursday.subject %><br>
+                                <%= item.Thursday.instructor %>
+                            </td>
+                            <td>
+                                <%= item.Friday.subject %><br>
+                                <%= item.Friday.instructor %>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Admin Dashboard</title>
     <link rel="stylesheet" href="/styles/adminDashboard.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
@@ -41,6 +41,14 @@
         <div class="services">
           <h1 class="heading">Services</h1>
           <div class="services-container">
+            <div class="service-clicklet" onclick="document.location.href = '/admin/dashboard/create-schedule'">
+              <div class="service-icon">
+                <i class='bx bx-table'></i>
+              </div>
+              <div class="service-name">
+                Schedule
+              </div>
+            </div>
             <div class="service-clicklet" onclick="document.location.href = '/admin/dashboard/register'">
               <div class="service-icon">
                 <i class='bx bxs-edit'></i>

@@ -83,6 +83,71 @@ app.post('/delete-feedback', (req, res) => {
     });
 });
 
+// Admin Create Schedule
+app.get('/admin/dashboard/create-schedule', (req, res) => {
+    if (!req.session || !req.session.adminID) {
+        return res.render("admin.ejs", { errorMessage: "Login your account first." });
+    }
+    let status = "";
+
+    const query = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
+
+    db.query(query, (error, results, fields) => {
+        res.render('admin/createSchedule.ejs', { status: "", subjects: results });
+    });
+});
+
+app.post('/admin/dashboard/create-schedule', (req, res) => {
+    const timeSlots = req.body.time_slot;
+
+    if (!timeSlots || !Array.isArray(timeSlots)) {
+        return res.status(400).send("Invalid request format");
+    }
+
+    const sql = 'INSERT INTO ClassSchedule (Section, time_slot, Monday, Tuesday, Wednesday, Thursday, Friday) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    
+    const schedules = timeSlots.map((_, index) => ({
+        Section: req.body.Section[index],
+        time_slot: req.body.time_slot[index],
+        Monday: req.body.Monday[index],
+        Tuesday: req.body.Tuesday[index],
+        Wednesday: req.body.Wednesday[index],
+        Thursday: req.body.Thursday[index],
+        Friday: req.body.Friday[index],
+    }));
+
+    schedules.forEach((schedule, index) => {
+        const values = [
+            schedule.Section,
+            schedule.time_slot,
+            schedule.Monday,
+            schedule.Tuesday,
+            schedule.Wednesday,
+            schedule.Thursday,
+            schedule.Friday,
+        ];
+
+        db.query(sql, values, (err, result) => {
+            if (err) {
+                console.error(err);
+                const query = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
+
+                db.query(query, (error, results, fields) => {
+                    return res.render('admin/createSchedule.ejs', { status: "Failed. Please follow the instruction above.", subjects: results });
+                });
+            }
+
+            if (index === schedules.length - 1) {
+                const query = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
+
+                db.query(query, (error, results, fields) => {
+                    return res.render('admin/createSchedule.ejs', { status: "Successful", subjects: results });
+                });
+            }
+        });
+    });
+});
+
 // Admin Appointment
 app.get('/admin/dashboard/appointments', adminController.renderAppointments);
 app.post('/handle-appointment', adminController.handleAppointment);
@@ -107,8 +172,6 @@ app.post('/delete-appointment', (req, res) => {
     });
 });
 
-
-
 // // Student Dashboard
 // app.get('/dashboard', (req, res) => {
 //     res.render("dashboard.ejs");
@@ -127,10 +190,9 @@ app.get('/dashboard/drawingboard', dashboardController.renderDrawingBoard);
 app.get('/dashboard/appointment', dashboardController.getAppointment);
 app.post('/dashboard/appointment', dashboardController.postAppointment);
 
-
 // Student Feedback
 app.get('/dashboard/feedback', (req, res) => {
-    res.render("feedback.ejs", {insertingStatus: '' });
+    res.render("student/feedback.ejs", {insertingStatus: '' });
 });
 app.post('/dashboard/feedback', dashboardController.renderFeedback);
 
@@ -321,9 +383,6 @@ app.post("/course/assignment/create/submit", upload.single("file"), (req, res) =
     } else {
         insertAssignment();
     }
-    
-
-    
 });
 
 app.post("/course/assignment/upload", upload.single("file"), (req, res) => {

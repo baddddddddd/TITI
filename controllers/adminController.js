@@ -20,7 +20,7 @@ exports.renderAdminDashboard = (req, res) => {
         const adminDetails = result[0]; // Assuming you expect only one result
 
         // Pass AdminName to the rendering of adminDashboard.ejs
-        return res.render("adminDashboard.ejs", { adminName: adminDetails.AdminName, adminId: adminDetails.AdminID });
+        return res.render("admin/adminDashboard.ejs", { adminName: adminDetails.AdminName, adminId: adminDetails.AdminID });
     });
 };
 
@@ -39,7 +39,7 @@ exports.renderFeedback = (req, res) => {
         }
 
         // Render the feedback data along with delete buttons
-        res.render("adminFeedback.ejs", { feedbackData: results });
+        res.render("admin/adminFeedback.ejs", { feedbackData: results });
     });
 };
 
@@ -57,7 +57,7 @@ exports.renderAppointments = (req, res) => {
             return res.status(500).send("Internal Server Error");
         }
 
-        res.render("adminAppointments.ejs", { appointmentData: results });
+        res.render("admin/adminAppointments.ejs", { appointmentData: results });
     });
 };
 

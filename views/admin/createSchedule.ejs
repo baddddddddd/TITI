@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Schedule</title>
+    <link rel="stylesheet" href="/styles/createSchedule.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="flex-container">
+            <div class="hidden-message">
+            <div class="btn-borderless" onclick="document.location.href = '/admin/dashboard'">
+                <i class='bx bx-arrow-back'></i>
+                    BACK
+            </div>
+            You can only access this on pc.</div>
+        <div class="content-wrapper">
+            <div class="btn-borderless button" onclick="document.location.href = '/admin/dashboard'">
+                <i class='bx bx-log-out'></i>
+                BACK
+                <!-- LOG OUT -->
+            </div>
+            <form action="/admin/dashboard/create-schedule" method="post">
+                <h3>Create Class Schedule</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Subject Code</th>
+                            <th>Subject Name</th>
+                            <th>Instructor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% subjects.forEach(subject => { %>
+                            <tr>
+                                <td><%= subject.SubjectCode %></td>
+                                <td><%= subject.SubjectName %></td>
+                                <td><%= subject.Instructor %></td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+                
+                <p style="font-size: 0.9rem; color: rgb(48, 48, 48); font-weight: bold;">Follow this example:</p>
+                <p style="font-size: 0.8rem; color: rgb(48, 48, 48);">7:15-8:15 am | DRRR01 | DRRR01 | UCSP01 | PR01 | NONE</p>
+                <p style="font-size: 0.8rem; color: rgb(48, 48, 48);">Enter subject code inside the Days Box</p><br>
+
+                <div id="schedule-container">
+                    <!-- Dynamic input fields will be added here -->
+                </div>
+
+                <button class="btn-row" type="button" id="add-section">+</button>
+
+                <br>
+                <input class="btn-submit" type="submit">
+                <p style="font-size: 0.8rem; margin: 2px;"><%= status %></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+        let sectionCount = 1;
+
+        function addSection() {
+            const sectionHtml = `
+                <div class="inline-input">
+                    <input type="text" name="Section[${sectionCount}]" placeholder="Section">
+                    <input type="text" name="time_slot[${sectionCount}]" placeholder="Time Slot">
+                    <input type="text" name="Monday[${sectionCount}]" placeholder="Monday">
+                    <input type="text" name="Tuesday[${sectionCount}]" placeholder="Tuesday">
+                    <input type="text" name="Wednesday[${sectionCount}]" placeholder="Wednesday">
+                    <input type="text" name="Thursday[${sectionCount}]" placeholder="Thursday">
+                    <input type="text" name="Friday[${sectionCount}]" placeholder="Friday">
+                </div>
+            `;
+
+            $("#schedule-container").append(sectionHtml);
+
+            sectionCount++;
+        }
+
+        addSection();
+
+        $("#add-section").click(addSection);
+    });
+    </script>
+</body>
+</html>

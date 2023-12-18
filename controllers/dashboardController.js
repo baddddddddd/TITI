@@ -40,7 +40,7 @@ exports.renderDashboard = (req, res) => {
                     const section = results[0].Section;
                     const enrollmentStatus = results[0].EnrollmentStatus;
 
-                    res.render("dashboard.ejs", {
+                    res.render("student/dashboard.ejs", {
                         userCode: userCode,
                         firstName: firstName,
                         lastName: lastName,
@@ -84,36 +84,72 @@ exports.renderSchedule = (req, res) => {
                 return res.render("error.ejs", { errorMessage: "Section information not found for the user." });
             }
 
-            const section = studentInfoResults[0].Section;
+            const section = studentInfoResults[0].Section; // Define section here
 
-            db.query('SELECT cs.*, sub.SubjectName, sub.Instructor FROM ClassSchedule cs LEFT JOIN Subject sub ON cs.Monday = sub.SubjectCode WHERE cs.Section = ?', [section], (error, scheduleResults) => {
+            const queryJoin = `
+                    SELECT 
+                    cs.time_slot,
+                    s1.SubjectName AS SubjectMonday, 
+                    s1.Instructor AS InstructorMonday,
+                    s2.SubjectName AS SubjectTuesday, 
+                    s2.Instructor AS InstructorTuesday,
+                    s3.SubjectName AS SubjectWednesday, 
+                    s3.Instructor AS InstructorWednesday,
+                    s4.SubjectName AS SubjectThursday, 
+                    s4.Instructor AS InstructorThursday,
+                    s5.SubjectName AS SubjectFriday, 
+                    s5.Instructor AS InstructorFriday
+                FROM ClassSchedule cs
+                LEFT JOIN Subject s1 ON cs.Monday = s1.SubjectCode
+                LEFT JOIN Subject s2 ON cs.Tuesday = s2.SubjectCode
+                LEFT JOIN Subject s3 ON cs.Wednesday = s3.SubjectCode
+                LEFT JOIN Subject s4 ON cs.Thursday = s4.SubjectCode
+                LEFT JOIN Subject s5 ON cs.Friday = s5.SubjectCode
+                WHERE cs.Section = ?;
+            `;
+
+            db.query(queryJoin, [section], (error, scheduleResults) => {
                 if (error) throw error;
 
                 const reshapedSchedule = [];
                 scheduleResults.forEach(item => {
                     reshapedSchedule.push({
                         time_slot: item.time_slot,
-                        Monday: item.SubjectName,
-                        Tuesday: item.SubjectName,
-                        Wednesday: item.SubjectName,
-                        Thursday: item.SubjectName,
-                        Friday: item.SubjectName,
-                        Instructor: item.Instructor
+                        Monday: {
+                            subject: item.SubjectMonday || '',
+                            instructor: item.InstructorMonday || ''
+                        },
+                        Tuesday: {
+                            subject: item.SubjectTuesday || '',
+                            instructor: item.InstructorTuesday || ''
+                        },
+                        Wednesday: {
+                            subject: item.SubjectWednesday || '',
+                            instructor: item.InstructorWednesday || ''
+                        },
+                        Thursday: {
+                            subject: item.SubjectThursday || '',
+                            instructor: item.InstructorThursday || ''
+                        },
+                        Friday: {
+                            subject: item.SubjectFriday || '',
+                            instructor: item.InstructorFriday || ''
+                        },
                     });
                 });
 
-                res.render('schedule.ejs', { schedule: reshapedSchedule });
+                res.render('student/schedule.ejs', { schedule: reshapedSchedule });
             });
         });
     });
-}
+};
 
 exports.renderDrawingBoard = (req, res) => {
     if (!req.session || !req.session.userCode) {
         return res.render("login.ejs", { errorMessage: "Login your account first." });
     }
 
-    res.render('drawingboard.ejs');
+    res.render('student/drawingboard.ejs');
 }
 
 exports.getAppointment = async (req, res) => {
@@ -133,7 +169,7 @@ exports.getAppointment = async (req, res) => {
             if (results.length > 0) {
                 status = results[0].Status;
             }
-            return res.render("appointment.ejs", { userCode, insertingStatus: '', status, results });
+            return res.render("student/appointment.ejs", { userCode, insertingStatus: '', status, results });
         }
     });
 };
@@ -161,7 +197,7 @@ exports.postAppointment = async (req, res) => {
             results = queryResults;
 
             if (!purpose || !appointmentdate) {
-                return res.render("appointment.ejs", { userCode, insertingStatus: "Failed: Purpose and Date are required.", status, results });
+                return res.render("student/appointment.ejs", { userCode, insertingStatus: "Failed: Purpose and Date are required.", status, results });
             }
 
             const countSimilarDatesQuery = "SELECT COUNT(*) AS count FROM Appointments WHERE Date = ?";
@@ -174,23 +210,23 @@ exports.postAppointment = async (req, res) => {
                 const existingCount = countResults[0].count;
 
                 if (existingCount >= 5) {
-                    return res.render("appointment.ejs", { userCode, insertingStatus: "Limit reached for this date.", status, results });
+                    return res.render("student/appointment.ejs", { userCode, insertingStatus: "Limit reached for this date.", status, results });
                 }
 
                 const insertQuery = "INSERT INTO Appointments (SchoolCode, Purpose, Date, Status) VALUES (?, ?, ?, 'Pending')";
                 db.query(insertQuery, [userCode, purpose, appointmentdate], (error, result) => {
                     if (error) {
                         if (error.code === 'ER_DUP_ENTRY') {
-                            return res.render("appointment.ejs", { userCode, insertingStatus: "Duplicate entry is not allowed.", status, results });
+                            return res.render("student/appointment.ejs", { userCode, insertingStatus: "Duplicate entry is not allowed.", status, results });
                         }
                         console.error(error);
-                        return res.render("appointment.ejs", { userCode, insertingStatus: "Failed: Error inserting appointment.", status, results });
+                        return res.render("student/appointment.ejs", { userCode, insertingStatus: "Failed: Error inserting appointment.", status, results });
                     }
 
                     if (result.affectedRows === 1) {
-                        return res.render("appointment.ejs", { userCode, insertingStatus: "Success: Appointment added.", status, results });
+                        return res.render("student/appointment.ejs", { userCode, insertingStatus: "Success: Appointment added.", status, results });
                     } else {
-                        return res.render("appointment.ejs", { userCode, insertingStatus: "Failed: Error inserting appointment.", status, results });
+                        return res.render("student/appointment.ejs", { userCode, insertingStatus: "Failed: Error inserting appointment.", status, results });
                     }
                 });
             });
@@ -210,11 +246,11 @@ exports.renderFeedback = async (req, res) => {
     db.query(userFeedback, concern, (err, result) => {
         if (err) {
             console.error(err);
-            return res.render("feedback.ejs", { insertingStatus: 'Failed to submit feedback.' });
+            return res.render("student/feedback.ejs", { insertingStatus: 'Failed to submit feedback.' });
         }
 
         db.commit();
 
-        res.render("feedback.ejs", { insertingStatus: 'Feedback submitted successfully.' });
+        res.render("student/feedback.ejs", { insertingStatus: 'Feedback submitted successfully.' });
     });
 };
