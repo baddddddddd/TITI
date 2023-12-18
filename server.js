@@ -32,7 +32,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-const dashboardController = require("./controllers/dashboardController")
+const dashboardController = require("./controllers/dashboardController");
+const { render } = require("ejs");
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
@@ -83,21 +84,23 @@ app.post('/delete-feedback', (req, res) => {
     });
 });
 
+function renderSchedule(req, res, status, deleteStatus) {
+    const query = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
+
+    db.query(query, (error, results, fields) => {
+        res.render('admin/createSchedule.ejs', { status: "", deleteStatus, subjects: results });
+    });
+}
+
 // Admin Create Schedule
 app.get('/admin/dashboard/create-schedule', (req, res) => {
     if (!req.session || !req.session.adminID) {
         return res.render("admin.ejs", { errorMessage: "Login your account first." });
     }
-    let status = "";
-
-    const query = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
-
-    db.query(query, (error, results, fields) => {
-        res.render('admin/createSchedule.ejs', { status: "", subjects: results });
-    });
+    renderSchedule(req, res);
 });
 
-app.post('/admin/dashboard/create-schedule', (req, res) => {
+app.post('/admin/dashboard/insert-schedule', (req, res) => {
     const timeSlots = req.body.time_slot;
 
     if (!timeSlots || !Array.isArray(timeSlots)) {
@@ -133,7 +136,7 @@ app.post('/admin/dashboard/create-schedule', (req, res) => {
                 const query = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
 
                 db.query(query, (error, results, fields) => {
-                    return res.render('admin/createSchedule.ejs', { status: "Failed. Please follow the instruction above.", subjects: results });
+                    return res.render('admin/createSchedule.ejs', { status: "Failed. Please follow the instruction above.", deleteStatus: "", subjects: results });
                 });
             }
 
@@ -141,10 +144,30 @@ app.post('/admin/dashboard/create-schedule', (req, res) => {
                 const query = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
 
                 db.query(query, (error, results, fields) => {
-                    return res.render('admin/createSchedule.ejs', { status: "Successful", subjects: results });
+                    return res.render('admin/createSchedule.ejs', { status: "Successful", deleteStatus: "", subjects: results });
                 });
             }
         });
+    });
+});
+
+app.post('/admin/dashboard/delete-schedule', (req, res) => {
+    const Section = req.body.Section;
+
+    db.query('DELETE FROM ClassSchedule WHERE Section = ?', [Section], (error, results) => {
+        if (error) {
+            renderSchedule(req, res, "", "Failed");
+            return;
+        }
+
+        if (results.affectedRows === 0) {
+            renderSchedule(req, res, "", "Section not found.");
+            return;
+        }
+
+        const deleteStatus = "Successful";
+        console.log("Schedule deleted successfully.");
+        renderSchedule(req, res, "", "Successful");
     });
 });
 

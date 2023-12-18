@@ -11,10 +11,10 @@
 <body>
     <div class="flex-container">
             <div class="hidden-message">
-            <div class="btn-borderless" onclick="document.location.href = '/admin/dashboard'">
-                <i class='bx bx-arrow-back'></i>
-                    BACK
-            </div>
+                <div class="btn-borderless" onclick="document.location.href = '/admin/dashboard'">
+                    <i class='bx bx-arrow-back'></i>
+                        BACK
+                </div>
             You can only access this on pc.</div>
         <div class="content-wrapper">
             <div class="btn-borderless button" onclick="document.location.href = '/admin/dashboard'">
@@ -22,8 +22,17 @@
                 BACK
                 <!-- LOG OUT -->
             </div>
-            <form action="/admin/dashboard/create-schedule" method="post">
-                <h3>Create Class Schedule</h3>
+            
+            <h3>Create Class Schedule</h3>
+
+            <form class="delete-form" action="/admin/dashboard/delete-schedule" method="post">
+                <p style="font-size: 0.9rem; color: rgb(48, 48, 48); font-weight: bold;">Delete Schedule for:</p>
+                <input required type="text" name="Section" placeholder="Section" style="width: 145px;">
+                <input class="btn-submit" type="submit" value="Delete">
+                <p style="font-size: 0.8rem; margin: 2px; color: black;"><%= deleteStatus %></p>
+            </form>
+            <br>
+            <form action="/admin/dashboard/insert-schedule" method="post">
                 <table>
                     <thead>
                         <tr>
