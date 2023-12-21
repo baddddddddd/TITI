@@ -18,6 +18,17 @@
         </div>
         <h1 class="heading">Dashboard</h1>
       </div>
+        <div class="slider">
+          <div class="img-box">
+            <img src="/styles/News/0.png" alt="" class="slider-img">
+          </div>
+    
+          <div class="btn-container">
+            <div class="btn" onclick="prev()">Prev</div>
+            <div class="btn" onclick="next()">Next</div>
+          </div>
+        </div>
+        
         <div class="profile"> 
             <p class="user-info"><b>School Code: </b> <%= userCode %></p>
             <p class="user-info"><b>Name:</b> <%= lastName %>, <%= firstName %> <%= middleName %> <%= extensionName %></p>
@@ -107,5 +118,31 @@
           </div>
         </div>
     </div>
+
+    <script>
+      var slider_img = document.querySelector('.slider-img');
+      var images = ['0.png', '1.png', '2.png', '3.png', '4.png'];
+      var i = 0;
+
+      function prev() {
+        if (i <= 0) i = images.length - 1;
+        else i--;
+        return setImg();
+      }
+
+      function next() {
+        if (i >= images.length - 1) i = 0;
+        else i++;
+        return setImg();
+      }
+
+      function setImg() {
+        return slider_img.setAttribute('src', '/styles/News/' + images[i]);
+      }
+
+      setInterval(function() {
+        next();
+      }, 3000);
+    </script>
 </body>
 </html>
