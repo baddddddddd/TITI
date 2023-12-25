@@ -184,7 +184,7 @@
   color: var(--main-color);
 }
 
-.slider {
+/* .slider {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -217,7 +217,7 @@
 
 .btn-container .btn:nth-child(2) {
   margin-right: 80px;
-}
+} */
 
 @media screen and (max-width: 600px) {
   .content-wrapper {
@@ -267,7 +267,7 @@
     font-size: 1.5rem;
   }
 
-  .slider {
+  /* .slider {
     display: none;
-  }
+  } */
 }
