@@ -1,10 +1,14 @@
 @import url("/styles/common.css");
 
+body {
+    margin: 20px 0; /* Add margin to body */
+}
+
 .flex-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 150vh;
+    height: 200vh; /* Adjusted height */
 }
 
 .flex-container h3 {
@@ -18,7 +22,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 80vh;
+    min-height: 80vh; /* Adjusted height */
     width: 80%;
     flex-direction: column;
     border-radius: 12px;            

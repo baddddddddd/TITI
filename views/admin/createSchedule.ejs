@@ -32,7 +32,10 @@
                 <p style="font-size: 0.8rem; margin: 2px; color: black;"><%= deleteStatus %></p>
             </form>
             <br>
+
             <form action="/admin/dashboard/insert-schedule" method="post">
+                <p style="font-size: 0.6rem;">Please toggle the button if the back button is not appearing.</p>
+                <button style="width: 100px;" class="btn-row" type="button" id="toggle-subject-tables">Toggle Subject Tables</button>
                 <table>
                     <thead>
                         <tr>
@@ -60,7 +63,10 @@
                     <!-- Dynamic input fields will be added here -->
                 </div>
 
-                <button class="btn-row" type="button" id="add-section">+</button>
+                <div style="display: flex; flex-direction: row;" class="form-button-add">
+                    <button class="btn-row" type="button" id="add-section">+</button>
+                    <button class="btn-row" type="button" id="remove-section">-</button>
+                </div>
 
                 <br>
                 <input class="btn-submit" type="submit">
@@ -71,30 +77,47 @@
 
     <script>
         $(document).ready(function () {
-        let sectionCount = 1;
-
-        function addSection() {
-            const sectionHtml = `
-                <div class="inline-input">
-                    <input type="text" name="Section[${sectionCount}]" placeholder="Section">
-                    <input type="text" name="time_slot[${sectionCount}]" placeholder="Time Slot">
-                    <input type="text" name="Monday[${sectionCount}]" placeholder="Monday">
-                    <input type="text" name="Tuesday[${sectionCount}]" placeholder="Tuesday">
-                    <input type="text" name="Wednesday[${sectionCount}]" placeholder="Wednesday">
-                    <input type="text" name="Thursday[${sectionCount}]" placeholder="Thursday">
-                    <input type="text" name="Friday[${sectionCount}]" placeholder="Friday">
-                </div>
-            `;
-
-            $("#schedule-container").append(sectionHtml);
-
-            sectionCount++;
-        }
-
-        addSection();
-
-        $("#add-section").click(addSection);
-    });
+            let sectionCount = 1;
+    
+            function addSection() {
+                const sectionHtml = `
+                    <div class="inline-input">
+                        <input type="text" name="Section[${sectionCount}]" placeholder="Section">
+                        <input type="text" name="time_slot[${sectionCount}]" placeholder="Time Slot">
+                        <input type="text" name="Monday[${sectionCount}]" placeholder="Monday">
+                        <input type="text" name="Tuesday[${sectionCount}]" placeholder="Tuesday">
+                        <input type="text" name="Wednesday[${sectionCount}]" placeholder="Wednesday">
+                        <input type="text" name="Thursday[${sectionCount}]" placeholder="Thursday">
+                        <input type="text" name="Friday[${sectionCount}]" placeholder="Friday">
+                    </div>
+                `;
+    
+                $("#schedule-container").append(sectionHtml);
+    
+                sectionCount++;
+            }
+    
+            function removeSection() {
+                if (sectionCount > 1) {
+                    // Remove the last added section
+                    sectionCount--;
+                    $("#schedule-container .inline-input:last").remove();
+                }
+            }
+    
+            function toggleSubjectTables() {
+                // Toggle the visibility of subject tables
+                $(".content-wrapper table").toggle();
+            }
+    
+            addSection();
+    
+            $("#add-section").click(addSection);
+            $("#remove-section").click(removeSection);
+    
+            // Assuming you have a button or trigger to toggle subject tables visibility
+            $("#toggle-subject-tables").click(toggleSubjectTables);
+        });
     </script>
 </body>
 </html>
