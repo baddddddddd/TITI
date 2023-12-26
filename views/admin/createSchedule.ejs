@@ -77,47 +77,47 @@
 
     <script>
         $(document).ready(function () {
-            let sectionCount = 1;
-    
-            function addSection() {
-                const sectionHtml = `
-                    <div class="inline-input">
-                        <input type="text" name="Section[${sectionCount}]" placeholder="Section">
-                        <input type="text" name="time_slot[${sectionCount}]" placeholder="Time Slot">
-                        <input type="text" name="Monday[${sectionCount}]" placeholder="Monday">
-                        <input type="text" name="Tuesday[${sectionCount}]" placeholder="Tuesday">
-                        <input type="text" name="Wednesday[${sectionCount}]" placeholder="Wednesday">
-                        <input type="text" name="Thursday[${sectionCount}]" placeholder="Thursday">
-                        <input type="text" name="Friday[${sectionCount}]" placeholder="Friday">
-                    </div>
-                `;
-    
-                $("#schedule-container").append(sectionHtml);
-    
-                sectionCount++;
+        let sectionCount = 1;
+
+        function addSection() {
+            const sectionHtml = `
+                <div class="inline-input added-section">
+                    <input type="text" name="Section[${sectionCount}]" placeholder="Section">
+                    <input type="text" name="time_slot[${sectionCount}]" placeholder="Time Slot">
+                    <input type="text" name="Monday[${sectionCount}]" placeholder="Monday">
+                    <input type="text" name="Tuesday[${sectionCount}]" placeholder="Tuesday">
+                    <input type="text" name="Wednesday[${sectionCount}]" placeholder="Wednesday">
+                    <input type="text" name="Thursday[${sectionCount}]" placeholder="Thursday">
+                    <input type="text" name="Friday[${sectionCount}]" placeholder="Friday">
+                </div>
+            `;
+
+            $("#schedule-container").append(sectionHtml);
+
+            sectionCount++;
+        }
+
+        function removeSection() {
+            if (sectionCount > 1) {
+                // Remove the last added section with the added-section class
+                sectionCount--;
+                $("#schedule-container .added-section:last").remove();
             }
-    
-            function removeSection() {
-                if (sectionCount > 1) {
-                    // Remove the last added section
-                    sectionCount--;
-                    $("#schedule-container .inline-input:last").remove();
-                }
-            }
-    
-            function toggleSubjectTables() {
-                // Toggle the visibility of subject tables
-                $(".content-wrapper table").toggle();
-            }
-    
-            addSection();
-    
-            $("#add-section").click(addSection);
-            $("#remove-section").click(removeSection);
-    
-            // Assuming you have a button or trigger to toggle subject tables visibility
-            $("#toggle-subject-tables").click(toggleSubjectTables);
-        });
+        }
+
+        function toggleSubjectTables() {
+            // Toggle the visibility of subject tables
+            $(".content-wrapper table").toggle();
+        }
+
+        addSection();
+
+        $("#add-section").click(addSection);
+        $("#remove-section").click(removeSection);
+
+        // Assuming you have a button or trigger to toggle subject tables visibility
+        $("#toggle-subject-tables").click(toggleSubjectTables);
+    });
     </script>
 </body>
 </html>
