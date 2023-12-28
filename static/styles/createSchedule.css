@@ -8,7 +8,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 200vh; /* Adjusted height */
+    max-width: 200vh; /* Adjusted height */
 }
 
 .flex-container h3 {

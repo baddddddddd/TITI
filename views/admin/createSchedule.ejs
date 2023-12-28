@@ -107,14 +107,6 @@
 
         function toggleSubjectTables() {
             $(".content-wrapper table").toggle();
-            scrollToContentWrapper();
-        }
-
-        function scrollToContentWrapper() {
-            // Smooth scroll to the content-wrapper element
-            $('html, body').animate({
-                scrollTop: $("#content-wrapper").offset().top
-            }, 1000); // You can adjust the duration (in milliseconds) as needed
         }
 
         addSection();
