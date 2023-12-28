@@ -151,6 +151,9 @@ app.post('/admin/dashboard/insert-schedule', (req, res) => {
     });
 });
 
+app.get('/admin/dashboard/delete-schedule', (req, res) => {
+    renderSchedule(req, res);
+})
 app.post('/admin/dashboard/delete-schedule', (req, res) => {
     const Section = req.body.Section;
 
@@ -168,6 +171,30 @@ app.post('/admin/dashboard/delete-schedule', (req, res) => {
         const deleteStatus = "Successful";
         console.log("Schedule deleted successfully.");
         renderSchedule(req, res, "", "Successful");
+    });
+});
+
+app.get('/admin/dashboard/show-schedule', (req, res) => {
+    // if (!req.session || !req.session.adminID) {
+    //   return res.render("admin.ejs", { errorMessage: "Login your account first." });
+    // }
+  
+    // Assuming you have a table named 'ClassSchedule'
+
+    const query_sub = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
+
+    db.query(query_sub, (error, results, fields) => {
+
+        const query = 'SELECT * FROM ClassSchedule';
+  
+        db.query(query, (err, schedules) => {
+        if (err) {
+            console.error('Error fetching schedules:', err);
+            return res.status(500).send("Internal Server Error");
+        }
+    
+        return res.render("admin/showSchedule.ejs", { schedules, subjects: results});
+        });
     });
 });
 

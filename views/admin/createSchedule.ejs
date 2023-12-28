@@ -23,8 +23,11 @@
                 <!-- LOG OUT -->
             </div>
             
-            <h3>Create Class Schedule</h3>
-
+            <div class="show-button" style="width: 100%;">
+                <h3>Create Class Schedule</h3>
+                <button style="display: flex; justify-content: flex-start; margin-left: 47px;" class="btn-submit" onclick="document.location.href = '/admin/dashboard/show-schedule'">Show schedules</button>
+            </div>
+            
             <form class="delete-form" action="/admin/dashboard/delete-schedule" method="post">
                 <p style="font-size: 0.9rem; color: rgb(48, 48, 48); font-weight: bold;">Delete Schedule for:</p>
                 <input required type="text" name="Section" placeholder="Section" style="width: 145px;">

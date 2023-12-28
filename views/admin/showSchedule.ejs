@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Schedule</title>
+    <link rel="stylesheet" href="/styles/createSchedule.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        table {
+            width: 100%;
+            overflow: hidden;
+            margin-bottom: 30px;
+            border: none;
+            background: white;
+            border-collapse: collapse;
+            border-radius: 12px;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            row-gap: 1rem;
+        }	
+        .table-wrapper {	
+            display: flex;	
+            flex-direction: column;	
+            justify-content: center;
+            align-items: center;
+            row-gap: 1rem;	
+            width: 100%;	
+            background: white;	
+            border-radius: 12px;	
+            padding: 3rem;	
+        }	
+        .heading {	
+            color: var(--main-color);	
+        }	
+        th, td {	
+            border: 1px solid var(--gray-color);	
+            text-align: center;	
+            padding: 0.7rem;	
+            font-size: 0.9rem;	
+        }	
+        th {	
+            background-color: var(--main-color);	
+            color: white;	
+            text-align: center;	
+        }	
+    </style>
+    
+</head>
+<body>
+    <div class="flex-container" style="display: flex; flex-direction: column;">
+        <div class="hidden-message">
+            <div class="btn-borderless" onclick="document.location.href = '/admin/dashboard'">
+                <i class='bx bx-arrow-back'></i>
+                    BACK
+            </div>
+        You can only access this on pc.</div>
+        <div class="content-wrapper">
+            <div class="btn-borderless button" onclick="document.location.href = '/admin/dashboard'">
+                <i class='bx bx-log-out'></i>
+                BACK
+                <!-- LOG OUT -->
+            </div>
+            <table class="table-wrapper" id="subject-table">
+                <p style="font-size: 0.6rem;">Please toggle the button if the back button is not appearing.</p>
+                <button style="width: 100px;" class="btn-row" type="button" id="toggle-subject-tables">Toggle Subject Tables</button>
+                    <tr>
+                        <th>Subject Code</th>
+                        <th>Subject Name</th>
+                        <th>Instructor</th>
+                    </tr>
+                    <% subjects.forEach(subject => { %>
+                        <tr>
+                            <td><%= subject.SubjectCode %></td>
+                            <td><%= subject.SubjectName %></td>
+                            <td><%= subject.Instructor %></td>
+                        </tr>
+                    <% }); %>
+            </table>
+
+            <% let currentSection = null; %>
+            <table class="table-wrapper">   
+                <p style="font-size: 0.8rem; margin-top: 20px;">You can use Ctrl + F to find 'section'</p>
+                <tr>
+                    <th>Time Slot</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                </tr>
+                <% for (const schedule of schedules) { %>
+                    <% if (currentSection !== schedule.Section) { %>
+                        <!-- Display section information only if it has changed -->
+                        <tr>
+                            <td colspan="6" style="text-align: left; background-color: var(--main-color); color: white; padding: 0.7rem;">
+                                Section: <%= schedule.Section %>
+                            </td>
+                        </tr>
+                    <% } %>
+
+                    <tr>
+                        <td><%= schedule.time_slot %></td>
+                        <td><%= schedule.Monday %></td>
+                        <td><%= schedule.Tuesday %></td>
+                        <td><%= schedule.Wednesday %></td>
+                        <td><%= schedule.Thursday %></td>
+                        <td><%= schedule.Friday %></td>
+                    </tr>
+
+                    <% currentSection = schedule.Section; %>
+                <% } %>
+            </table>
+        </div>
+    </div>
+
+    
+    <script>
+        $(document).ready(function () {
+            function toggleSubjectTables() {
+                $(".content-wrapper #subject-table").toggle();
+            }
+            // Assuming you have a button or trigger to toggle subject tables visibility
+            $("#toggle-subject-tables").click(toggleSubjectTables);
+        });
+    </script>
+</body>
+</html>
