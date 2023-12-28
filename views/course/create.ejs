@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Course | Student Portal</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
   <style>
     @import url("/styles/common.css");
@@ -52,6 +53,10 @@
 <body>
   <div class="content-wrapper">
     <form class="form-container" action="/course/create" method="post" id="courseForm">
+      <div style="display: flex; align-items: center; justify-content: center;" class="btn-borderless button" onclick="document.location.href = '/dashboard'">
+        <i class='bx bx-arrow-back'></i>
+        BACK
+      </div>
       <div class="heading">
         Create Course
       </div>
