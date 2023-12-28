@@ -175,11 +175,9 @@ app.post('/admin/dashboard/delete-schedule', (req, res) => {
 });
 
 app.get('/admin/dashboard/show-schedule', (req, res) => {
-    // if (!req.session || !req.session.adminID) {
-    //   return res.render("admin.ejs", { errorMessage: "Login your account first." });
-    // }
-  
-    // Assuming you have a table named 'ClassSchedule'
+    if (!req.session || !req.session.adminID) {
+      return res.render("admin.ejs", { errorMessage: "Login your account first." });
+    }
 
     const query_sub = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
 
