@@ -107,7 +107,123 @@ app.get('/admin/dashboard/insert-schedule', (req, res) => {
     renderSchedule(req, res);
 });
 
-let responseSent = false;
+// let responseSent = false;
+// app.post('/admin/dashboard/insert-schedule', (req, res) => {
+//     const timeSlots = req.body.time_slot;
+
+//     if (!timeSlots || !Array.isArray(timeSlots)) {
+//         return res.status(400).send("Invalid request format");
+//     }
+
+//     const checkSubjectsExistence = () => {
+//         const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+//         for (const day of weekdays) {
+//             const subjectCode = req.body[day];
+
+//             // Replace 'Subject' with the actual name of your Subject table
+//             const subjectQuery = 'SELECT COUNT(*) AS count FROM Subject WHERE SubjectCode = ?';
+
+//             db.query(subjectQuery, [subjectCode], (error, results) => {
+//                 if (error) {
+//                     console.error(error);
+//                     if (!responseSent) {
+//                         responseSent = true;
+//                         return res.status(500).send("Internal Server Error");
+//                     }
+//                 }
+
+//                 const count = results[0].count;
+
+//                 if (count === 0) {
+//                     if (!responseSent) {
+//                         responseSent = true;
+//                         return res.render('admin/createSchedule.ejs', {
+//                             status: "Failed. Subject not found.",
+//                             deleteStatus: "",
+//                             subjects: [] // You may want to fetch and pass the subjects here for rendering
+//                         });
+//                     }
+//                 }
+
+//                 // Proceed to insert schedules if all subjects are found
+//                 if (day === 'Friday' && !responseSent) {
+//                     insertSchedules();
+//                 }
+//             });
+//         }
+//     };
+
+//     const insertSchedules = () => {
+//         const sql = 'INSERT INTO ClassSchedule (Section, time_slot, Monday, Tuesday, Wednesday, Thursday, Friday) VALUES (?, ?, ?, ?, ?, ?, ?)';
+//         const schedules = timeSlots.map((_, index) => ({
+//             Section: req.body.Section[index],
+//             time_slot: req.body.time_slot[index],
+//             Monday: req.body.Monday[index],
+//             Tuesday: req.body.Tuesday[index],
+//             Wednesday: req.body.Wednesday[index],
+//             Thursday: req.body.Thursday[index],
+//             Friday: req.body.Friday[index],
+//         }));
+
+//         schedules.forEach((schedule, index) => {
+//             const values = [
+//                 schedule.Section,
+//                 schedule.time_slot,
+//                 schedule.Monday,
+//                 schedule.Tuesday,
+//                 schedule.Wednesday,
+//                 schedule.Thursday,
+//                 schedule.Friday,
+//             ];
+
+//             db.query(sql, values, (err, result) => {
+//                 if (err) {
+//                     console.error(err);
+//                     const query = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
+
+//                     db.query(query, (error, results, fields) => {
+//                         if (!responseSent) {
+//                             responseSent = true;
+//                             return res.render('admin/createSchedule.ejs', {
+//                                 status: "Failed. Please follow the instruction above.",
+//                                 deleteStatus: "",
+//                                 subjects: results
+//                             });
+//                         }
+//                     });
+//                 }
+
+//                 if (index === schedules.length - 1 && !responseSent) {
+//                     const query = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
+
+//                     db.query(query, (error, results, fields) => {
+//                         if (!responseSent) {
+//                             responseSent = true;
+//                             return res.render('admin/createSchedule.ejs', {
+//                                 status: "Successful",
+//                                 deleteStatus: "",
+//                                 subjects: results
+//                             });
+//                         }
+//                     });
+//                 }
+//             });
+//         });
+//     };
+
+//     // Check subjects existence before proceeding to insert schedules
+//     checkSubjectsExistence();
+// });
+
+const validSubjects = [
+    'BE01', 'BF01', 'BT01', 'CEN01', 'CEN02', 'CEN03', 'CEN04', 'CEN05',
+    'CPAR01', 'DIASS01', 'DIASS02', 'DIASS03', 'DRRR01', 'EAPP01', 'EAPP02',
+    'ETP01', 'ETP02', 'FABM01', 'FIL01', 'FIL02', 'GC01', 'GP01', 'HOPE01',
+    'HOPE02', 'LB01', 'NONE', 'PD01', 'PD02', 'PD03', 'POL01', 'PR01', 'PR02',
+    'PR03', 'TN01', 'TN02', 'UCSP01', 'UCSP02', 'UCSP03'
+];
+
 app.post('/admin/dashboard/insert-schedule', (req, res) => {
     const timeSlots = req.body.time_slot;
 
@@ -115,106 +231,58 @@ app.post('/admin/dashboard/insert-schedule', (req, res) => {
         return res.status(400).send("Invalid request format");
     }
 
-    const checkSubjectsExistence = () => {
-        const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+    // Function to check if a subject is valid
+    const isValidSubject = (subject) => validSubjects.includes(subject);
 
-        for (const day of weekdays) {
-            const subjectCode = req.body[day];
+    const sql = 'INSERT INTO ClassSchedule (Section, time_slot, Monday, Tuesday, Wednesday, Thursday, Friday) VALUES (?, ?, ?, ?, ?, ?, ?)';
 
-            // Replace 'Subject' with the actual name of your Subject table
-            const subjectQuery = 'SELECT COUNT(*) AS count FROM Subject WHERE SubjectCode = ?';
+    const schedules = timeSlots.map((_, index) => ({
+        Section: req.body.Section[index],
+        time_slot: req.body.time_slot[index],
+        Monday: req.body.Monday[index],
+        Tuesday: req.body.Tuesday[index],
+        Wednesday: req.body.Wednesday[index],
+        Thursday: req.body.Thursday[index],
+        Friday: req.body.Friday[index],
+    }));
 
-            db.query(subjectQuery, [subjectCode], (error, results) => {
-                if (error) {
-                    console.error(error);
-                    if (!responseSent) {
-                        responseSent = true;
-                        return res.status(500).send("Internal Server Error");
-                    }
-                }
+    // Check if all subjects are valid
+    if (schedules.some(schedule => !isValidSubject(schedule.Monday) || !isValidSubject(schedule.Tuesday) || !isValidSubject(schedule.Wednesday) || !isValidSubject(schedule.Thursday) || !isValidSubject(schedule.Friday))) {
+        return res.render('admin/createSchedule.ejs', { status: "Failed. Invalid subjects. Please follow the instruction above.", deleteStatus: "", subjects: validSubjects });
+    }
 
-                const count = results[0].count;
+    schedules.forEach((schedule, index) => {
+        const values = [
+            schedule.Section,
+            schedule.time_slot,
+            schedule.Monday,
+            schedule.Tuesday,
+            schedule.Wednesday,
+            schedule.Thursday,
+            schedule.Friday,
+        ];
 
-                if (count === 0) {
-                    if (!responseSent) {
-                        responseSent = true;
-                        return res.render('admin/createSchedule.ejs', {
-                            status: "Failed. Subject not found.",
-                            deleteStatus: "",
-                            subjects: [] // You may want to fetch and pass the subjects here for rendering
-                        });
-                    }
-                }
+        db.query(sql, values, (err, result) => {
+            if (err) {
+                console.error(err);
+                const query = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
 
-                // Proceed to insert schedules if all subjects are found
-                if (day === 'Friday' && !responseSent) {
-                    insertSchedules();
-                }
-            });
-        }
-    };
+                db.query(query, (error, results, fields) => {
+                    return res.render('admin/createSchedule.ejs', { status: "Failed. Please follow the instruction above.", deleteStatus: "", subjects: results });
+                });
+            }
 
-    const insertSchedules = () => {
-        const sql = 'INSERT INTO ClassSchedule (Section, time_slot, Monday, Tuesday, Wednesday, Thursday, Friday) VALUES (?, ?, ?, ?, ?, ?, ?)';
-        const schedules = timeSlots.map((_, index) => ({
-            Section: req.body.Section[index],
-            time_slot: req.body.time_slot[index],
-            Monday: req.body.Monday[index],
-            Tuesday: req.body.Tuesday[index],
-            Wednesday: req.body.Wednesday[index],
-            Thursday: req.body.Thursday[index],
-            Friday: req.body.Friday[index],
-        }));
+            if (index === schedules.length - 1) {
+                const query = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
 
-        schedules.forEach((schedule, index) => {
-            const values = [
-                schedule.Section,
-                schedule.time_slot,
-                schedule.Monday,
-                schedule.Tuesday,
-                schedule.Wednesday,
-                schedule.Thursday,
-                schedule.Friday,
-            ];
-
-            db.query(sql, values, (err, result) => {
-                if (err) {
-                    console.error(err);
-                    const query = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
-
-                    db.query(query, (error, results, fields) => {
-                        if (!responseSent) {
-                            responseSent = true;
-                            return res.render('admin/createSchedule.ejs', {
-                                status: "Failed. Please follow the instruction above.",
-                                deleteStatus: "",
-                                subjects: results
-                            });
-                        }
-                    });
-                }
-
-                if (index === schedules.length - 1 && !responseSent) {
-                    const query = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
-
-                    db.query(query, (error, results, fields) => {
-                        if (!responseSent) {
-                            responseSent = true;
-                            return res.render('admin/createSchedule.ejs', {
-                                status: "Successful",
-                                deleteStatus: "",
-                                subjects: results
-                            });
-                        }
-                    });
-                }
-            });
+                db.query(query, (error, results, fields) => {
+                    return res.render('admin/createSchedule.ejs', { status: "Successful", deleteStatus: "", subjects: results });
+                });
+            }
         });
-    };
-
-    // Check subjects existence before proceeding to insert schedules
-    checkSubjectsExistence();
+    });
 });
+
 
 app.get('/admin/dashboard/delete-schedule', (req, res) => {
     renderSchedule(req, res);
