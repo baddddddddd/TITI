@@ -107,6 +107,7 @@ app.get('/admin/dashboard/insert-schedule', (req, res) => {
     renderSchedule(req, res);
 });
 
+let responseSent = false;
 app.post('/admin/dashboard/insert-schedule', (req, res) => {
     const timeSlots = req.body.time_slot;
 
@@ -114,48 +115,105 @@ app.post('/admin/dashboard/insert-schedule', (req, res) => {
         return res.status(400).send("Invalid request format");
     }
 
-    const sql = 'INSERT INTO ClassSchedule (Section, time_slot, Monday, Tuesday, Wednesday, Thursday, Friday) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    
-    const schedules = timeSlots.map((_, index) => ({
-        Section: req.body.Section[index],
-        time_slot: req.body.time_slot[index],
-        Monday: req.body.Monday[index],
-        Tuesday: req.body.Tuesday[index],
-        Wednesday: req.body.Wednesday[index],
-        Thursday: req.body.Thursday[index],
-        Friday: req.body.Friday[index],
-    }));
+    const checkSubjectsExistence = () => {
+        const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
-    schedules.forEach((schedule, index) => {
-        const values = [
-            schedule.Section,
-            schedule.time_slot,
-            schedule.Monday,
-            schedule.Tuesday,
-            schedule.Wednesday,
-            schedule.Thursday,
-            schedule.Friday,
-        ];
+        for (const day of weekdays) {
+            const subjectCode = req.body[day];
 
-        db.query(sql, values, (err, result) => {
-            if (err) {
-                console.error(err);
-                const query = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
+            // Replace 'Subject' with the actual name of your Subject table
+            const subjectQuery = 'SELECT COUNT(*) AS count FROM Subject WHERE SubjectCode = ?';
 
-                db.query(query, (error, results, fields) => {
-                    return res.render('admin/createSchedule.ejs', { status: "Failed. Please follow the instruction above.", deleteStatus: "", subjects: results });
-                });
-            }
+            db.query(subjectQuery, [subjectCode], (error, results) => {
+                if (error) {
+                    console.error(error);
+                    if (!responseSent) {
+                        responseSent = true;
+                        return res.status(500).send("Internal Server Error");
+                    }
+                }
 
-            if (index === schedules.length - 1) {
-                const query = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
+                const count = results[0].count;
 
-                db.query(query, (error, results, fields) => {
-                    return res.render('admin/createSchedule.ejs', { status: "Successful", deleteStatus: "", subjects: results });
-                });
-            }
+                if (count === 0) {
+                    if (!responseSent) {
+                        responseSent = true;
+                        return res.render('admin/createSchedule.ejs', {
+                            status: "Failed. Subject not found.",
+                            deleteStatus: "",
+                            subjects: [] // You may want to fetch and pass the subjects here for rendering
+                        });
+                    }
+                }
+
+                // Proceed to insert schedules if all subjects are found
+                if (day === 'Friday' && !responseSent) {
+                    insertSchedules();
+                }
+            });
+        }
+    };
+
+    const insertSchedules = () => {
+        const sql = 'INSERT INTO ClassSchedule (Section, time_slot, Monday, Tuesday, Wednesday, Thursday, Friday) VALUES (?, ?, ?, ?, ?, ?, ?)';
+        const schedules = timeSlots.map((_, index) => ({
+            Section: req.body.Section[index],
+            time_slot: req.body.time_slot[index],
+            Monday: req.body.Monday[index],
+            Tuesday: req.body.Tuesday[index],
+            Wednesday: req.body.Wednesday[index],
+            Thursday: req.body.Thursday[index],
+            Friday: req.body.Friday[index],
+        }));
+
+        schedules.forEach((schedule, index) => {
+            const values = [
+                schedule.Section,
+                schedule.time_slot,
+                schedule.Monday,
+                schedule.Tuesday,
+                schedule.Wednesday,
+                schedule.Thursday,
+                schedule.Friday,
+            ];
+
+            db.query(sql, values, (err, result) => {
+                if (err) {
+                    console.error(err);
+                    const query = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
+
+                    db.query(query, (error, results, fields) => {
+                        if (!responseSent) {
+                            responseSent = true;
+                            return res.render('admin/createSchedule.ejs', {
+                                status: "Failed. Please follow the instruction above.",
+                                deleteStatus: "",
+                                subjects: results
+                            });
+                        }
+                    });
+                }
+
+                if (index === schedules.length - 1 && !responseSent) {
+                    const query = 'SELECT SubjectCode, SubjectName, Instructor FROM Subject';
+
+                    db.query(query, (error, results, fields) => {
+                        if (!responseSent) {
+                            responseSent = true;
+                            return res.render('admin/createSchedule.ejs', {
+                                status: "Successful",
+                                deleteStatus: "",
+                                subjects: results
+                            });
+                        }
+                    });
+                }
+            });
         });
-    });
+    };
+
+    // Check subjects existence before proceeding to insert schedules
+    checkSubjectsExistence();
 });
 
 app.get('/admin/dashboard/delete-schedule', (req, res) => {
