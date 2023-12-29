@@ -100,6 +100,13 @@ app.get('/admin/dashboard/create-schedule', (req, res) => {
     renderSchedule(req, res);
 });
 
+app.get('/admin/dashboard/insert-schedule', (req, res) => {
+    if (!req.session || !req.session.adminID) {
+        return res.render("admin.ejs", { errorMessage: "Login your account first." });
+    }
+    renderSchedule(req, res);
+});
+
 app.post('/admin/dashboard/insert-schedule', (req, res) => {
     const timeSlots = req.body.time_slot;
 
