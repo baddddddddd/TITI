@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show/Delete Account</title>
+    <link rel="stylesheet" href="/styles/deleteAccount.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="flex-container">
+        <div class="hidden-message">
+            <div class="btn-borderless" onclick="document.location.href = '/admin/dashboard'">
+                <i class='bx bx-arrow-back'></i>
+                    BACK
+            </div>
+        You can only access this on pc.</div>
+        <div class="content-wrapper">
+            <div class="btn-borderless button" onclick="document.location.href = '/admin/dashboard'">
+                <i class='bx bx-log-out'></i>
+                BACK
+                <!-- LOG OUT -->
+            </div>
+            <br><br>
+            <form action="/admin/dashboard/show-account" method="post">
+                <p>Show School Account</p>
+                <input type="text" name="userCode" placeholder="User Code">
+                <input type="submit">
+            </form>
+            
+            <!-- Display user details -->
+            <% if (user) { %>
+                <!-- Display user details -->
+                
+                <div style="display: flex; justify-content: flex-start; flex-direction: column; font-size: 0.85rem;">
+                    <p>User Details: <%= user.FirstName %> <%= user.MiddleName %> <%= user.LastName %></p>
+                    <p>Section: <%= user.Section%></p>
+                </div>
+            
+                <!-- Add a form for deleting the account -->
+                <br><br>
+                <form action="/admin/dashboard/delete-account" method="post">
+                    <p>Delete School Account</p>
+                    <input type="text" name="userCode" placeholder="User Code">
+                    <input type="submit" value="Delete Account">
+                </form>
+            <% } %>
+            
+            <br><br>
+            <% if (status) { %>
+                <p style="font-size: 0.8rem;"><%= status %></p>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

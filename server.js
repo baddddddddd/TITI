@@ -64,6 +64,111 @@ app.get('/admin/dashboard/register', (req, res) => {
 
 app.post('/admin/dashboard/register', authController.registerUser);
 
+// Account Deletion
+app.get('/admin/dashboard/delete-account', (req, res) => {
+    if (!req.session || !req.session.adminID) {
+        return res.render("admin.ejs", { errorMessage: "Login your account first." });
+    }
+
+    return res.render("admin/deleteAccount.ejs", { user: {}, status: '' });
+});
+
+app.get('/admin/dashboard/show-account', (req, res) => {
+    if (!req.session || !req.session.adminID) {
+        return res.render("admin.ejs", { errorMessage: "Login your account first." });
+    }
+
+    return res.render("admin/deleteAccount.ejs", { user: {}, status: '' });
+});
+
+app.post('/admin/dashboard/show-account', (req, res) => {
+    const userCode = req.body.userCode;
+
+    const userCredentialsQuery = "SELECT UserID FROM UserCredentials WHERE UserCode = ?";
+    db.query(userCredentialsQuery, [userCode], (error, userCredentialsResult) => {
+        if (error) {
+            console.error("Error executing query:", error);
+            return res.render("admin/deleteAccount.ejs", { user: {}, status: 'Error retrieving user details.' });
+        }
+
+        if (userCredentialsResult.length > 0) {
+            const userID = userCredentialsResult[0].UserID;
+
+            const userProfileQuery = "SELECT UI.FirstName, UI.MiddleName, UI.LastName, SI.Section " +
+                "FROM UserProfile UI " +
+                "LEFT JOIN StudentInformation SI ON UI.UserID = SI.UserID " +
+                "WHERE UI.UserID = ?";
+            db.query(userProfileQuery, [userID], (error, userProfileResult) => {
+                if (error) {
+                    console.error("Error executing query:", error);
+                    return res.render("admin/deleteAccount.ejs", { user: {}, status: 'Error retrieving user details.' });
+                }
+
+                if (userProfileResult.length > 0) {
+                    const user = userProfileResult[0];
+                    return res.render("admin/deleteAccount.ejs", { user, status: 'Account found.' });
+                } else {
+                    return res.render("admin/deleteAccount.ejs", { user: {}, status: 'User not found.' });
+                }
+            });
+        } else {
+            return res.render("admin/deleteAccount.ejs", { user: {}, status: 'User not found.' });
+        }
+    });
+});
+
+app.post('/admin/dashboard/delete-account', (req, res) => {
+    const userCode = req.body.userCode;
+    let status = '';
+
+    const userCredentialsQuery = "SELECT UserID FROM UserCredentials WHERE UserCode = ?";
+    db.query(userCredentialsQuery, [userCode], (error, userCredentialsResult) => {
+        if (error) {
+            console.error(error);
+            status = "Error finding user.";
+            return res.render("admin/deleteAccount.ejs", { user: {}, status });
+        }
+
+        if (userCredentialsResult.length > 0) {
+            const userID = userCredentialsResult[0].UserID;
+
+            const deleteQuery1 = "DELETE FROM StudentInformation WHERE UserID = ?";
+            const deleteQuery2 = "DELETE FROM UserCredentials WHERE UserID = ?";
+            const deleteQuery3 = "DELETE FROM UserProfile WHERE UserID = ?";
+
+            db.query(deleteQuery1, [userID], (error1) => {
+                if (error1) {
+                    console.error(error1);
+                    status = "Error deleting user account.";
+                    return res.render("admin/deleteAccount.ejs", { user: {}, status });
+                }
+
+                db.query(deleteQuery2, [userID], (error2) => {
+                    if (error2) {
+                        console.error(error2);
+                        status = "Error deleting user account.";
+                        return res.render("admin/deleteAccount.ejs", { user: {}, status });
+                    }
+
+                    db.query(deleteQuery3, [userID], (error3) => {
+                        if (error3) {
+                            console.error(error3);
+                            status = "Error deleting user account.";
+                            return res.render("admin/deleteAccount.ejs", { user: {}, status });
+                        }
+
+                        status = "User account deleted successfully.";
+                        res.render("admin/deleteAccount.ejs", { user: {}, status });
+                    });
+                });
+            });
+        } else {
+            status = "User not found.";
+            res.render("admin/deleteAccount.ejs", { user: {}, status });
+        }
+    });
+});
+
 // Admin Feedback
 app.get('/admin/dashboard/feedback', adminController.renderFeedback);
 app.post('/delete-feedback', (req, res) => {
@@ -97,6 +202,7 @@ app.get('/admin/dashboard/create-schedule', (req, res) => {
     if (!req.session || !req.session.adminID) {
         return res.render("admin.ejs", { errorMessage: "Login your account first." });
     }
+    
     renderSchedule(req, res);
 });
 
@@ -104,6 +210,7 @@ app.get('/admin/dashboard/insert-schedule', (req, res) => {
     if (!req.session || !req.session.adminID) {
         return res.render("admin.ejs", { errorMessage: "Login your account first." });
     }
+
     renderSchedule(req, res);
 });
 

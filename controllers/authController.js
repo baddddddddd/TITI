@@ -95,7 +95,7 @@ async function sendEmail(emailAddress, userCode) {
         from: 'testsubject.studentportal@gmail.com',
         to: emailAddress,
         subject: 'Welcome to your school account!',
-        text: `Your school code is: ${userCode}.\nYour password is 123.`,
+        text: `Your school code is: ${userCode}.\nYour password is 1234.`,
     };
 
     try {
