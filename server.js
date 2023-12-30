@@ -390,7 +390,6 @@ app.post('/admin/dashboard/insert-schedule', (req, res) => {
     });
 });
 
-
 app.get('/admin/dashboard/delete-schedule', (req, res) => {
     renderSchedule(req, res);
 })
@@ -534,6 +533,86 @@ function getCurrentDatetime() {
 
     return mysqlDatetimeString;
 } 
+
+app.post('/dashboard/course/delete-course', (req, res) => {
+    const { courseInput } = req.body;
+  
+    // Step 1: Find CourseID using CourseCode
+    const findCourseIdQuery = 'SELECT CourseID FROM Courses WHERE CourseCode = ?';
+  
+    db.query(findCourseIdQuery, [courseInput], (error, results) => {
+      if (error) {
+        console.error('Error finding CourseID:', error);
+        res.status(500).send('Error finding CourseID');
+        return;
+      }
+  
+      if (results.length === 0) {
+        // Course with the given CourseCode not found
+        res.status(404).send('Course not found');
+        return;
+      }
+  
+      const courseId = results[0].CourseID;
+  
+      // Step 3: Delete records from CourseEnrolees where CourseID matches
+      const deleteEnroleesQuery = 'DELETE FROM CourseEnrolees WHERE CourseID = ?';
+  
+      db.query(deleteEnroleesQuery, [courseId], (enroleesError) => {
+        if (enroleesError) {
+          console.error('Error deleting enrolees:', enroleesError);
+          res.status(500).send('Error deleting enrolees');
+          return;
+        }
+  
+        // Step 4: Delete Announcements with the corresponding CourseID
+        const deleteAnnouncementsQuery = 'DELETE FROM Announcements WHERE CourseID = ?';
+  
+        db.query(deleteAnnouncementsQuery, [courseId], (announcementsError) => {
+          if (announcementsError) {
+            console.error('Error deleting announcements:', announcementsError);
+            res.status(500).send('Error deleting announcements');
+            return;
+          }
+  
+          // Step 5: Delete Course Materials with the corresponding CourseID
+          const deleteCourseMaterialsQuery = 'DELETE FROM CourseMaterials WHERE CourseID = ?';
+  
+          db.query(deleteCourseMaterialsQuery, [courseId], (courseMaterialsError) => {
+            if (courseMaterialsError) {
+              console.error('Error deleting course materials:', courseMaterialsError);
+              res.status(500).send('Error deleting course materials');
+              return;
+            }
+  
+            // Step 6: Delete Assignments with the corresponding CourseID
+            const deleteAssignmentsQuery = 'DELETE FROM Assignments WHERE CourseID = ?';
+  
+            db.query(deleteAssignmentsQuery, [courseId], (assignmentsError) => {
+              if (assignmentsError) {
+                console.error('Error deleting assignments:', assignmentsError);
+                res.status(500).send('Error deleting assignments');
+                return;
+              }
+  
+              // Step 7: Delete Course from Courses table
+              const deleteCourseQuery = 'DELETE FROM Courses WHERE CourseCode = ?';
+  
+              db.query(deleteCourseQuery, [courseInput], (deleteError) => {
+                if (deleteError) {
+                  console.error('Error deleting course:', deleteError);
+                  res.status(500).send('Error deleting course');
+                  return;
+                }
+                  res.redirect('/dashboard');
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+  
 
 app.post("/course/upload", upload.single("file"), (req, res) => {
     console.log(req.body);

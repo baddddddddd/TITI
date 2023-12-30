@@ -7,6 +7,9 @@ router.use("/assignment", assignmentRouter);
 
 
 router.get("/", (req, res) => {
+    if (!req.session || !req.session.userCode) {
+        return res.render("login.ejs", { errorMessage: "Login your account first." });
+    }
     // View Courses
     const userId = req.session.userId;
     
@@ -30,6 +33,10 @@ router.get("/", (req, res) => {
 });
 
 router.get("/owned", (req, res) => {
+    if (!req.session || !req.session.userCode) {
+        return res.render("login.ejs", { errorMessage: "Login your account first." });
+    }
+
     // View Courses
     const userId = req.session.userId;
     
@@ -53,6 +60,9 @@ router.get("/owned", (req, res) => {
 });
 
 router.get("/owned", (req, res) => {
+    if (!req.session || !req.session.userCode) {
+        return res.render("login.ejs", { errorMessage: "Login your account first." });
+    }
     // View Courses
     const userId = req.session.userId;
     
@@ -76,6 +86,9 @@ router.get("/owned", (req, res) => {
 });
 
 router.get("/create", (req, res) => {
+    if (!req.session || !req.session.userCode) {
+        return res.render("login.ejs", { errorMessage: "Login your account first." });
+    }
     // Create courses, for teachers only
     res.render("course/create");
 });
@@ -83,11 +96,17 @@ router.get("/create", (req, res) => {
 
 
 router.get("/join", (req, res) => {
+    if (!req.session || !req.session.userCode) {
+        return res.render("login.ejs", { errorMessage: "Login your account first." });
+    }
     // Join courses, for students only
     res.render("course/join");
 });
 
 router.get("/:courseId", (req, res) => {
+    if (!req.session || !req.session.userCode) {
+        return res.render("login.ejs", { errorMessage: "Login your account first." });
+    }
     // View a course through ID
     let query = "SELECT * FROM Courses WHERE CourseCode=?";
     let params = [req.params.courseId];
