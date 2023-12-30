@@ -1,136 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= locals.info.title %> | Student Portal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= locals.info.title %> | Student Portal</title>
 
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-  <link rel="stylesheet" href="/styles/view_assignment.css">
+    <link rel="stylesheet" href="/styles/view_assignment.css">
 
     <% if (locals.isInstructor) { %>
-      <style>
+    <style>
         .content-wrapper {
-          margin: 5rem 15%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          row-gap: 2rem;
+            margin: 5rem 15%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            row-gap: 2rem;
         }
 
         .content-grid {
-          display: grid;
-          grid-template-columns: 1fr;
+            display: grid;
+            grid-template-columns: 1fr;
         }
-      </style>
+    </style>
     <% } %>
 </head>
 
 <body>
-  <div class="content-wrapper">
-    <div class="control-view">
-      <div class="btn-borderless" onclick="document.location.href = '/course/<%= locals.courseCode %>'">
-        <i class='bx bx-arrow-back'></i>
-        BACK
-      </div>
-    </div>
-
-    <div class="content-grid">
-      <div class="left-column">
-        <div class="heading">
-          <div class="title"><%= locals.info.title %></div>
-          <div class="upload-date"><%= new Date(locals.info.uploadDate).toLocaleString('en-US', { timeZone: 'UTC' }) %></div>
-        </div>
-        <hr class="rule">
-        <textarea readonly class="instructions"><%= locals.info.instructions %></textarea>
-        <hr class="rule">
-
-        <div class="attachments">
-          <div class="stream-card">
-            <form class="stream-header" action="/course/download" method="post">
-              <div class="stream-left">
-                <i class='bx bxs-file'></i>
-                <div class="stream-info">
-                  <div class="stream-title"><%= locals.info.fileName %></div>
-                </div>
-              </div>
-              <input type="hidden" name="path" value="<%= locals.info.filePath %>">
-              <button class="btn" type="submit"><i class='bx bxs-download'></i><span>DOWNLOAD</span></button>
-            </form>
-          </div>
-        </div>
-        <% if (locals.isInstructor) { %>
-
-        <hr class="rule">
-
-        <div class="submission-view">
-          <div class="subheading">
-            Submissions
-          </div>
-          <div class="submission-list">
-            <% for (let i = 0; i < locals.submissions.length; i++) { %>
-              <form class="submission-card" action="/course/download" method="post">
-                <div class="submission-left">
-                  <div class="submission-info">
-                    <div class="submission-title"><%= locals.submissions[i].name %></div>
-                    <div class="submission-file"><%= locals.submissions[i].fileName %></div>
-                  </div>
-                </div>
-                <input type="hidden" name="path" value="<%= locals.submissions[i].filePath %>">
-                <button class="btn" type="submit"><i class='bx bxs-download'></i><span>DOWNLOAD</span></button>
-              </form>
-            <% } %>
-          </div>
-        </div>
-
-        <% } %>
-
-      </div>
-      <div class="right-column">
-        <% if (!locals.isInstructor) { %>
-          <form class="submissions" action="/course/assignment/upload" method="post" enctype="multipart/form-data">
-            <div class="submission-header">
-              <div class="submission-heading">Your Work</div>
-              <div class="status"><%= locals.info.submission.status %></div>
+    <div class="content-wrapper">
+        <div class="control-view">
+            <div class="btn-borderless" onclick="document.location.href = '/course/<%= locals.courseCode %>'">
+                <i class='bx bx-arrow-back'></i>
+                BACK
             </div>
-            <div class="submission-files">
-              <!--
+        </div>
+
+        <div class="content-grid">
+            <div class="left-column">
+                <div class="heading">
+                    <div class="title"><%= locals.info.title %></div>
+                    <div class="upload-date"><%= new Date(locals.info.uploadDate).toLocaleString('en-US', {
+                        timeZone: 'UTC'
+                    }) %></div>
+                </div>
+                <hr class="rule">
+                <textarea readonly class="instructions"><%= locals.info.instructions %></textarea>
+                <hr class="rule">
+
+                <div class="attachments">
+                    <% if (locals.info.fileId) { %>
+                        <div class="stream-card">
+                            <form class="stream-header" action="/course/download" method="post">
+                                <div class="stream-left">
+                                    <i class='bx bxs-file'></i>
+                                    <div class="stream-info">
+                                        <div class="stream-title"><%= locals.info.fileName %></div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="path" value="<%= locals.info.filePath %>">
+                                <button class="btn" type="submit"><i class='bx bxs-download'></i><span>DOWNLOAD</span></button>
+                            </form>
+                        </div>
+                    <% } else { %>
+                        <p>No attachment available.</p>
+                    <% } %>
+                </div>
+
+                <% if (locals.isInstructor) { %>
+
+                <hr class="rule">
+
+                <div class="submission-view">
+                    <div class="subheading">
+                        Submissions
+                    </div>
+                    <div class="submission-list">
+                        <% for (let i = 0; i < locals.submissions.length; i++) { %>
+                        <form class="submission-card" action="/course/download" method="post">
+                            <div class="submission-left">
+                                <div class="submission-info">
+                                    <div class="submission-title"><%= locals.submissions[i].name %></div>
+                                    <div class="submission-file"><%= locals.submissions[i].fileName %></div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="path" value="<%= locals.submissions[i].filePath %>">
+                            <button class="btn" type="submit"><i class='bx bxs-download'></i><span>DOWNLOAD</span></button>
+                        </form>
+                        <% } %>
+                    </div>
+                </div>
+
+                <% } %>
+
+            </div>
+            <div class="right-column">
+                <% if (!locals.isInstructor) { %>
+                <form class="submissions" action="/course/assignment/upload" method="post" enctype="multipart/form-data">
+                    <div class="submission-header">
+                        <div class="submission-heading">Your Work</div>
+                        <div class="status"><%= locals.info.submission.status %></div>
+                    </div>
+                    <div class="submission-files">
+                        <!--
               <div class="add-btn">
                 <input class="btn-hollow" type="submit" value="ADD FILE">
               </div>
               -->
-              <% if (locals.info.submission.status == "Turned In") { %>
-                <div class="file-info">
-                  <%= locals.info.submission.fileName %>
-                </div>
-              <% } else { %>
-                <input type="file" name="file" id="file">
-              <% } %>
+                        <% if (locals.info.submission.status == "Turned In") { %>
+                        <div class="file-info">
+                            <%= locals.info.submission.fileName %>
+                        </div>
+                        <% } else { %>
+                        <input type="file" name="file" id="file">
+                        <% } %>
+                    </div>
+                    <div class="submit-btn">
+                        <% if (locals.info.submission.status == "Turned In") { %>
+                        <input class="btn-hollow" type="submit" value="UNSUBMIT">
+                        <input type="hidden" name="type" value="unsubmit">
+                        <% } else { %>
+                        <input class="btn" type="submit" value="SUBMIT">
+                        <input type="hidden" name="type" value="submit">
+                        <% } %>
+                    </div>
+                    <input type="hidden" name="assignmentId" value="<%= locals.info.id %>">
+                </form>
+                <% } %>
             </div>
-            <div class="submit-btn">
-              <% if (locals.info.submission.status == "Turned In") { %>
-                <input class="btn-hollow" type="submit" value="UNSUBMIT">
-                <input type="hidden" name="type" value="unsubmit">
-                <% } else { %>
-                <input class="btn" type="submit" value="SUBMIT">
-                <input type="hidden" name="type" value="submit">
-              <% } %>
-            </div>
-            <input type="hidden" name="assignmentId" value="<%= locals.info.id %>">
-          </form>
-        <% } %>
-      </div>
+        </div>
     </div>
-  </div>
 
-  <script>
-    function autoAdjustHeight(textarea) {
-        textarea.style.height = 'auto'; // Reset height to auto
-        textarea.style.height = (textarea.scrollHeight) + 'px'; // Set new height
-    }
+    <script>
+        function autoAdjustHeight(textarea) {
+            textarea.style.height = 'auto'; // Reset height to auto
+            textarea.style.height = (textarea.scrollHeight) + 'px'; // Set new height
+        }
 
-    autoAdjustHeight(document.querySelector(".instructions"));
-  </script>
+        autoAdjustHeight(document.querySelector(".instructions"));
+    </script>
 </body>
+
 </html>

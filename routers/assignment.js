@@ -5,7 +5,13 @@ const router = express.Router();
 router.get("/:assignmentId", (req, res) => {
     let assignmentId = req.params.assignmentId;
 
-    const query = "SELECT * FROM Assignments JOIN File ON AttachmentID = FileID JOIN Courses on Assignments.CourseID = Courses.CourseID WHERE AssignmentID = ?";
+    const query = `
+    SELECT *
+    FROM Assignments
+    LEFT JOIN File ON Assignments.AttachmentID = File.FileID
+    LEFT JOIN Courses ON Assignments.CourseID = Courses.CourseID
+    WHERE Assignments.AssignmentID = ?;
+`;
     const params = [assignmentId];
     
     db.query(query, params, (err, result) => {
