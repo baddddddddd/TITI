@@ -3,6 +3,10 @@ const db = require("../db");
 const router = express.Router();
 
 router.get("/:assignmentId", (req, res) => {
+    if (!req.session || !req.session.userCode) {
+        return res.render("login.ejs", { errorMessage: "Login your account first." });
+    }
+
     let assignmentId = req.params.assignmentId;
 
     const query = `
@@ -15,13 +19,19 @@ router.get("/:assignmentId", (req, res) => {
     const params = [assignmentId];
     
     db.query(query, params, (err, result) => {
+        if (result.length === 0) {
+            // Handle the case where no assignment was found with the given assignmentId
+            console.error('No assignment found with id:', assignmentId);
+            res.redirect("/");
+        }
+
         let assignment = result[0];
 
         console.log(assignment);
 
         const query = "SELECT * FROM Submissions JOIN File ON Submissions.FileID = File.FileID WHERE AssignmentID=? AND StudentID=?";
         const params = [assignmentId, req.session.userId];
-
+        
         let isInstructor = req.session.userId == assignment.InstructorID;
 
         let info = {
