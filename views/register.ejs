@@ -74,8 +74,8 @@
         <div class="field-container pivot">
           <input required type="password" id="confirmPassword" placeholder="Confirm Password">
         </div>
-        <div class="field-container removable">
-          <input required type="text" name="section" placeholder="Section">
+        <div class="field-container">
+          <input required type="text" name="section" placeholder="Section" id="sectionPart">
         </div>
         <div class="field-container removable">
           <input required type="text" name="strand" placeholder="Strand">
@@ -95,9 +95,11 @@
     let accountSelect = document.querySelector("#accountType");
     let removables = document.querySelectorAll(".removable");
     let pivot = document.querySelector(".pivot");
+    let sectionPart = document.getElementById("sectionPart")
 
     accountSelect.addEventListener("change", (e) => {
       if (accountSelect.value == "Instructor") {
+        sectionPart.placeholder = "Schedule (Use Last Name + SCHED) eg. CruzSCHED";
         if (document.querySelectorAll(".removable").length > 0) {
           removables.forEach((element) => {
             element.remove();

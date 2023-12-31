@@ -72,7 +72,7 @@ exports.renderSchedule = (req, res) => {
         if (error) throw error;
 
         if (userCredentialsResults.length === 0 || !userCredentialsResults[0].UserID) {
-            return res.render("error.ejs", { errorMessage: "User information not found for the provided UserCode." });
+            return res.render("login.ejs", { errorMessage: "Error proccessing request. Contact an admin." });
         }
 
         const userID = userCredentialsResults[0].UserID;
@@ -80,8 +80,8 @@ exports.renderSchedule = (req, res) => {
         db.query('SELECT Section FROM StudentInformation WHERE UserID = ?', [userID], (error, studentInfoResults) => {
             if (error) throw error;
 
-            if (studentInfoResults.length === 0 || !studentInfoResults[0].Section) {
-                return res.render("error.ejs", { errorMessage: "Section information not found for the user." });
+            if (studentInfoResults.length === 0 || !studentInfoResults[0].Section) {  
+                return res.render("login.ejs", { errorMessage: "Error proccessing request. Contact an admin." });
             }
 
             const section = studentInfoResults[0].Section; // Define section here

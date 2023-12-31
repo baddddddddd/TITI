@@ -328,7 +328,8 @@ const validSubjects = [
     'CPAR01', 'DIASS01', 'DIASS02', 'DIASS03', 'DRRR01', 'EAPP01', 'EAPP02',
     'ETP01', 'ETP02', 'FABM01', 'FIL01', 'FIL02', 'GC01', 'GP01', 'HOPE01',
     'HOPE02', 'LB01', 'NONE', 'PD01', 'PD02', 'PD03', 'POL01', 'PR01', 'PR02',
-    'PR03', 'TN01', 'TN02', 'UCSP01', 'UCSP02', 'UCSP03'
+    'PR03', 'TN01', 'TN02', 'UCSP01', 'UCSP02', 'UCSP03', 'SEC01', 'SEC02', 'SEC03',
+    'SEC04', 'SEC05', 'SEC06', 'SEC07', 'SEC08', 'SEC09', 'SEC10', 'SEC11', 'SEC12', 'SEC13'
 ];
 
 app.post('/admin/dashboard/insert-schedule', (req, res) => {
