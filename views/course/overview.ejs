@@ -24,10 +24,16 @@
       <div class="item-wrapper">
         <h1><%= locals.name %></h1>
         <h3><%= locals.section %></h3>
-        <form method="post" action="/dashboard/course/delete-course">
-          <input type="hidden" name="courseInput" value="<%= locals.code %>">
-          <input style="margin-top: 3px; font-weight: bold; border: 1px solid white; background: white; border-radius: 3px; color: black; padding: 3px; cursor: pointer;" type="submit" value="Delete Course">
-        </form>
+        
+
+        <% if (!locals.isInstructor) { %>
+        <% } else { %>
+          <form method="post" action="/dashboard/course/delete-course">
+            <input type="hidden" name="courseInput" value="<%= locals.code %>">
+            <input style="margin-top: 3px; font-weight: bold; border: 1px solid white; background: white; border-radius: 3px; color: black; padding: 3px; cursor: pointer;" type="submit" value="Delete Course">
+          </form>
+        <% } %>
+
       </div>
     </div>
     <div class="class-content">
