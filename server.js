@@ -135,6 +135,7 @@ app.post('/admin/dashboard/delete-account', (req, res) => {
             const deleteQuery1 = "DELETE FROM StudentInformation WHERE UserID = ?";
             const deleteQuery2 = "DELETE FROM UserCredentials WHERE UserID = ?";
             const deleteQuery3 = "DELETE FROM UserProfile WHERE UserID = ?";
+            const deleteQuery6 = "DELETE FROM Courses WHERE InstructorID = ?";
 
             db.query(deleteQuery1, [userID], (error1) => {
                 if (error1) {
@@ -157,8 +158,17 @@ app.post('/admin/dashboard/delete-account', (req, res) => {
                             return res.render("admin/deleteAccount.ejs", { user: {}, status });
                         }
 
-                        status = "User account deleted successfully.";
-                        res.render("admin/deleteAccount.ejs", { user: {}, status });
+                        // Add your additional delete query here
+                        db.query(deleteQuery6, [userID], (error6) => {
+                            if (error6) {
+                                console.error(error6);
+                                status = "Error deleting user account.";
+                                return res.render("admin/deleteAccount.ejs", { user: {}, status });
+                            }
+                        
+                            status = "User account deleted successfully.";
+                            res.render("admin/deleteAccount.ejs", { user: {}, status });
+                        });
                     });
                 });
             });
