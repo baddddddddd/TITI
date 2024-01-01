@@ -335,7 +335,7 @@ app.get('/admin/dashboard/insert-schedule', (req, res) => {
 
 const validSubjects = [
     'BE01', 'BF01', 'BT01', 'CEN01', 'CEN02', 'CEN03', 'CEN04', 'CEN05',
-    'CPAR01', 'DIASS01', 'DIASS02', 'DIASS03', 'DRRR01', 'EAPP01', 'EAPP02',
+    'CPAR01', 'DIASS01', 'DIASS02', 'DIASS03', 'DIASS04', 'DRRR01', 'EAPP01', 'EAPP02',
     'ETP01', 'ETP02', 'FABM01', 'FIL01', 'FIL02', 'GC01', 'GP01', 'HOPE01',
     'HOPE02', 'LB01', 'NONE', 'PD01', 'PD02', 'PD03', 'POL01', 'PR01', 'PR02',
     'PR03', 'TN01', 'TN02', 'UCSP01', 'UCSP02', 'UCSP03', 'SEC01', 'SEC02', 'SEC03',
