@@ -35,6 +35,32 @@
                 <i class='bx bx-arrow-back'></i>
                 BACK
             </div>
+
+            <!-- Add the edit button for instructors -->
+            <% if (locals.isInstructor) { %>
+            <div class="btn-borderless" onclick="showEditForm()">
+                <i class='bx bx-edit'></i>
+                EDIT
+            </div>
+            <% } %>
+        </div>
+
+        <!-- Add the edit form (initially hidden) -->
+        <div id="editForm" style="display: none;">
+            <form style="display: flex; flex-direction: column; min-width: 200px;" action="/course/assignment/edit/<%= locals.info.id %>" method="post">
+                <input type="hidden" name="assignmentId" value="<%= locals.info.id %>">
+
+                <label for="editTitle"><b>Assignment Title:</b></label>
+                <input style="height: 50px;" type="text" id="editTitle" name="editTitle" value="<%= locals.info.title %>">
+
+                <label for="editInstructions"><b>Instructions:</b></label>
+                <textarea style="height: 150px;" id="editInstructions" name="editInstructions" resize: none;><%= locals.info.instructions %></textarea>
+                <br>
+                <div style="display: flex; flex-direction: row; width: 40px;">
+                    <input style="margin-right: 4px;" class="btn" type="submit" value="Save">
+                    <button class="btn" onclick="document.location.href = '/course/assignment/edit/:<%= locals.info.id %>'">Cancel</button>
+                </div>
+            </form>
         </div>
 
         <div class="content-grid">
@@ -139,6 +165,11 @@
         }
 
         autoAdjustHeight(document.querySelector(".instructions"));
+
+        function showEditForm() {
+            var editForm = document.getElementById("editForm");
+            editForm.style.display = "block";
+        }
     </script>
 </body>
 

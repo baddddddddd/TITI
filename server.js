@@ -811,6 +811,25 @@ app.post("/course/assignment/upload", upload.single("file"), (req, res) => {
     }
 });
 
+app.post("/course/assignment/edit/:assignmentId", (req, res) => {
+    const assignmentId = req.params.assignmentId;
+    const newTitle = req.body.editTitle;
+    const newInstructions = req.body.editInstructions;
+
+    // Update AssignmentTitle and Instructions in the database
+    const updateQuery = "UPDATE Assignments SET AssignmentTitle = ?, Instructions = ? WHERE AssignmentID = ?";
+    const updateParams = [newTitle, newInstructions, assignmentId];
+
+    db.query(updateQuery, updateParams, (err, result) => {
+        if (err) {
+            console.error('Error updating assignment:', err);
+            res.redirect("/");
+        } else {
+            res.redirect("/course/assignment/" + assignmentId);
+        }
+    });
+});
+
 // Logout
 app.get('/logout', (req, res) => {
     req.session.destroy((err) => {
