@@ -135,6 +135,7 @@ app.post('/admin/dashboard/delete-account', (req, res) => {
             const deleteQuery1 = "DELETE FROM StudentInformation WHERE UserID = ?";
             const deleteQuery2 = "DELETE FROM UserCredentials WHERE UserID = ?";
             const deleteQuery3 = "DELETE FROM UserProfile WHERE UserID = ?";
+            const deleteQuery6 = "DELETE FROM Courses WHERE InstructorID = ?";
 
             db.query(deleteQuery1, [userID], (error1) => {
                 if (error1) {
@@ -157,8 +158,17 @@ app.post('/admin/dashboard/delete-account', (req, res) => {
                             return res.render("admin/deleteAccount.ejs", { user: {}, status });
                         }
 
-                        status = "User account deleted successfully.";
-                        res.render("admin/deleteAccount.ejs", { user: {}, status });
+                        // Add your additional delete query here
+                        db.query(deleteQuery6, [userID], (error6) => {
+                            if (error6) {
+                                console.error(error6);
+                                status = "Error deleting user account.";
+                                return res.render("admin/deleteAccount.ejs", { user: {}, status });
+                            }
+                        
+                            status = "User account deleted successfully.";
+                            res.render("admin/deleteAccount.ejs", { user: {}, status });
+                        });
                     });
                 });
             });
@@ -325,7 +335,7 @@ app.get('/admin/dashboard/insert-schedule', (req, res) => {
 
 const validSubjects = [
     'BE01', 'BF01', 'BT01', 'CEN01', 'CEN02', 'CEN03', 'CEN04', 'CEN05',
-    'CPAR01', 'DIASS01', 'DIASS02', 'DIASS03', 'DRRR01', 'EAPP01', 'EAPP02',
+    'CPAR01', 'DIASS01', 'DIASS02', 'DIASS03', 'DIASS04', 'DRRR01', 'EAPP01', 'EAPP02',
     'ETP01', 'ETP02', 'FABM01', 'FIL01', 'FIL02', 'GC01', 'GP01', 'HOPE01',
     'HOPE02', 'LB01', 'NONE', 'PD01', 'PD02', 'PD03', 'POL01', 'PR01', 'PR02',
     'PR03', 'TN01', 'TN02', 'UCSP01', 'UCSP02', 'UCSP03', 'SEC01', 'SEC02', 'SEC03',
@@ -799,6 +809,25 @@ app.post("/course/assignment/upload", upload.single("file"), (req, res) => {
             submitAssignment();
         }
     }
+});
+
+app.post("/course/assignment/edit/:assignmentId", (req, res) => {
+    const assignmentId = req.params.assignmentId;
+    const newTitle = req.body.editTitle;
+    const newInstructions = req.body.editInstructions;
+
+    // Update AssignmentTitle and Instructions in the database
+    const updateQuery = "UPDATE Assignments SET AssignmentTitle = ?, Instructions = ? WHERE AssignmentID = ?";
+    const updateParams = [newTitle, newInstructions, assignmentId];
+
+    db.query(updateQuery, updateParams, (err, result) => {
+        if (err) {
+            console.error('Error updating assignment:', err);
+            res.redirect("/");
+        } else {
+            res.redirect("/course/assignment/" + assignmentId);
+        }
+    });
 });
 
 // Logout
