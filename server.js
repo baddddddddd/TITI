@@ -830,6 +830,68 @@ app.post("/course/assignment/edit/:assignmentId", (req, res) => {
     });
 });
 
+app.post("/grades/upload", (req, res) => {
+    let courseId = req.body.courseId;
+    let courseCode = req.body.courseCode;
+
+    const query = "SELECT UserCredentials.UserID, UserCode, LastName, FirstName, MiddleName, NameExtension, Grade FROM CourseEnrolees JOIN UserProfile ON CourseEnrolees.StudentID = UserProfile.UserID JOIN UserCredentials ON UserCredentials.UserID = UserProfile.UserID WHERE CourseID = ? ORDER BY LastName";
+    const params = [courseId];
+
+    db.query(query, params, (err, result) => {
+        console.log(result);
+
+        let grades = [];
+        for (const student of result) {
+            grades.push({
+                studentId: student.UserID,
+                studentCode: student.UserCode,
+                name: `${student.LastName}, ${student.FirstName} ${student.MiddleName}`,
+                grade: student.Grade || "N/A",
+            });
+        }
+
+        res.render("grades/upload", { courseId: courseId, courseCode: courseCode, grades: grades });
+    });
+
+});
+
+app.put('/grades/upload', (req, res) => {
+    let studentId = req.body.studentId;
+    let courseId = req.body.courseId;
+    let grade = req.body.grade;
+
+    const query = "UPDATE CourseEnrolees SET Grade = ? WHERE CourseID = ? AND StudentID = ?";
+    const params = [grade, courseId, studentId];
+
+    db.query(query, params, (err, result) => {
+        console.log(result);
+        res.status(200);
+    });
+});
+
+app.get("/grades/view", (req, res) => {
+    const studentId = req.session.userId;
+
+    const query = "SELECT ClassName, LastName, FirstName, MiddleName, Grade FROM CourseEnrolees JOIN Courses ON CourseEnrolees.CourseID = Courses.CourseID JOIN UserProfile ON InstructorID = UserID WHERE StudentID = ?";
+    const params = [studentId];
+
+    db.query(query, params, (err, result) => {
+        let grades = [];
+
+        for (const grade of result) {
+            grades.push({
+                className: grade.ClassName,
+                instructorName: `${grade.LastName}, ${grade.FirstName} ${grade.MiddleName}`,
+                grade: grade.Grade,
+            });
+        }
+
+        console.log(result);
+
+        res.render("grades/view", { grades: grades });
+    });
+});
+
 // Logout
 app.get('/logout', (req, res) => {
     req.session.destroy((err) => {

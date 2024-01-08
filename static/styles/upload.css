@@ -1,0 +1,144 @@
+@import url("/styles/common.css");
+
+.flex-container {
+    display: flex;
+    align-items: center;
+    min-height: 80vh;
+    width: 100%;
+    flex-direction: column;
+    border-radius: 12px;            
+    padding: 2rem;
+    background: white;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem
+}
+
+
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    text-align: center;
+    background: var(--main-color);
+    color: white;
+}
+
+.code-column {
+    width: 20%;
+    overflow-wrap: break-word;
+}
+
+
+.name-column {
+    width: 60%;
+    overflow-wrap: break-word;
+}
+
+.grade-column {
+    width: 20%;
+    overflow-wrap: break-word;
+}
+
+.button-submit {
+    display: flex;
+    flex-direction: row;
+}
+
+.extra {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+}
+
+.extra button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    color: black;
+    background: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 8px 20px;
+    line-height: 24px;
+    border: 3px solid #003049;
+    border-radius: 5px;
+    transition: ease 0.3s;
+    height: 35px;
+    width: 80;
+    position: relative;
+}
+
+.header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+}
+
+.heading {
+    color: var(--main-color);
+}
+
+.content-wrapper {
+    margin: 3rem 10%;
+    text-align: center;
+}
+
+.button {
+    text-align: left;
+}
+
+.control-view {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.controls {
+    padding: 0.7rem;
+    background: var(--main-color);
+    color: white;
+    border: none;
+    font-weight: 600;
+    border-radius: 6px;
+}
+
+.button-submit {
+    display: flex;
+    column-gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.hidden-message {
+    display: none;
+}
+
+@media screen and (max-width: 600px) {
+    .hidden-message {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translate(-50%, -50%);
+        position: fixed;
+        top: 50%;
+        left: 50%;
+    }
+
+    .content-wrapper {
+        display: none;
+    }
+}

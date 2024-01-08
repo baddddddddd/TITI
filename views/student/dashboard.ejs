@@ -9,6 +9,13 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="shortcut icon" href="/styles/images/bcihs.png" type="image/x-icon">
 
+    <% if (locals.isInstructor) { %>
+    <style>
+      .services-container {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    </style>
+    <% } %>
 </head>
 <body>
     <div class="main-container">
@@ -92,6 +99,16 @@
                 Courses
               </div>
             </div>
+            <% if (!locals.isInstructor) { %>
+            <div class="service-clicklet" onclick="document.location.href = '/grades/view'">
+              <div class="service-icon">
+                <i class='bx bxs-graduation'></i>
+              </div>
+              <div class="service-name">
+                View Grades
+              </div>
+            </div>
+            <% } %>
             <div class="service-clicklet" onclick="document.location.href = '/dashboard/drawingboard'">
               <div class="service-icon">
                 <i class='bx bxs-palette' ></i>

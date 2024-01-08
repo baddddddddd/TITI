@@ -114,8 +114,9 @@
 
 .services-container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   column-gap: 1.5rem;
+  row-gap: 1.3rem;
   justify-content: center;
   align-items: center;
   margin: 1rem 0rem;

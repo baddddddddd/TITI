@@ -61,6 +61,12 @@
             <input type="hidden" name="courseCode" value="<%= locals.code %>">
             <input type="submit" class="btn" value="CREATE ASSIGNMENT" style="width: 100%;"></input>
           </form>
+
+          <form class="create-ass" action="/grades/upload" method="post" style="width: 100%;">
+            <input type="hidden" name="courseId" value="<%= locals.courseId %>">
+            <input type="hidden" name="courseCode" value="<%= locals.code %>">
+            <input type="submit" class="btn-hollow" value="UPLOAD GRADES" style="width: 100%;"></input>
+          </form>
         <% } %>
       </div>
       <div class="class-stream">
