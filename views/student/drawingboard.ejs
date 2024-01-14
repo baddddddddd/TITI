@@ -15,13 +15,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 80vh;
+            height: 450px; /* Set a fixed height */
             text-align: center;
             flex-direction: row;
             padding: 3rem;
             background: white;
             border-radius: 12px;
-            margin: 2rem 0rem;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
@@ -47,32 +46,34 @@
         canvas {
             border: 3px solid #003049;
             border-radius: 5px;
+            background: white; /* Set canvas background to white */
         }
-        
+
         .functional-button button {
             display: flex;
             text-align: center;
             justify-content: center;
             align-items: center;
-            margin: 10px;
+            margin-top: 9px;
+            margin-inline: 10px;
             color: black;
             background: white;
             font-weight: 500;
             line-height: 24px;
             border: 2px solid #003049;
             border-radius: 5px;
-            font-size: 0.9rem;
+            font-size: 0.7rem;
             width: 150px;
-            padding: 0.4rem;
+            padding: 0.1rem;
         }
 
         label {
             margin: 10px 0 0 10px;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
 
         input {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             margin: 10px 20px 0 0;
             width: 60px;
             padding: 0.3rem;
@@ -82,45 +83,58 @@
             display: flex;
             flex-direction: row;
         }
-        
+
         .canvasButtons button {
             border: 2px solid #003049;
             border-radius: 5px;
             background-color: white;
             text-align: center;
-            margin: 2px 2px 5px 2px;
-            font-size: 0.9rem;
-            width: 50px;
-            padding: 0.4rem;
+            margin: 3px 2px 3px 2px;
+            font-size: 0.6rem;
+            width: 22px;
+            padding: 0.1rem;
         }
 
         button:hover {
-          background: #f1f1f1;
+            background: #f1f1f1;
         }
 
         .header {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
         }
 
         .heading {
-          color: var(--main-color);
+            color: var(--main-color);
         }
 
         .content-wrapper {
-          margin: 2rem 10%;
-          text-align: center;
+            margin: 0.5rem 10%;
+            text-align: center;
         }
 
         #currentPageInfo {
-          font-size: 0.9rem;
+            font-size: 0.9rem;
         }
-        
+
         .hidden-message {
             display: none;
         }
 
-        @media screen and (max-width: 600px) {
+        .text-input {
+            position: absolute;
+            border: none;
+            outline: none;
+            font-family: Arial;
+            background: transparent;
+            color: #000;
+            width: 600px; /* Adjust the width as needed */
+            padding: 0.3rem; /* Add padding as needed */
+            overflow: visible; /* Ensure text visibility even when moved to the top */
+            transform: translate(-2px, -34px);
+        }
+
+        @media screen and (max-width: 1100px) {
             .hidden-message {
                 display: flex;
                 align-items: center;
@@ -138,198 +152,270 @@
     </style>
 </head>
 <body>
-  <div class="hidden-message">
+<div class="hidden-message">
     <div class="btn-borderless" onclick="document.location.href = '/dashboard'">
         <i class='bx bx-arrow-back'></i>
         BACK
-        </div>
-    You can only access this on pc.</div>
-  <div class="content-wrapper">
-    <div class="header">
-      <div class="btn-borderless button" onclick="document.location.href = '/dashboard'">
-        <i class='bx bx-arrow-back'></i>
-        BACK
-      </div>
-      <h1 class="heading">Drawing Board</h1>
     </div>
-      <div class="main-container">
-          <div>
-              <div class="functional-button">
-                  <div class="button-1">
-                      <button id="clearButton">Clear All</button>
-                      <button id="newCanvasButton">New Canvas</button>
-                      <button id="deleteCanvasButton">Delete All</button>
-                      <button id="prevCanvasButton">Previous</button>
-                      <button id="nextCanvasButton">Next</button>
-                  </div>
-                  <div class="button-2">
-                      <button id="toggleBrushButton">Toggle Brush</button>
-                      <label for="brushSize">Brush Size:</label>
-                      <input type="number" id="brushSize" value="2" min="1" max="20">
-                      <br>
-                      <label for="eraserSize">Eraser Size:</label>
-                      <input type="number" id="eraserSize" value="10" min="1" max="50">
-                  </div>
-              </div>
-          </div>
-          <div style="display: flex; flex-direction: column;" class="canvas-css">
-              <div class="canvasButtons" id="canvasButtons"></div>
-              <div id="canvasContainer">
-                  <!-- Canvases will be dynamically added here -->
-              </div>
-              <span style="font-size: 0.6rem;" id="currentPageInfo">Page 1</span>
-          </div>
-      </div>
-  </div>
+    You can only access this on pc.
+</div>
+<div class="content-wrapper">
+    <div class="header">
+        <div class="btn-borderless button" onclick="document.location.href = '/dashboard'">
+            <i class='bx bx-arrow-back'></i>
+            BACK
+        </div>
+        <div style="display: flex; flex-direction: column;">
+            <h1 class="heading">Drawing Board</h1>
+            <p style="font-size: 0.65rem; margin-bottom: 1px;">Better use this in fullscreen for better performance at 100%.</p>
+        </div>
+    </div>
+    <div class="main-container">
+        <div>
+            <div class="functional-button">
+                <div class="button-1">
+                    <button id="clearButton">Clear All</button>
+                    <button id="newCanvasButton">New Canvas</button>
+                    <button id="deleteCanvasButton">Delete All</button>
+                    <button id="prevCanvasButton">Previous</button>
+                    <button id="nextCanvasButton">Next</button>
+                    <button id="addTextButton">Add Text</button> <!-- Add Text Button -->
+                </div>
+                <div class="button-2">
+                    <button id="toggleBrushButton">Toggle Brush</button>
+                    <button id="toggleEraserButton">Toggle Eraser</button>
+                    <label for="brushSize">Brush Size:</label>
+                    <input type="number" id="brushSize" value="2" min="1" max="20">
+                    <br>
+                    <label for="eraserSize">Eraser Size:</label>
+                    <input type="number" id="eraserSize" value="10" min="1" max="50">
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: column;" class="canvas-css">
+            <div class="canvasButtons" id="canvasButtons"></div>
+            <div id="canvasContainer">
+                <!-- Canvases will be dynamically added here -->
+            </div>
+            <span style="font-size: 0.6rem;" id="currentPageInfo">Page 1</span>
+        </div>
+    </div>
+</div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var canvasContainer = document.getElementById("canvasContainer");
-            var canvasButtonsContainer = document.getElementById("canvasButtons");
-            var canvases = [];
-            var currentCanvasIndex = 0;
-            var isDrawing = false;
-            var isEraser = false;
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var canvasContainer = document.getElementById("canvasContainer");
+        var canvasButtonsContainer = document.getElementById("canvasButtons");
+        var canvases = [];
+        var currentCanvasIndex = 0;
+        var isDrawing = false;
+        var isEraser = false;
+        var isTextMode = false;
+        var textInput;
 
-            function createCanvas() {
-                var canvas = document.createElement("canvas");
-                canvas.width = 700;
-                canvas.height = 400;
-                canvas.style.border = "3px solid #003049";
-                canvas.style.borderRadius = "10px";  // Set the border radius directly
-                canvasContainer.appendChild(canvas);
+        function createCanvas() {
+            var canvas = document.createElement("canvas");
+            canvas.width = 700;
+            canvas.height = 400;
+            canvas.style.border = "3px solid #003049";
+            canvas.style.borderRadius = "10px";  // Set the border radius directly
+            canvasContainer.appendChild(canvas);
 
-                var context = canvas.getContext("2d");
-                context.lineWidth = 2;
-                context.lineCap = "round";
-                context.strokeStyle = "#000";
+            var context = canvas.getContext("2d");
+            context.lineWidth = 2;
+            context.lineCap = "round";
+            context.strokeStyle = "#000";
 
-                canvases.push({ canvas: canvas, context: context, content: [] });
+            canvases.push({ canvas: canvas, context: context, content: [] });
 
-                canvas.addEventListener("mousedown", startDrawing);
-                canvas.addEventListener("mouseup", stopDrawing);
-                canvas.addEventListener("mousemove", draw);
-            }
+            canvas.addEventListener("mousedown", startDrawing);
+            canvas.addEventListener("mouseup", stopDrawing);
+            canvas.addEventListener("mousemove", draw);
+            canvas.addEventListener("click", handleCanvasClick);
+        }
 
-            function startDrawing(e) {
+        function startDrawing(e) {
+            if (!isTextMode) {
                 isDrawing = true;
                 draw(e);
             }
+        }
 
-            function stopDrawing() {
-                isDrawing = false;
-                canvases[currentCanvasIndex].context.beginPath();
-            }
+        function stopDrawing() {
+            isDrawing = false;
+            canvases[currentCanvasIndex].context.beginPath();
+        }
 
-            function draw(e) {
-                var canvas = canvases[currentCanvasIndex];
-                var x = e.clientX - canvas.canvas.offsetLeft;
-                var y = e.clientY - canvas.canvas.offsetTop;
+        function draw(e) {
+            var canvas = canvases[currentCanvasIndex];
+            var x = e.clientX - canvas.canvas.offsetLeft;
+            var y = e.clientY - canvas.canvas.offsetTop;
 
-                if (isDrawing) {
-                    if (isEraser) {
-                        canvas.context.globalCompositeOperation = "destination-out";
-                        canvas.context.strokeStyle = "rgba(0,0,0,1)";
-                        canvas.context.lineWidth = document.getElementById("eraserSize").value;
-                    } else {
-                        canvas.context.globalCompositeOperation = "source-over";
-                        canvas.context.strokeStyle = "#000";
-                        canvas.context.lineWidth = document.getElementById("brushSize").value;
-                    }
-
-                    canvas.context.lineTo(x, y);
-                    canvas.context.stroke();
-                    canvas.context.beginPath();
-                    canvas.context.moveTo(x, y);
-
-                    canvas.content.push({ x: x, y: y });
-                }
-            }
-
-            function clearCanvas() {
-                var canvas = canvases[currentCanvasIndex];
-                canvas.context.clearRect(0, 0, canvas.canvas.width, canvas.canvas.height);
-                canvas.content = [];
-            }
-
-            function createNewCanvas() {
-                currentCanvasIndex = canvases.length;
-                createCanvas();
-                updateCanvasView();
-                createCanvasButton();
-            }
-
-            function deleteCanvas() {
-                for (var i = 1; i < canvases.length; i++) {
-                    canvasContainer.removeChild(canvases[i].canvas);
+            if (isDrawing) {
+                if (isEraser) {
+                    canvas.context.globalCompositeOperation = "destination-out";
+                    canvas.context.strokeStyle = "rgba(0,0,0,1)";
+                    canvas.context.lineWidth = document.getElementById("eraserSize").value;
+                } else {
+                    canvas.context.globalCompositeOperation = "source-over";
+                    canvas.context.strokeStyle = "#000";
+                    canvas.context.lineWidth = document.getElementById("brushSize").value;
                 }
 
-                canvases = [canvases[0]];  // Keep the first canvas and clear its content
-                canvases[0].context.clearRect(0, 0, canvases[0].canvas.width, canvases[0].canvas.height);
-                currentCanvasIndex = 0;
+                canvas.context.lineTo(x, y);
+                canvas.context.stroke();
+                canvas.context.beginPath();
+                canvas.context.moveTo(x, y);
 
-                // Remove all canvas buttons except the first one
-                while (canvasButtonsContainer.children.length > 1) {
-                    canvasButtonsContainer.removeChild(canvasButtonsContainer.lastChild);
-                }
-
-                updateCanvasView();
+                canvas.content.push({ x: x, y: y });
             }
-            
-            function moveToPreviousCanvas() {
-                if (currentCanvasIndex > 0) {
-                    currentCanvasIndex--;
-                    updateCanvasView();
-                }
-            }
+        }
 
-            function moveToNextCanvas() {
-                if (currentCanvasIndex < canvases.length - 1) {
-                    currentCanvasIndex++;
-                    updateCanvasView();
-                }
-            }
+        function clearCanvas() {
+            var canvas = canvases[currentCanvasIndex];
+            canvas.context.clearRect(0, 0, canvas.canvas.width, canvas.canvas.height);
+            canvas.content = [];
+        }
 
-            function toggleEraser() {
-                isEraser = !isEraser;
-            }
-
-            function toggleBrush() {
-                isEraser = !isEraser;
-                document.getElementById("toggleBrushButton").innerText = isEraser ? "Toggle Brush" : "Toggle Eraser";
-            }
-
-            function updateCanvasView() {
-                for (var i = 0; i < canvases.length; i++) {
-                    canvases[i].canvas.style.display = (i === currentCanvasIndex) ? "block" : "none";
-                }
-                document.getElementById("currentPageInfo").innerText = "Page " + (currentCanvasIndex + 1);
-            }
-
-            function createCanvasButton() {
-                var button = document.createElement("button");
-                button.innerText = canvases.length.toString();
-                button.addEventListener("click", function () {
-                    currentCanvasIndex = parseInt(button.innerText) - 1;
-                    updateCanvasView();
-                });
-                canvasButtonsContainer.appendChild(button);
-            }
-
-            // Initial canvas
+        function createNewCanvas() {
+            currentCanvasIndex = canvases.length;
             createCanvas();
+            updateCanvasView();
             createCanvasButton();
+        }
 
-            // Attach event listeners to buttons
-            document.getElementById("clearButton").addEventListener("click", clearCanvas);
-            document.getElementById("newCanvasButton").addEventListener("click", createNewCanvas);
-            document.getElementById("deleteCanvasButton").addEventListener("click", deleteCanvas);
-            document.getElementById("prevCanvasButton").addEventListener("click", moveToPreviousCanvas);
-            document.getElementById("nextCanvasButton").addEventListener("click", moveToNextCanvas);
-            document.getElementById("toggleBrushButton").addEventListener("click", toggleBrush);
-            document.getElementById("eraserSize").addEventListener("input", draw);
-            document.getElementById("brushSize").addEventListener("input", draw);
+        function deleteCanvas() {
+            for (var i = 1; i < canvases.length; i++) {
+                canvasContainer.removeChild(canvases[i].canvas);
+            }
+
+            canvases = [canvases[0]];  // Keep the first canvas and clear its content
+            canvases[0].context.clearRect(0, 0, canvases[0].canvas.width, canvases[0].canvas.height);
+            currentCanvasIndex = 0;
+
+            // Remove all canvas buttons except the first one
+            while (canvasButtonsContainer.children.length > 1) {
+                canvasButtonsContainer.removeChild(canvasButtonsContainer.lastChild);
+            }
+
+            updateCanvasView();
+        }
+
+        function moveToPreviousCanvas() {
+            if (currentCanvasIndex > 0) {
+                currentCanvasIndex--;
+                updateCanvasView();
+            }
+        }
+
+        function moveToNextCanvas() {
+            if (currentCanvasIndex < canvases.length - 1) {
+                currentCanvasIndex++;
+                updateCanvasView();
+            }
+        }
+
+        function toggleEraser() {
+            isEraser = !isEraser;
+            if (isTextMode) {
+                isTextMode = false;
+                document.getElementById("addTextButton").classList.remove("active");
+            }
+        }
+
+        function toggleBrush() {
+            isEraser = false; // Ensure eraser is turned off
+            if (isTextMode) {
+                isTextMode = false;
+                document.getElementById("addTextButton").classList.remove("active");
+            }
+        }
+
+        function updateCanvasView() {
+            for (var i = 0; i < canvases.length; i++) {
+                canvases[i].canvas.style.display = (i === currentCanvasIndex) ? "block" : "none";
+            }
+            document.getElementById("currentPageInfo").innerText = "Page " + (currentCanvasIndex + 1);
+        }
+
+        function createCanvasButton() {
+            var button = document.createElement("button");
+            button.innerText = canvases.length.toString();
+            button.addEventListener("click", function () {
+                currentCanvasIndex = parseInt(button.innerText) - 1;
+                updateCanvasView();
+            });
+            canvasButtonsContainer.appendChild(button);
+        }
+
+        function handleCanvasClick(e) {
+            if (isTextMode) {
+                showTextInput(e.clientX, e.clientY);
+            }
+        }
+
+        function showTextInput(x, y) {
+            textInput = document.createElement("input");
+            textInput.type = "text";
+            textInput.classList.add("text-input");
+            textInput.style.left = x - window.scrollX + "px"; // Adjust for scroll position
+            textInput.style.top = y - window.scrollY + "px"; // Adjust for scroll position
+            textInput.style.fontSize = "1.5rem";
+            textInput.style.color = "#000";
+            document.body.appendChild(textInput);
+
+            textInput.focus();
+
+            textInput.addEventListener("blur", function () {
+                if (textInput.value.trim() !== "") {
+                    addTextToCanvas(textInput.value, x, y);
+                }
+                document.body.removeChild(textInput);
+                textInput = null;
+            });
+
+            textInput.addEventListener("keydown", function (e) {
+                if (e.key === "Enter") {
+                    textInput.blur();
+                }
+            });
+        }
+
+        function addTextToCanvas(text, x, y) {
+            var canvas = canvases[currentCanvasIndex];
+            var context = canvas.context;
+
+            context.font = "1.5rem Arial";
+            context.fillStyle = "#000";
+            context.fillText(text, x - canvas.canvas.offsetLeft, y - canvas.canvas.offsetTop);
+        }
+
+        // Initial canvas
+        createCanvas();
+        createCanvasButton();
+
+        // Attach event listeners to buttons
+        document.getElementById("clearButton").addEventListener("click", clearCanvas);
+        document.getElementById("newCanvasButton").addEventListener("click", createNewCanvas);
+        document.getElementById("deleteCanvasButton").addEventListener("click", deleteCanvas);
+        document.getElementById("prevCanvasButton").addEventListener("click", moveToPreviousCanvas);
+        document.getElementById("nextCanvasButton").addEventListener("click", moveToNextCanvas);
+        document.getElementById("toggleBrushButton").addEventListener("click", toggleBrush);
+        document.getElementById("eraserSize").addEventListener("input", draw);
+        document.getElementById("brushSize").addEventListener("input", draw);
+        document.getElementById("toggleBrushButton").addEventListener("click", toggleBrush);
+        document.getElementById("toggleEraserButton").addEventListener("click", toggleEraser);
+        document.getElementById("addTextButton").addEventListener("click", function () {
+            isTextMode = !isTextMode;
+            if (isTextMode) {
+                isEraser = false;
+                document.getElementById("toggleBrushButton").innerText = "Toggle Brush";
+                document.getElementById("toggleEraserButton").innerText = "Toggle Eraser";
+                document.getElementById("eraserSize").value = 5;
+                document.getElementById("brushSize").value = 2;
+            }
         });
-    </script>
+    });
+</script>
 </body>
 </html>
