@@ -252,13 +252,6 @@
             var y = e.clientY - canvas.canvas.offsetTop;
 
             if (isDrawing) {
-                if (!canvas.isBackgroundFilled) {
-                    // Fill the background with white only once at the beginning
-                    canvas.context.fillStyle = "#fff";
-                    canvas.context.fillRect(0, 0, canvas.canvas.width, canvas.canvas.height);
-                    canvas.isBackgroundFilled = true;
-                }
-
                 if (isEraser) {
                     canvas.context.globalCompositeOperation = "destination-out";
                     canvas.context.strokeStyle = "rgba(0,0,0,1)";
