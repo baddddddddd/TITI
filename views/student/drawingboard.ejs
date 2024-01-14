@@ -218,7 +218,7 @@
             canvas.width = 700;
             canvas.height = 400;
             canvas.style.border = "3px solid #003049";
-            canvas.style.borderRadius = "10px";  // Set the border radius directly
+            canvas.style.borderRadius = "10px";
             canvasContainer.appendChild(canvas);
 
             var context = canvas.getContext("2d");
@@ -228,6 +228,12 @@
 
             canvases.push({ canvas: canvas, context: context, content: [] });
 
+            canvas.addEventListener("mousedown", startDrawing);
+            canvas.addEventListener("mouseup", stopDrawing);
+            canvas.addEventListener("mousemove", draw);
+            canvas.addEventListener("click", handleCanvasClick);
+
+            // Add event listeners for the new canvas
             canvas.addEventListener("mousedown", startDrawing);
             canvas.addEventListener("mouseup", stopDrawing);
             canvas.addEventListener("mousemove", draw);
@@ -282,6 +288,12 @@
             createCanvas();
             updateCanvasView();
             createCanvasButton();
+
+            // Add event listeners for the new canvas
+            canvases[currentCanvasIndex].canvas.addEventListener("mousedown", startDrawing);
+            canvases[currentCanvasIndex].canvas.addEventListener("mouseup", stopDrawing);
+            canvases[currentCanvasIndex].canvas.addEventListener("mousemove", draw);
+            canvases[currentCanvasIndex].canvas.addEventListener("click", handleCanvasClick);
         }
 
         function deleteCanvas() {
